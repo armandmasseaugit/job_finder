@@ -1,0 +1,23 @@
+
+wttj_params:
+  headers_jobs: {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
+    'Accept': '*/*',
+    'Accept-Language': 'fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3',
+    'Referer': 'https://www.welcometothejungle.com/',
+    'x-algolia-api-key': '4bd8f6215d0cc52b26430765769e65a0',
+    'x-algolia-application-id': 'CSEKHVMS53',
+    'content-type': 'application/x-www-form-urlencoded',
+    'Origin': 'https://www.welcometothejungle.com',
+    'DNT': '1',
+    'Sec-GPC': '1',
+    'Connection': 'keep-alive',
+    'Sec-Fetch-Dest': 'empty',
+    'Sec-Fetch-Mode': 'cors',
+    'Sec-Fetch-Site': 'cross-site',
+    'Priority': 'u=0',
+    'Pragma': 'no-cache',
+    'Cache-Control': 'no-cache',
+  }
+  queries: ["data", "IA", "Machine learning"]
+  number_of_pages_to_search_into: 10

@@ -1,0 +1,11 @@
+wttj_jobs_output:
+  type: pandas.ExcelDataset
+  filepath: "s3://wttj-scraping/wttj_jobs.xlsx"
+  credentials: aws_credentials
+  load_args:
+    engine: openpyxl
+
+wttj_last_scrape_output:
+  type: json.JSONDataset
+  filepath: "s3://wttj-scraping/wttj_last_scrape.xlsx"
+  credentials: aws_credentials

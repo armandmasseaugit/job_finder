@@ -1,0 +1,869 @@
+{
+  "results": [
+    {
+      "hits": [
+        {
+          "has_salary_yearly_minimum": false,
+          "salary_minimum": null,
+          "language": "fr",
+          "has_remote": true,
+          "published_at_timestamp": 1748884816,
+          "wk_reference": "EF_P0eG8dX",
+          "published_at_date": "2025-06-02",
+          "has_contract_duration": false,
+          "published_at": "2025-06-02T17:20:16Z",
+          "organization": {
+            "name": "EssilorLuxottica France",
+            "description": "EssilorLuxottica is the global industry leader for both eyewear and eyecare. Thanks to the centuries long excellence and best in class brands portfolio, we are able to cover all aspects of the industry; design, production, distribution and innovation, within a  vertically integrated business model. As an open network company, we are driving the transformation of the eyewear and eyecare industry for a unique mission; which is to help people See More and Be More, addressing the world's evolving vision needs.",
+            "reference": "BmQD1j",
+            "labels": [],
+            "profile_type": "standard",
+            "logo": {
+              "url": "https://cdn-images.welcometothejungle.com/Gcnr7xhAEo7LH1qNVCTYDEo2mXENGYVZV-w4mz2BJQw/rs:auto:400::/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy9vcmdhbml6YXRpb24vbG9nby8xOTg1LzE3MDIzMS9hZjA1ZmU0MC0wNjZiLTRhZGItYTA5Mi03MTdjMmYxNjYyMTEucG5n",
+              "thumb": {
+                "url": "https://cdn-images.welcometothejungle.com/x1agzAtOreRFFm7Mq9--_czfMRXkvirewNZx5yae_hs/rs:auto:70::/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy9vcmdhbml6YXRpb24vbG9nby8xOTg1LzE3MDIzMS9hZjA1ZmU0MC0wNjZiLTRhZGItYTA5Mi03MTdjMmYxNjYyMTEucG5n"
+              }
+            },
+            "slug": "essilorluxottica",
+            "nb_employees": 190000,
+            "creation_year": 1849,
+            "cover_image": {
+              "small": {
+                "url": "https://cdn-images.welcometothejungle.com/cqE_dMx3UBnJYXLymqO2ZOorujqS0t__fL_0cXMgOfw/rs:auto:640::/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy93ZWJzaXRlX29yZ2FuaXphdGlvbi9jb3Zlcl9pbWFnZS93dHRqX2ZyL2VuLTAwNjljZjExLWNlNzgtNDE5OC1iMDNmLTlmNjU0N2IxYWVmNy5qcGc"
+              },
+              "url": "https://cdn-images.welcometothejungle.com/rZocVV3lhAyaftr4OYZEGfzHAdrOZ1lzn9CSy7WpTZI/rs:auto:2000:450:/g:fp:0:0.61/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy93ZWJzaXRlX29yZ2FuaXphdGlvbi9jb3Zlcl9pbWFnZS93dHRqX2ZyL2VuLTAwNjljZjExLWNlNzgtNDE5OC1iMDNmLTlmNjU0N2IxYWVmNy5qcGc",
+              "medium": {
+                "url": "https://cdn-images.welcometothejungle.com/eKS5Rqs3tcKNpSDY2yxj1Sais9prlDjbwAk4OIhu544/rs:auto:900::/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy93ZWJzaXRlX29yZ2FuaXphdGlvbi9jb3Zlcl9pbWFnZS93dHRqX2ZyL2VuLTAwNjljZjExLWNlNzgtNDE5OC1iMDNmLTlmNjU0N2IxYWVmNy5qcGc"
+              },
+              "large": {
+                "url": "https://cdn-images.welcometothejungle.com/SeE28ua2MFmulqtFKAvFo9tcGZPGz2RpOoxx-da-zaE/rs:auto:1500::/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy93ZWJzaXRlX29yZ2FuaXphdGlvbi9jb3Zlcl9pbWFnZS93dHRqX2ZyL2VuLTAwNjljZjExLWNlNzgtNDE5OC1iMDNmLTlmNjU0N2IxYWVmNy5qcGc"
+              },
+              "social": {
+                "url": "https://cdn-images.welcometothejungle.com/HUSt8260pyzwiSDFhSlWnDjibC24r2ibSR8K_IM8O5A/rs:auto:1200:627:/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy93ZWJzaXRlX29yZ2FuaXphdGlvbi9jb3Zlcl9pbWFnZS93dHRqX2ZyL2VuLTAwNjljZjExLWNlNzgtNDE5OC1iMDNmLTlmNjU0N2IxYWVmNy5qcGc"
+              }
+            },
+            "profile_ranking": 100,
+            "commitments": [],
+            "equality_index": 99
+          },
+          "remote": "punctual",
+          "contract_duration_maximum": null,
+          "experience_level_minimum": 0.0,
+          "offices": [
+            {
+              "state": "Ile-de-France",
+              "city": "Charenton-le-Pont",
+              "country": "France",
+              "country_code": "FR",
+              "district": "Val-de-Marne",
+              "local_district": "Val-de-Marne",
+              "local_city": "Charenton-le-Pont",
+              "local_state": "Île-de-France"
+            }
+          ],
+          "has_benefits": false,
+          "salary_period": null,
+          "has_education_level": true,
+          "profile_ranking": 100,
+          "rank_group_1": 6747,
+          "salary_maximum": null,
+          "contract_duration_minimum": null,
+          "source_stage": "production",
+          "sectors": [
+            {
+              "name": "Ingénieries Spécialisées",
+              "reference": "engineering",
+              "parent_name": "Ingénierie",
+              "parent_reference": "engineering-1"
+            },
+            {
+              "name": "Pharmaceutique / Biotechnologique",
+              "reference": "pharmaceutical-biotech",
+              "parent_name": "Industrie",
+              "parent_reference": "industry-1"
+            },
+            {
+              "name": "Accompagnement d'entreprises",
+              "reference": "corporate-support",
+              "parent_name": "Services aux entreprises",
+              "parent_reference": "corporate-services"
+            }
+          ],
+          "_geoloc": [
+            {
+              "lat": 48.82681,
+              "lng": 2.4052
+            }
+          ],
+          "contract_type": "apprenticeship",
+          "rank_group_2": 6746,
+          "new_profession": {
+            "sub_category_reference": "employee-relations-and-engagement-yYmIz",
+            "sub_category_name": "Relations avec les employés et engagement",
+            "category_reference": "hr-people-iZGMy",
+            "category_name": "RH/Personnel",
+            "pivot_name": "Responsable de la diversité et de l'inclusion",
+            "pivot_reference": "diversity-and-inclusion-manager-lYTg5"
+          },
+          "profile": "<span>Description du profil :<br><br></span><p><strong>Profil :</strong></p><ul> <li>Vous préparez un master ou équivalent avec une spécialisation en ressources humaines</li> <li>Bonne maitrise du pack Office</li> <li>Niveau B2-C1 en anglais</li> <li>Bonnes capacités rédactionnelles et de synthèse</li> <li>Personne curieuse, créative et proactive</li> <li>Bonne capacité organisationnelle et très bon relationnel</li> </ul><br><br><span>Nous proposons :<br><br></span><p>Chez EssilorLuxottica, vous n’êtes pas défini uniquement par votre titre de poste. Chaque aventure professionnelle est unique, mais voici un aperçu des avantages et des bénéfices que vous pouvez obtenir en nous choisissant.</p><p>Rejoindre EssilorLuxottica, c'est plonger au cœur d'un environnement international dynamique et stimulant. Vous aurez l'opportunité de collaborer avec des équipes diversifiées provenant de nombreux pays, enrichissant ainsi votre perspective culturelle et professionnelle.</p><p>L'innovation est au cœur de notre ADN. Vous serez impliqué dans des projets novateurs qui façonnent l'avenir de l'optique et de la lunetterie. Vous aurez l'occasion de contribuer activement à des initiatives qui ont un impact réel sur le marché et sur la vie des consommateurs.</p><p><em>La Diversité, l’Equité et l’Inclusion font partie des valeurs fondamentales de notre Groupe. Depuis de longues années, nous nous attachons à créer un environnement de travail où chaque personne se sent soutenue, valorisée et respectée, quel que soit son profil.</em></p><p><em>Rejoignez-nous, vos talents uniques feront la différence !</em></p>",
+          "name": "ALTERNANCE - Assistant Service Diversité & Inclusion F/H",
+          "is_boosted": false,
+          "has_experience_level_minimum": true,
+          "organization_score": 30,
+          "benefits": [],
+          "education_level": "bac_5",
+          "rank_group_3": 6746,
+          "salary_yearly_minimum": null,
+          "slug": "alternance-assistant-service-diversite-inclusion-f-h_charenton-le-pont_EF_P0eG8dX",
+          "salary_currency": null,
+          "reference": "4d6cda86-0220-4bd3-93b6-ff497cb1f0d3",
+          "objectID": "4d6cda86-0220-4bd3-93b6-ff497cb1f0d3",
+          "_highlightResult": {
+            "organization": {
+              "name": {
+                "value": "EssilorLuxottica France",
+                "matchLevel": "none",
+                "matchedWords": []
+              }
+            },
+            "offices": [
+              {
+                "state": {
+                  "value": "Ile-de-France",
+                  "matchLevel": "none",
+                  "matchedWords": []
+                },
+                "city": {
+                  "value": "Charenton-le-Pont",
+                  "matchLevel": "none",
+                  "matchedWords": []
+                },
+                "country": {
+                  "value": "France",
+                  "matchLevel": "none",
+                  "matchedWords": []
+                },
+                "country_code": {
+                  "value": "FR",
+                  "matchLevel": "none",
+                  "matchedWords": []
+                },
+                "district": {
+                  "value": "Val-de-Marne",
+                  "matchLevel": "none",
+                  "matchedWords": []
+                },
+                "local_district": {
+                  "value": "Val-de-Marne",
+                  "matchLevel": "none",
+                  "matchedWords": []
+                },
+                "local_city": {
+                  "value": "Charenton-le-Pont",
+                  "matchLevel": "none",
+                  "matchedWords": []
+                },
+                "local_state": {
+                  "value": "Île-de-France",
+                  "matchLevel": "none",
+                  "matchedWords": []
+                }
+              }
+            ],
+            "new_profession": {
+              "sub_category_reference": {
+                "value": "employee-relations-and-engagement-yYmIz",
+                "matchLevel": "none",
+                "matchedWords": []
+              },
+              "sub_category_name": {
+                "value": "Relations avec les employés et engagement",
+                "matchLevel": "none",
+                "matchedWords": []
+              },
+              "category_name": {
+                "value": "RH/Personnel",
+                "matchLevel": "none",
+                "matchedWords": []
+              },
+              "pivot_name": {
+                "value": "Responsable de la diversité et de l'inclusion",
+                "matchLevel": "none",
+                "matchedWords": []
+              },
+              "pivot_reference": {
+                "value": "diversity-and-inclusion-manager-lYTg5",
+                "matchLevel": "none",
+                "matchedWords": []
+              }
+            },
+            "profile": {
+              "value": "<span>Description du profil :<br><br></span><p><strong>Profil :</strong></p><ul> <li>Vous préparez un master ou équivalent avec une spécialisation en ressources humaines</li> <li>Bonne maitrise du pack Office</li> <li>Niveau B2-C1 en anglais</li> <li>Bonnes capacités rédactionnelles et de synthèse</li> <li>Personne curieuse, créative et proactive</li> <li>Bonne capacité organisationnelle et très bon relationnel</li> </ul><br><br><span>Nous proposons :<br><br></span><p>Chez EssilorLuxottica, vous n’êtes pas défini uniquement par votre titre de poste. Chaque aventure professionnelle est unique, mais voici un aperçu des avantages et des bénéfices que vous pouvez obtenir en nous choisissant.</p><p>Rejoindre EssilorLuxottica, c'est plonger au cœur d'un environnement international dynamique et stimulant. Vous aurez l'opportunité de collaborer avec des équipes diversifiées provenant de nombreux pays, enrichissant ainsi votre perspective culturelle et professionnelle.</p><p>L'innovation est au cœur de notre ADN. Vous serez impliqué dans des projets novateurs qui façonnent l'avenir de l'optique et de la lunetterie. Vous aurez l'occasion de contribuer activement à des initiatives qui ont un impact réel sur le marché et sur la vie des consommateurs.</p><p><em>La Diversité, l’Equité et l’Inclusion font partie des valeurs fondamentales de notre Groupe. Depuis de longues années, nous nous attachons à créer un environnement de travail où chaque personne se sent soutenue, valorisée et respectée, quel que soit son profil.</em></p><p><em>Rejoignez-nous, vos talents uniques feront la différence !</em></p>",
+              "matchLevel": "none",
+              "matchedWords": []
+            },
+            "name": {
+              "value": "ALTERNANCE - Assistant Service Diversité & Inclusion F/H",
+              "matchLevel": "none",
+              "matchedWords": []
+            }
+          }
+        },
+        {
+          "contract_type": "full_time",
+          "rank_group_1": 6747,
+          "has_contract_duration": false,
+          "language": "fr",
+          "profile_ranking": 100,
+          "wk_reference": "IXIGR_aAZRLVV",
+          "_geoloc": [
+            {
+              "lat": 50.31185,
+              "lng": 2.71921
+            }
+          ],
+          "salary_minimum": null,
+          "organization": {
+            "name": "IXI-Groupe",
+            "description": null,
+            "reference": "jakGwYz",
+            "labels": [],
+            "profile_type": "standard",
+            "logo": {
+              "url": "https://cdn-images.welcometothejungle.com/ZJkqZd9QiADLg4kfxdhpUIfzJNfkudcgJY5Hx-cwquk/rs:auto:400::/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy9vcmdhbml6YXRpb24vbG9nby82MTE0LzE2MTI4NS9hYmQ1MDQwNS02N2E2LTQ2OGYtODM5ZS0yY2VjZjQ2MWU1MDkucG5n",
+              "thumb": {
+                "url": "https://cdn-images.welcometothejungle.com/cTbYVo_YzsRXTn29zdE6L5V-YiLCXkKleGHR0G2PUu0/rs:auto:70::/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy9vcmdhbml6YXRpb24vbG9nby82MTE0LzE2MTI4NS9hYmQ1MDQwNS02N2E2LTQ2OGYtODM5ZS0yY2VjZjQ2MWU1MDkucG5n"
+              }
+            },
+            "slug": "ixi-groupe",
+            "nb_employees": 670,
+            "creation_year": 1986,
+            "cover_image": {
+              "small": {
+                "url": "https://cdn-images.welcometothejungle.com/ReFZaAxVUl7d3HsdnpTY6xDjhbLXvGrUabPpOlwkLFc/rs:auto:640::/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy93ZWJzaXRlX29yZ2FuaXphdGlvbi9jb3Zlcl9pbWFnZS93dHRqX2ZyL2ZyLWQ2ZTFlMzg3LTdhZWEtNDExYy04YmZkLTRiYzcxNmZlZGIyMC5qcGc"
+              },
+              "url": "https://cdn-images.welcometothejungle.com/RIfDOsr20obhHMvE6SsWGY97PtAyC_8g6oEiKIpygiY/rs:auto:2000:450:/g:fp:0:0.0/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy93ZWJzaXRlX29yZ2FuaXphdGlvbi9jb3Zlcl9pbWFnZS93dHRqX2ZyL2ZyLWQ2ZTFlMzg3LTdhZWEtNDExYy04YmZkLTRiYzcxNmZlZGIyMC5qcGc",
+              "medium": {
+                "url": "https://cdn-images.welcometothejungle.com/VkiVP9swiNq8EKz4Ado3JMWieK2xY9SpKks8abNrOfc/rs:auto:900::/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy93ZWJzaXRlX29yZ2FuaXphdGlvbi9jb3Zlcl9pbWFnZS93dHRqX2ZyL2ZyLWQ2ZTFlMzg3LTdhZWEtNDExYy04YmZkLTRiYzcxNmZlZGIyMC5qcGc"
+              },
+              "large": {
+                "url": "https://cdn-images.welcometothejungle.com/Ygi2dVT1Bx8eEdT1NRZi5tBbvbR661A9wy8HBcWCqsY/rs:auto:1500::/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy93ZWJzaXRlX29yZ2FuaXphdGlvbi9jb3Zlcl9pbWFnZS93dHRqX2ZyL2ZyLWQ2ZTFlMzg3LTdhZWEtNDExYy04YmZkLTRiYzcxNmZlZGIyMC5qcGc"
+              },
+              "social": {
+                "url": "https://cdn-images.welcometothejungle.com/7DdyFDKujFWvvvyKHQVdGFt40U6ekH6P8JO5M4_bE3E/rs:auto:1200:627:/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy93ZWJzaXRlX29yZ2FuaXphdGlvbi9jb3Zlcl9pbWFnZS93dHRqX2ZyL2ZyLWQ2ZTFlMzg3LTdhZWEtNDExYy04YmZkLTRiYzcxNmZlZGIyMC5qcGc"
+              }
+            },
+            "commitments": [],
+            "equality_index": null,
+            "profile_ranking": 100
+          },
+          "has_salary_yearly_minimum": false,
+          "published_at_timestamp": 1748884098,
+          "new_profession": {
+            "sub_category_reference": "executive-jZWVl",
+            "sub_category_name": "Équipe de direction",
+            "category_reference": "hr-people-iZGMy",
+            "category_name": "RH/Personnel",
+            "pivot_name": "Assistant de direction",
+            "pivot_reference": "executive-assistant-lMzEx"
+          },
+          "reference": "4b7c52e9-e2df-407f-98f5-d946b435f044",
+          "salary_maximum": null,
+          "experience_level_minimum": 1.0,
+          "published_at_date": "2025-06-02",
+          "organization_score": 30,
+          "has_experience_level_minimum": true,
+          "remote": "punctual",
+          "is_boosted": false,
+          "offices": [
+            {
+              "state": "Hauts-de-France",
+              "city": "Duisans",
+              "country": "France",
+              "country_code": "FR",
+              "district": "Pas-de-Calais",
+              "local_district": "Pas-de-Calais",
+              "local_city": "Duisans",
+              "local_state": "Hauts-de-France"
+            }
+          ],
+          "salary_period": null,
+          "source_stage": "production",
+          "contract_duration_maximum": null,
+          "has_benefits": false,
+          "contract_duration_minimum": null,
+          "sectors": [
+            {
+              "name": "Assurance",
+              "reference": "insurance-1",
+              "parent_name": "Banques / Assurances / Finance",
+              "parent_reference": "banking-insurance-finance"
+            },
+            {
+              "name": "Bâtiment / Travaux publics",
+              "reference": "building-public-works",
+              "parent_name": "Industrie",
+              "parent_reference": "industry-1"
+            },
+            {
+              "name": "Accompagnement d'entreprises",
+              "reference": "corporate-support",
+              "parent_name": "Services aux entreprises",
+              "parent_reference": "corporate-services"
+            }
+          ],
+          "salary_yearly_minimum": null,
+          "has_remote": true,
+          "has_education_level": true,
+          "profile": "Vous êtes rigoureux, empathique, proactif et ouvert d'esprit ? Vous avez une parfaite maitrise de la langue française ?\n\nVotre motivation et votre engagement personnel seront déterminant !\n\nNous recherchons une personne de valeur pouvant se fondre dans une entreprise familiale. Une expérience ou formation dans le domaine de l'expertise et ou assurance serait un bel atout.",
+          "name": "Assistant(e) d'expert et service rendez vous - Cabinet Seiliez",
+          "rank_group_2": 6746,
+          "benefits": [],
+          "rank_group_3": 6746,
+          "education_level": "bac_3",
+          "slug": "assistant-d-expert-et-service-rendez-vous-cabinet-seiliez_duisans",
+          "salary_currency": null,
+          "published_at": "2025-06-02T17:08:18Z",
+          "objectID": "4b7c52e9-e2df-407f-98f5-d946b435f044",
+          "_highlightResult": {
+            "organization": {
+              "name": {
+                "value": "IXI-Groupe",
+                "matchLevel": "none",
+                "matchedWords": []
+              }
+            },
+            "new_profession": {
+              "sub_category_reference": {
+                "value": "executive-jZWVl",
+                "matchLevel": "none",
+                "matchedWords": []
+              },
+              "sub_category_name": {
+                "value": "Équipe de direction",
+                "matchLevel": "none",
+                "matchedWords": []
+              },
+              "category_name": {
+                "value": "RH/Personnel",
+                "matchLevel": "none",
+                "matchedWords": []
+              },
+              "pivot_name": {
+                "value": "Assistant de direction",
+                "matchLevel": "none",
+                "matchedWords": []
+              },
+              "pivot_reference": {
+                "value": "executive-assistant-lMzEx",
+                "matchLevel": "none",
+                "matchedWords": []
+              }
+            },
+            "offices": [
+              {
+                "state": {
+                  "value": "Hauts-de-France",
+                  "matchLevel": "none",
+                  "matchedWords": []
+                },
+                "city": {
+                  "value": "Duisans",
+                  "matchLevel": "none",
+                  "matchedWords": []
+                },
+                "country": {
+                  "value": "France",
+                  "matchLevel": "none",
+                  "matchedWords": []
+                },
+                "country_code": {
+                  "value": "FR",
+                  "matchLevel": "none",
+                  "matchedWords": []
+                },
+                "district": {
+                  "value": "Pas-de-Calais",
+                  "matchLevel": "none",
+                  "matchedWords": []
+                },
+                "local_district": {
+                  "value": "Pas-de-Calais",
+                  "matchLevel": "none",
+                  "matchedWords": []
+                },
+                "local_city": {
+                  "value": "Duisans",
+                  "matchLevel": "none",
+                  "matchedWords": []
+                },
+                "local_state": {
+                  "value": "Hauts-de-France",
+                  "matchLevel": "none",
+                  "matchedWords": []
+                }
+              }
+            ],
+            "profile": {
+              "value": "Vous êtes rigoureux, empathique, proactif et ouvert d'esprit ? Vous avez une parfaite maitrise de la langue française ?\n\nVotre motivation et votre engagement personnel seront déterminant !\n\nNous recherchons une personne de valeur pouvant se fondre dans une entreprise familiale. Une expérience ou formation dans le domaine de l'expertise et ou assurance serait un bel atout.",
+              "matchLevel": "none",
+              "matchedWords": []
+            },
+            "name": {
+              "value": "Assistant(e) d'expert et service rendez vous - Cabinet Seiliez",
+              "matchLevel": "none",
+              "matchedWords": []
+            }
+          }
+        },
+        {
+          "profile_ranking": 100,
+          "published_at_date": "2025-06-02",
+          "experience_level_minimum": 3.0,
+          "_geoloc": [
+            {
+              "lat": 47.50165,
+              "lng": 6.79587
+            }
+          ],
+          "rank_group_2": 6746,
+          "is_boosted": false,
+          "has_contract_duration": false,
+          "wk_reference": "IXIGR_L4rzP83",
+          "offices": [
+            {
+              "state": "Bourgogne-Franche-Comte",
+              "city": "Montbeliard",
+              "country": "France",
+              "country_code": "FR",
+              "district": "Doubs",
+              "local_district": "Doubs",
+              "local_city": "Montbéliard",
+              "local_state": "Bourgogne-Franche-Comté"
+            }
+          ],
+          "contract_type": "full_time",
+          "benefits": [],
+          "organization_score": 30,
+          "language": "fr",
+          "salary_minimum": null,
+          "has_experience_level_minimum": true,
+          "sectors": [
+            {
+              "name": "Assurance",
+              "reference": "insurance-1",
+              "parent_name": "Banques / Assurances / Finance",
+              "parent_reference": "banking-insurance-finance"
+            },
+            {
+              "name": "Bâtiment / Travaux publics",
+              "reference": "building-public-works",
+              "parent_name": "Industrie",
+              "parent_reference": "industry-1"
+            },
+            {
+              "name": "Accompagnement d'entreprises",
+              "reference": "corporate-support",
+              "parent_name": "Services aux entreprises",
+              "parent_reference": "corporate-services"
+            }
+          ],
+          "published_at_timestamp": 1748884097,
+          "contract_duration_maximum": null,
+          "salary_yearly_minimum": null,
+          "remote": "punctual",
+          "contract_duration_minimum": null,
+          "salary_period": null,
+          "source_stage": "production",
+          "rank_group_1": 6747,
+          "published_at": "2025-06-02T17:08:17Z",
+          "new_profession": {
+            "sub_category_reference": "management-consulting-wMjU0",
+            "sub_category_name": "Conseil en gestion",
+            "category_reference": "consulting-strategy-iNDRl",
+            "category_name": "Conseil et stratégie",
+            "pivot_name": "Consultant en stratégie",
+            "pivot_reference": "strategy-consultant-0MTU4"
+          },
+          "profile": "**SAVOIRS CLÉS :**\n\n* Aisance téléphonique (nombreux appels entrants / sortants),\n    \n* Organisation,\n    \n* Curiosité et implication,\n    \n* Empathie et humilité,\n    \n* Initiative (pour alerter sur une difficulté, consulter ses référents pour conforter son avis).  \n    \n\n**EXPÉRIENCE ET CONNAISSANCES :**\n\n* La maîtrise des outils Word et Excel est essentiel, y compris la fonction publipostage.\n    \n* Des connaissances en location immobilière, gestion de copropriété, second œuvre de bâtiment et Droit seront appréciées.\n    \n* La connaissance des conventions d’expertise amiable contradictoire, IRSI, CIDECOP, sera un atout supplémentaire.",
+          "name": "Assistant(e) d'Experts - Cabinet NADLER",
+          "organization": {
+            "name": "IXI-Groupe",
+            "description": null,
+            "reference": "jakGwYz",
+            "labels": [],
+            "profile_type": "standard",
+            "logo": {
+              "url": "https://cdn-images.welcometothejungle.com/ZJkqZd9QiADLg4kfxdhpUIfzJNfkudcgJY5Hx-cwquk/rs:auto:400::/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy9vcmdhbml6YXRpb24vbG9nby82MTE0LzE2MTI4NS9hYmQ1MDQwNS02N2E2LTQ2OGYtODM5ZS0yY2VjZjQ2MWU1MDkucG5n",
+              "thumb": {
+                "url": "https://cdn-images.welcometothejungle.com/cTbYVo_YzsRXTn29zdE6L5V-YiLCXkKleGHR0G2PUu0/rs:auto:70::/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy9vcmdhbml6YXRpb24vbG9nby82MTE0LzE2MTI4NS9hYmQ1MDQwNS02N2E2LTQ2OGYtODM5ZS0yY2VjZjQ2MWU1MDkucG5n"
+              }
+            },
+            "slug": "ixi-groupe",
+            "nb_employees": 670,
+            "creation_year": 1986,
+            "cover_image": {
+              "small": {
+                "url": "https://cdn-images.welcometothejungle.com/ReFZaAxVUl7d3HsdnpTY6xDjhbLXvGrUabPpOlwkLFc/rs:auto:640::/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy93ZWJzaXRlX29yZ2FuaXphdGlvbi9jb3Zlcl9pbWFnZS93dHRqX2ZyL2ZyLWQ2ZTFlMzg3LTdhZWEtNDExYy04YmZkLTRiYzcxNmZlZGIyMC5qcGc"
+              },
+              "url": "https://cdn-images.welcometothejungle.com/RIfDOsr20obhHMvE6SsWGY97PtAyC_8g6oEiKIpygiY/rs:auto:2000:450:/g:fp:0:0.0/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy93ZWJzaXRlX29yZ2FuaXphdGlvbi9jb3Zlcl9pbWFnZS93dHRqX2ZyL2ZyLWQ2ZTFlMzg3LTdhZWEtNDExYy04YmZkLTRiYzcxNmZlZGIyMC5qcGc",
+              "medium": {
+                "url": "https://cdn-images.welcometothejungle.com/VkiVP9swiNq8EKz4Ado3JMWieK2xY9SpKks8abNrOfc/rs:auto:900::/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy93ZWJzaXRlX29yZ2FuaXphdGlvbi9jb3Zlcl9pbWFnZS93dHRqX2ZyL2ZyLWQ2ZTFlMzg3LTdhZWEtNDExYy04YmZkLTRiYzcxNmZlZGIyMC5qcGc"
+              },
+              "large": {
+                "url": "https://cdn-images.welcometothejungle.com/Ygi2dVT1Bx8eEdT1NRZi5tBbvbR661A9wy8HBcWCqsY/rs:auto:1500::/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy93ZWJzaXRlX29yZ2FuaXphdGlvbi9jb3Zlcl9pbWFnZS93dHRqX2ZyL2ZyLWQ2ZTFlMzg3LTdhZWEtNDExYy04YmZkLTRiYzcxNmZlZGIyMC5qcGc"
+              },
+              "social": {
+                "url": "https://cdn-images.welcometothejungle.com/7DdyFDKujFWvvvyKHQVdGFt40U6ekH6P8JO5M4_bE3E/rs:auto:1200:627:/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy93ZWJzaXRlX29yZ2FuaXphdGlvbi9jb3Zlcl9pbWFnZS93dHRqX2ZyL2ZyLWQ2ZTFlMzg3LTdhZWEtNDExYy04YmZkLTRiYzcxNmZlZGIyMC5qcGc"
+              }
+            },
+            "profile_ranking": 100,
+            "commitments": [],
+            "equality_index": null
+          },
+          "has_remote": true,
+          "salary_maximum": null,
+          "reference": "f824b41c-1b6a-4462-8674-3de1f3f91492",
+          "has_salary_yearly_minimum": false,
+          "has_benefits": false,
+          "rank_group_3": 6746,
+          "slug": "assistant-d-experts-cabinet-nadler_asnieres-sur-seine",
+          "salary_currency": null,
+          "has_education_level": true,
+          "education_level": "bac_2",
+          "objectID": "f824b41c-1b6a-4462-8674-3de1f3f91492",
+          "_highlightResult": {
+            "offices": [
+              {
+                "state": {
+                  "value": "Bourgogne-Franche-Comte",
+                  "matchLevel": "none",
+                  "matchedWords": []
+                },
+                "city": {
+                  "value": "Montbeliard",
+                  "matchLevel": "none",
+                  "matchedWords": []
+                },
+                "country": {
+                  "value": "France",
+                  "matchLevel": "none",
+                  "matchedWords": []
+                },
+                "country_code": {
+                  "value": "FR",
+                  "matchLevel": "none",
+                  "matchedWords": []
+                },
+                "district": {
+                  "value": "Doubs",
+                  "matchLevel": "none",
+                  "matchedWords": []
+                },
+                "local_district": {
+                  "value": "Doubs",
+                  "matchLevel": "none",
+                  "matchedWords": []
+                },
+                "local_city": {
+                  "value": "Montbéliard",
+                  "matchLevel": "none",
+                  "matchedWords": []
+                },
+                "local_state": {
+                  "value": "Bourgogne-Franche-Comté",
+                  "matchLevel": "none",
+                  "matchedWords": []
+                }
+              }
+            ],
+            "new_profession": {
+              "sub_category_reference": {
+                "value": "management-consulting-wMjU0",
+                "matchLevel": "none",
+                "matchedWords": []
+              },
+              "sub_category_name": {
+                "value": "Conseil en gestion",
+                "matchLevel": "none",
+                "matchedWords": []
+              },
+              "category_name": {
+                "value": "Conseil et stratégie",
+                "matchLevel": "none",
+                "matchedWords": []
+              },
+              "pivot_name": {
+                "value": "Consultant en stratégie",
+                "matchLevel": "none",
+                "matchedWords": []
+              },
+              "pivot_reference": {
+                "value": "strategy-consultant-0MTU4",
+                "matchLevel": "none",
+                "matchedWords": []
+              }
+            },
+            "profile": {
+              "value": "**SAVOIRS CLÉS :**\n\n* Aisance téléphonique (nombreux appels entrants / sortants),\n    \n* Organisation,\n    \n* Curiosité et implication,\n    \n* Empathie et humilité,\n    \n* Initiative (pour alerter sur une difficulté, consulter ses référents pour conforter son avis).  \n    \n\n**EXPÉRIENCE ET CONNAISSANCES :**\n\n* La maîtrise des outils Word et Excel est essentiel, y compris la fonction publipostage.\n    \n* Des connaissances en location immobilière, gestion de copropriété, second œuvre de bâtiment et Droit seront appréciées.\n    \n* La connaissance des conventions d’expertise amiable contradictoire, IRSI, CIDECOP, sera un atout supplémentaire.",
+              "matchLevel": "none",
+              "matchedWords": []
+            },
+            "name": {
+              "value": "Assistant(e) d'Experts - Cabinet NADLER",
+              "matchLevel": "none",
+              "matchedWords": []
+            },
+            "organization": {
+              "name": {
+                "value": "IXI-Groupe",
+                "matchLevel": "none",
+                "matchedWords": []
+              }
+            }
+          }
+        },
+        {
+          "contract_type": "full_time",
+          "rank_group_1": 6747,
+          "has_contract_duration": false,
+          "language": "fr",
+          "profile_ranking": 100,
+          "wk_reference": "AD_x2xPbQA",
+          "_geoloc": [
+            {
+              "lat": 48.85717,
+              "lng": 2.3414
+            }
+          ],
+          "salary_minimum": 67000.0,
+          "organization": {
+            "name": "Apprentis d'Auteuil",
+            "description": null,
+            "reference": "TkcSTw",
+            "labels": [],
+            "profile_type": "standard",
+            "logo": {
+              "url": "https://cdn-images.welcometothejungle.com/oWE7JU8pNHfFrvjCdeOKxN5ITAIlMvoAcOMMcUl1O7U/rs:auto:400::/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy9vcmdhbml6YXRpb24vbG9nby85Nzc0LzE2ODg5OC8zYjJkNjBkOS1mZTRhLTQ2YTctODhlZi03MmI5ZWMwNDNjNjEuanBn",
+              "thumb": {
+                "url": "https://cdn-images.welcometothejungle.com/qDpGnW-8Xv2yvubMBjsSeFX26gHuz2k2xOnZtrlFOTo/rs:auto:70::/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy9vcmdhbml6YXRpb24vbG9nby85Nzc0LzE2ODg5OC8zYjJkNjBkOS1mZTRhLTQ2YTctODhlZi03MmI5ZWMwNDNjNjEuanBn"
+              }
+            },
+            "slug": "apprentis-auteuil",
+            "nb_employees": 8087,
+            "creation_year": 1866,
+            "cover_image": {
+              "small": {
+                "url": "https://cdn-images.welcometothejungle.com/Yoh1Xr4pWCdDCpQpUxw3WQ_WHkd2wZBb4f8smnFgOss/rs:auto:640::/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy93ZWJzaXRlX29yZ2FuaXphdGlvbi9jb3Zlcl9pbWFnZS93dHRqX2ZyL2ZyLWJhMmM3Y2RjLTUwMDUtNDQ5YS1iYWRlLTE2OWE2MWY3MTQ0Ny5qcGc"
+              },
+              "url": "https://cdn-images.welcometothejungle.com/4j8AdzjpUVcu0hpmrlIPZ8fOhMfwJuzRp_8L477Y-1k/rs:auto:2000:450:/g:fp:0:0.5/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy93ZWJzaXRlX29yZ2FuaXphdGlvbi9jb3Zlcl9pbWFnZS93dHRqX2ZyL2ZyLWJhMmM3Y2RjLTUwMDUtNDQ5YS1iYWRlLTE2OWE2MWY3MTQ0Ny5qcGc",
+              "medium": {
+                "url": "https://cdn-images.welcometothejungle.com/rHj-OaDa_-7bg8TVqZ-q_IZ7uSdm3reeTLyswsLGvmY/rs:auto:900::/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy93ZWJzaXRlX29yZ2FuaXphdGlvbi9jb3Zlcl9pbWFnZS93dHRqX2ZyL2ZyLWJhMmM3Y2RjLTUwMDUtNDQ5YS1iYWRlLTE2OWE2MWY3MTQ0Ny5qcGc"
+              },
+              "large": {
+                "url": "https://cdn-images.welcometothejungle.com/JT4yRbDHuBoQ277cMFLqcZZpac32Nt7kqpCzAMwYeKE/rs:auto:1500::/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy93ZWJzaXRlX29yZ2FuaXphdGlvbi9jb3Zlcl9pbWFnZS93dHRqX2ZyL2ZyLWJhMmM3Y2RjLTUwMDUtNDQ5YS1iYWRlLTE2OWE2MWY3MTQ0Ny5qcGc"
+              },
+              "social": {
+                "url": "https://cdn-images.welcometothejungle.com/-B6IVyxGnWjk5X4ebcDGcadsBB0foSfXu3Vn0kbyAFk/rs:auto:1200:627:/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy93ZWJzaXRlX29yZ2FuaXphdGlvbi9jb3Zlcl9pbWFnZS93dHRqX2ZyL2ZyLWJhMmM3Y2RjLTUwMDUtNDQ5YS1iYWRlLTE2OWE2MWY3MTQ0Ny5qcGc"
+              }
+            },
+            "commitments": [],
+            "equality_index": 94,
+            "profile_ranking": 100
+          },
+          "has_salary_yearly_minimum": true,
+          "published_at_timestamp": 1748883918,
+          "new_profession": {
+            "sub_category_reference": "hr-generalist-hMjEw",
+            "sub_category_name": "Généraliste RH",
+            "category_reference": "hr-people-iZGMy",
+            "category_name": "RH/Personnel",
+            "pivot_name": "Office Manager",
+            "pivot_reference": "office-manager-hYmUw"
+          },
+          "reference": "65040361-2308-4da3-976d-37a931db99ef",
+          "salary_maximum": 72000.0,
+          "experience_level_minimum": 7.0,
+          "published_at_date": "2025-06-02",
+          "organization_score": 55,
+          "has_experience_level_minimum": true,
+          "remote": "partial",
+          "is_boosted": false,
+          "offices": [
+            {
+              "state": "Ile-de-France",
+              "city": "Paris",
+              "country": "France",
+              "country_code": "FR",
+              "district": "Paris",
+              "local_district": null,
+              "local_city": null,
+              "local_state": null
+            }
+          ],
+          "salary_period": "yearly",
+          "source_stage": "production",
+          "contract_duration_maximum": null,
+          "has_benefits": true,
+          "contract_duration_minimum": null,
+          "sectors": [
+            {
+              "name": "Education",
+              "reference": "education-1",
+              "parent_name": "Education / Formation / Recrutement",
+              "parent_reference": "education-training-recruitment"
+            },
+            {
+              "name": "Formation",
+              "reference": "job-training-1",
+              "parent_name": "Education / Formation / Recrutement",
+              "parent_reference": "education-training-recruitment"
+            },
+            {
+              "name": "ONG",
+              "reference": "ngo",
+              "parent_name": "Association / ONG",
+              "parent_reference": "nonprofit-association"
+            }
+          ],
+          "salary_yearly_minimum": 67000,
+          "has_remote": true,
+          "has_education_level": true,
+          "profile": "<p><strong><span style=\"color: #c00000;\"><span style=\"font-size: small;\">Votre profil :</span></span></strong></p>\r\n<p><span style=\"font-size: small;\">*Vous êtes diplômé(e) d'un bac +5 et justifiez d'une expérience similaire de 10 ans dans le pilotage de projet, complétée par une expérience managériale<br />*Organisé(e), vous savez être force de proposition<br />*Doté(e) d'un excellent esprit de synthèse, vous avez de bonnes capacités rédactionnelles et faites preuve de rigueur<br />*Vous savez utiliser votre leadership et vos capacités managériales pour mener à bien vos projets ;<br />*Vous avez un esprit d'équipe et un relationnel solide pour collaborer avec les différentes parties prenantes<br />*Vous avez de fortes aptitudes relationnelles et à cœur d'identifier les besoins de vos interlocuteurs tout en faisant preuve de clarté, d'écoute, de diplomatie et de pédagogie<strong><span style=\"color: #c00000;\"><br /></span></strong><br /><span style=\"color: #c00000;\"><strong>Ce poste est vraiment fait pour vous si :</strong></span></span></p>\r\n<p><span style=\"font-size: small;\">Vous vous sentez en phase avec nos valeurs de confiance, espérance, bienveillance.</span></p>\r\n<p><span style=\"font-size: small;\">Vous vous reconnaissez dans ce que nous vous proposons, alors il est temps de postuler. Nous avons hâte de vous rencontrer !</span></p>\r\n<p><span style=\"font-size: small;\"><span style=\"color: #c00000;\"><strong>Notre processus de recrutement</strong></span><br />*1er entretien avec la chargée de recriutement<br />*2ème entretien avec le manager / directeur du service</span></p>",
+          "name": "Responsable Système d'Information Activités et back office H/F",
+          "rank_group_2": 6746,
+          "benefits": [
+            "Entre 1-2 jours de télétravail",
+            "Restaurant d’entreprise / Cuisine pour les employés",
+            "Congés payés supplémentaires",
+            "Plan d’épargne entreprise (PEE)",
+            "Prime de cooptation",
+            "Aide au déménagement",
+            "Plan de développement professionnel",
+            "Financement des certifications",
+            "Congés pour enfant malade",
+            "Solution de prévention santé mentale",
+            "Maintien du salaire à 100% dès le premier jour d’arrêt maladie",
+            "Retraite complémentaire",
+            "Plan de retraite anticipée",
+            "Plan d’épargne pour la retraite collectif (PERCO)",
+            "Remboursement au delà des 50%"
+          ],
+          "rank_group_3": 6746,
+          "education_level": "bac_5",
+          "slug": "responsable-systeme-d-information-activites-et-back-office-h-f_paris",
+          "salary_currency": "EUR",
+          "published_at": "2025-06-02T17:05:18Z",
+          "objectID": "65040361-2308-4da3-976d-37a931db99ef",
+          "_highlightResult": {
+            "organization": {
+              "name": {
+                "value": "Apprentis d'Auteuil",
+                "matchLevel": "none",
+                "matchedWords": []
+              }
+            },
+            "new_profession": {
+              "sub_category_reference": {
+                "value": "hr-generalist-hMjEw",
+                "matchLevel": "none",
+                "matchedWords": []
+              },
+              "sub_category_name": {
+                "value": "Généraliste RH",
+                "matchLevel": "none",
+                "matchedWords": []
+              },
+              "category_name": {
+                "value": "RH/Personnel",
+                "matchLevel": "none",
+                "matchedWords": []
+              },
+              "pivot_name": {
+                "value": "Office Manager",
+                "matchLevel": "none",
+                "matchedWords": []
+              },
+              "pivot_reference": {
+                "value": "office-manager-hYmUw",
+                "matchLevel": "none",
+                "matchedWords": []
+              }
+            },
+            "offices": [
+              {
+                "state": {
+                  "value": "Ile-de-France",
+                  "matchLevel": "none",
+                  "matchedWords": []
+                },
+                "city": {
+                  "value": "Paris",
+                  "matchLevel": "none",
+                  "matchedWords": []
+                },
+                "country": {
+                  "value": "France",
+                  "matchLevel": "none",
+                  "matchedWords": []
+                },
+                "country_code": {
+                  "value": "FR",
+                  "matchLevel": "none",
+                  "matchedWords": []
+                },
+                "district": {
+                  "value": "Paris",
+                  "matchLevel": "none",
+                  "matchedWords": []
+                }
+              }
+            ],
+            "profile": {
+              "value": "<p><strong><span style=\"color: #c00000;\"><span style=\"font-size: small;\">Votre profil :</span></span></strong></p>\r\n<p><span style=\"font-size: small;\">*Vous êtes diplômé(e) d'un bac +5 et justifiez d'une expérience similaire de 10 ans dans le pilotage de projet, complétée par une expérience managériale<br />*Organisé(e), vous savez être force de proposition<br />*Doté(e) d'un excellent esprit de synthèse, vous avez de bonnes capacités rédactionnelles et faites preuve de rigueur<br />*Vous savez utiliser votre leadership et vos capacités managériales pour mener à bien vos projets ;<br />*Vous avez un esprit d'équipe et un relationnel solide pour collaborer avec les différentes parties prenantes<br />*Vous avez de fortes aptitudes relationnelles et à cœur d'identifier les besoins de vos interlocuteurs tout en faisant preuve de clarté, d'écoute, de diplomatie et de pédagogie<strong><span style=\"color: #c00000;\"><br /></span></strong><br /><span style=\"color: #c00000;\"><strong>Ce poste est vraiment fait pour vous si :</strong></span></span></p>\r\n<p><span style=\"font-size: small;\">Vous vous sentez en phase avec nos valeurs de confiance, espérance, bienveillance.</span></p>\r\n<p><span style=\"font-size: small;\">Vous vous reconnaissez dans ce que nous vous proposons, alors il est temps de postuler. Nous avons hâte de vous rencontrer !</span></p>\r\n<p><span style=\"font-size: small;\"><span style=\"color: #c00000;\"><strong>Notre processus de recrutement</strong></span><br />*1er entretien avec la chargée de recriutement<br />*2ème entretien avec le manager / directeur du service</span></p>",
+              "matchLevel": "none",
+              "matchedWords": []
+            },
+            "name": {
+              "value": "Responsable Système d'Information Activités et back office H/F",
+              "matchLevel": "none",
+              "matchedWords": []
+            }
+          }
+        }
+      ],
+      "nbHits": 100894,
+      "page": 0,
+      "nbPages": 250,
+      "hitsPerPage": 4,
+      "exhaustiveNbHits": true,
+      "exhaustiveTypo": true,
+      "exhaustive": {
+        "nbHits": true,
+        "typo": true
+      },
+      "query": "",
+      "params": "hitsPerPage=4&page=0&query=",
+      "index": "wttj_jobs_production_fr_published_at_desc",
+      "renderingContent": {},
+      "extensions": {
+        "queryCategorization": {}
+      },
+      "processingTimeMS": 5,
+      "processingTimingsMS": {
+        "_request": {
+          "roundTrip": 11
+        },
+        "extensions": 2,
+        "getIdx": {
+          "load": {
+            "total": 1
+          },
+          "total": 1
+        },
+        "total": 5
+      },
+      "serverTimeMS": 7
+    }
+  ]
+}
