@@ -4,7 +4,9 @@
 
 ## Overview
 
-This is your new Kedro project with PySpark setup, which was generated using `kedro 0.19.13`.
+The goal of this project is to automatically search for new job postings that match specific keywords 
+(such as "data", "AI", etc.) across multiple websites. Each day, the system emails me summarizing 
+the latest relevant job offers. These job listings are also displayed on a Streamlit web app.
 
 Take a look at the [Kedro documentation](https://docs.kedro.org) to get started.
 
@@ -19,12 +21,10 @@ In order to get the best out of the template:
 
 ## How to install dependencies
 
-Declare any dependencies in `requirements.txt` for `pip` installation.
-
 To install them, run:
 
 ```
-pip install -r requirements.txt
+make user_install
 ```
 
 ## How to run your Kedro pipeline
@@ -32,7 +32,7 @@ pip install -r requirements.txt
 You can run your Kedro project with:
 
 ```
-kedro run
+make run
 ```
 
 ## How to test your Kedro project
