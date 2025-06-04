@@ -23,6 +23,8 @@ dependencies = [
     "datetime",
     "boto3",
     "pandas",
+    "streamlit",
+    "PIL",
 
 ]
 

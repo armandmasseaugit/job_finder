@@ -8,6 +8,9 @@ The goal of this project is to automatically search for new job postings that ma
 (such as "data", "AI", etc.) across multiple websites. Each day, the system emails me summarizing 
 the latest relevant job offers. These job listings are also displayed on a Streamlit web app.
 
+
+
+credit: Streamlit app sidebar was taken from https://medium.com/@ericdennis7/5-components-that-beautify-your-streamlit-app-79039f405ae1
 Take a look at the [Kedro documentation](https://docs.kedro.org) to get started.
 
 ## Rules and guidelines

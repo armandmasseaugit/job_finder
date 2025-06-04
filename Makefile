@@ -21,7 +21,7 @@ user_install: | $(VENV) $(BUILD_CACHE)
 install: $(BUILD_CACHE)
 
 
-SRC = src tests
+SRC = src tests streamlit_app
 
 .PHONY: format lint test kedro-run
 

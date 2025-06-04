@@ -5,7 +5,7 @@ wttj_jobs_output:
   load_args:
     engine: openpyxl
 
-wttj_last_scrape_output:
+wttj_last_scrape:
   type: json.JSONDataset
-  filepath: "s3://wttj-scraping/wttj_last_scrape.xlsx"
+  filepath: "s3://wttj-scraping/wttj_last_scrape.json"
   credentials: aws_credentials

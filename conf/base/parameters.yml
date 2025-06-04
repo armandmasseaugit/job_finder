@@ -19,5 +19,5 @@ wttj_params:
     'Pragma': 'no-cache',
     'Cache-Control': 'no-cache',
   }
-  queries: ["data", "IA", "Machine learning"]
+  queries: ["data", "IA", "Machine learning",] # "data scientist"
   number_of_pages_to_search_into: 10

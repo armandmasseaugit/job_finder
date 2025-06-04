@@ -18,10 +18,7 @@ def create_pipeline(**kwargs) -> Pipeline:
             ),
             node(
                 func=jobs_filtering,
-                inputs=[
-                    "wttj_jobs",
-                    "params:wttj_params.queries",
-                ],
+                inputs=["wttj_jobs", "params:wttj_params.queries", ],
                 outputs="wttj_jobs_filtered",
                 name="node_2_jobs_filtering",
             ),
@@ -30,7 +27,9 @@ def create_pipeline(**kwargs) -> Pipeline:
                 inputs=[
                     "wttj_jobs_filtered",
                 ],
-                outputs=["wttj_jobs_output", "wttj_last_scrape"],
+                outputs=[
+                    "wttj_jobs_output", "wttj_last_scrape"
+                ],
                 name="node_3_js3_uploading",
             ),
         ]

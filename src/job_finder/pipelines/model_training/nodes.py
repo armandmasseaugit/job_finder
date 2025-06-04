@@ -58,10 +58,7 @@ def wttj_query_and_parsing(
 
 
 # TODO: filter on date et chnager de nom de fonction
-def jobs_filtering(
-    wttj_jobs: pd.DataFrame,
-    queries: list,
-) -> pd.DataFrame:
+def jobs_filtering(wttj_jobs: pd.DataFrame, queries: list,) -> pd.DataFrame:
     wttj_jobs = wttj_jobs.loc[
         wttj_jobs["name"].str.contains("|".join(queries), case=False)
     ]
