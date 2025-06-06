@@ -9,3 +9,17 @@ wttj_last_scrape:
   type: json.JSONDataset
   filepath: "s3://wttj-scraping/wttj_last_scrape.json"
   credentials: aws_credentials
+
+scored_offers:
+  type: json.JSONDataset
+  filepath: "s3://wttj-scraping/"
+
+rl_model_old:
+  type: pickle.PickleDataset
+  filepath: "s3://wttj-scraping/rl_model.pkl"
+  versioned: true
+
+rl_model_new:
+  type: pickle.PickleDataset
+  filepath: "s3://wttj-scraping/rl_model.pkl"
+  versioned: true
