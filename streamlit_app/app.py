@@ -6,6 +6,8 @@ import json
 import boto3
 from io import BytesIO
 from streamlit_lottie import st_lottie
+from kedro.config import OmegaConfigLoader
+
 
 from kedro.framework.startup import bootstrap_project
 from kedro.framework.session import KedroSession
@@ -19,6 +21,10 @@ bootstrap_project(project_path)
 with KedroSession.create(project_path) as session:
     context = session.load_context()
     df = context.catalog.load("wttj_jobs_output")
+
+config_loader: OmegaConfigLoader = context.config_loader
+credentials = config_loader.get("credentials")
+aws_creds = credentials.get("aws_credentials")
 
 df.sort_values(by="publication_date", ascending=False, inplace=True)
 # --------- Multi-page navigation ----------
@@ -90,12 +96,13 @@ if tabs == "Home":
 
 # --------- Explore offers page ----------
 
+
 # --- Configurer le client S3 ---
 s3 = boto3.client(
     "s3",
-    aws_access_key_id="AKIAT2BOKVQCSHQRHA4O",
-    aws_secret_access_key="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",
-    region_name="us-east-1",
+    aws_access_key_id=aws_creds["key"],
+    aws_secret_access_key=aws_creds["secret"],
+    region_name=aws_creds["client_kwargs"]["region_name"],
 )
 
 BUCKET = "wttj-scraping"
