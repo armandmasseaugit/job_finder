@@ -6,18 +6,21 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 
 tfidf_vectorizer = TfidfVectorizer()
 
+
 def load_and_merge_feedback(feedback: pd.DataFrame, jobs: pd.DataFrame) -> pd.DataFrame:
     """
-      Merge user feedback with the corresponding job offers.
+    Merge user feedback with the corresponding job offers.
 
-      Args:
-          feedback (pd.DataFrame): Dictionary-like structure {reference: "like"/"dislike"}.
-          jobs (pd.DataFrame): DataFrame containing job offers, including at least "reference" and "name" columns.
+    Args:
+        feedback (pd.DataFrame): Dictionary-like structure {reference: "like"/"dislike"}.
+        jobs (pd.DataFrame): DataFrame containing job offers, including at least "reference" and "name" columns.
 
-      Returns:
-          pd.DataFrame: Merged DataFrame including a new 'reward' column (+1 for like, -1 for dislike).
-      """
-    feedback_df = pd.DataFrame({"reference": feedback.keys(), "feedback": feedback.values()})
+    Returns:
+        pd.DataFrame: Merged DataFrame including a new 'reward' column (+1 for like, -1 for dislike).
+    """
+    feedback_df = pd.DataFrame(
+        {"reference": feedback.keys(), "feedback": feedback.values()}
+    )
     df = feedback_df.merge(jobs, left_on="reference", right_on="reference", how="inner")
     df["reward"] = df["feedback"].map({"like": 1, "dislike": -1})
     return df
@@ -41,14 +44,14 @@ def feature_engineering(df: pd.DataFrame) -> pd.DataFrame:
 
 def train_rl_model(df_features: pd.DataFrame, previous_model=None):
     """
-       Train or update a logistic regression model (SGD) based on user feedback.
+    Train or update a logistic regression model (SGD) based on user feedback.
 
-       Args:
-           df_features (pd.DataFrame): Feature matrix with a 'reward' column.
-           previous_model (SGDClassifier, optional): Existing model to continue training.
+    Args:
+        df_features (pd.DataFrame): Feature matrix with a 'reward' column.
+        previous_model (SGDClassifier, optional): Existing model to continue training.
 
-       Returns:
-           SGDClassifier: A trained or updated logistic regression model.
+    Returns:
+        SGDClassifier: A trained or updated logistic regression model.
     """
     X = df_features.drop(columns=["reward"])
     y = df_features["reward"] > 0  # 1 pour like, 0 pour dislike
@@ -66,14 +69,14 @@ def train_rl_model(df_features: pd.DataFrame, previous_model=None):
 
 def score_all_offers(jobs: pd.DataFrame, model):
     """
-      Score all job offers based on their predicted relevance.
+    Score all job offers based on their predicted relevance.
 
-      Args:
-          jobs (pd.DataFrame): Job offers with 'reference' and 'name' columns.
-          model (SGDClassifier): Trained model to predict the probability of a like.
+    Args:
+        jobs (pd.DataFrame): Job offers with 'reference' and 'name' columns.
+        model (SGDClassifier): Trained model to predict the probability of a like.
 
-      Returns:
-          dict: Dictionary mapping each job reference to its relevance score (likelihood of being liked).
+    Returns:
+        dict: Dictionary mapping each job reference to its relevance score (likelihood of being liked).
     """
     features = tfidf_vectorizer.transform(jobs["name"])
     scores = model.predict_proba(features)[:, 1]

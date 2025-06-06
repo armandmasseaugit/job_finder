@@ -7,7 +7,10 @@ from pathlib import Path
 
 class OptionalPickleDataset(AbstractVersionedDataset):
     """Custom dataset that prevents an error to raise if there is no model on s3 yet."""
-    def __init__(self, filepath, version=None, credentials=None, load_args=None, save_args=None):
+
+    def __init__(
+        self, filepath, version=None, credentials=None, load_args=None, save_args=None
+    ):
         self._filepath = filepath
         self._credentials = credentials or {}
         self._protocol, self._path = get_protocol_and_path(filepath, version)
