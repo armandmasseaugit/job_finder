@@ -25,6 +25,7 @@ dependencies = [
     "pandas",
     "streamlit",
     "PIL",
+    "sentence_transformers",
 
 ]
 
