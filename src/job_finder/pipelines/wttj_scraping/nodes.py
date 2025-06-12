@@ -7,6 +7,17 @@ from datetime import datetime
 def wttj_query_and_parsing(
     headers_jobs: dict, queries: list, number_of_pages_to_search_into: int
 ) -> pd.DataFrame:
+    """
+    Query the Welcome to the Jungle (WTTJ) API and parse job offers into a DataFrame.
+
+    Args:
+        headers_jobs (dict): HTTP headers used for the API request (e.g., with Algolia credentials).
+        queries (list): List of search terms to use in the API requests.
+        number_of_pages_to_search_into (int): Number of result pages to iterate through for each query.
+
+    Returns:
+        pd.DataFrame: DataFrame containing parsed job offer data with metadata (company, location, publication date, etc.).
+    """
     with requests.Session() as session:
         jobs = []
         for query in queries:
@@ -62,6 +73,16 @@ def jobs_filtering(
     wttj_jobs: pd.DataFrame,
     queries: list,
 ) -> pd.DataFrame:
+    """
+    Filter job offers based on whether the job title contains one of the query terms.
+
+    Args:
+        wttj_jobs (pd.DataFrame): DataFrame containing job offers.
+        queries (list): List of keywords to match in the 'name' (title) of the job offers.
+
+    Returns:
+        pd.DataFrame: Filtered DataFrame with unique job offers whose titles match any query term.
+    """
     wttj_jobs = wttj_jobs.loc[
         wttj_jobs["name"].str.contains("|".join(queries), case=False)
     ]
@@ -70,6 +91,17 @@ def jobs_filtering(
 
 
 def s3_uploading(wttj_jobs: pd.DataFrame) -> [pd.DataFrame, dict]:
+    """
+    Prepare job data for S3 uploading by adding metadata and timestamping the scrape.
+
+    Args:
+        wttj_jobs (pd.DataFrame): DataFrame containing job offers to be uploaded.
+
+    Returns:
+        tuple:
+            - pd.DataFrame: DataFrame with a new 'provider' column added.
+            - dict: Dictionary containing a timestamp under the key 'last_scrape'.
+    """
     wttj_jobs["provider"] = "Welcome to the jungle"
 
     now = datetime.now().isoformat()
