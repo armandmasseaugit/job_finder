@@ -26,6 +26,8 @@ dependencies = [
     "streamlit",
     "PIL",
     "sentence_transformers",
+    "pytest",
+    "pytest-cov",
 
 ]
 
