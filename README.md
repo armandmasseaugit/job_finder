@@ -92,9 +92,7 @@ To ensure clarity and consistency in version control, this project follows a set
 Branch names typically follow this format:
 
 ```
-
 <type>/<short-description>
-
 ```
 
 Example: `feature/job-scoring`, `fix/missing-logo-url`
@@ -117,21 +115,17 @@ Example: `feature/job-scoring`, `fix/missing-logo-url`
 Commit message format:
 
 ```
-
 <type>: short description of the change
-
 ```
 
 Example:
 
 ```
-
 feat: add job relevance scoring model
 fix: correct scraping URL construction
 chore: update requirements.txt
-
 ```
 
 This structure makes it easier to automate release notes, understand project history, and onboard contributors.
-```
+
 
