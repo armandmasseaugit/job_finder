@@ -1,5 +1,3 @@
-
-
 VENV = .venv
 VENV_ACTIVATE = $(shell test -d $(VENV) && find $(VENV) -name "activate")
 VENV_PYTHON = $(shell test -d $(VENV) && . $(VENV)/bin/activate && which python)
@@ -21,7 +19,7 @@ user_install: | $(VENV) $(BUILD_CACHE)
 install: $(BUILD_CACHE)
 
 
-SRC = src tests streamlit_app
+SRC = src tests
 
 .PHONY: format lint test kedro-run
 

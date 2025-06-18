@@ -28,6 +28,7 @@ dependencies = [
     "sentence_transformers",
     "pytest",
     "pytest-cov",
+    "pylint",
 
 ]
 

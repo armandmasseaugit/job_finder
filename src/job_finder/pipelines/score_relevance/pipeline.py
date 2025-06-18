@@ -1,8 +1,14 @@
 from kedro.pipeline import Pipeline, node, pipeline
-from .nodes import *
+from .nodes import (
+    load_and_merge_feedback,
+    feature_engineering,
+    train_rl_model,
+    score_all_offers,
+)
 
 
-def create_pipeline(**kwargs) -> Pipeline:
+def create_pipeline() -> Pipeline:
+    """Score relevance pipeline."""
     return pipeline(
         [
             node(

@@ -1,7 +1,7 @@
+from datetime import datetime
+import requests
 from job_finder.utils import generate_payload
 import pandas as pd
-import requests
-from datetime import datetime
 
 
 def wttj_query_and_parsing(
@@ -11,12 +11,16 @@ def wttj_query_and_parsing(
     Query the Welcome to the Jungle (WTTJ) API and parse job offers into a DataFrame.
 
     Args:
-        headers_jobs (dict): HTTP headers used for the API request (e.g., with Algolia credentials).
+        headers_jobs (dict): HTTP headers used for the API
+                            request (e.g., with Algolia credentials).
         queries (list): List of search terms to use in the API requests.
-        number_of_pages_to_search_into (int): Number of result pages to iterate through for each query.
+        number_of_pages_to_search_into (int): Number of result pages
+                                            to iterate through for each query.
 
     Returns:
-        pd.DataFrame: DataFrame containing parsed job offer data with metadata (company, location, publication date, etc.).
+        pd.DataFrame: DataFrame containing parsed job offer
+                        data with metadata (company, location,
+                        publication date, etc.).
     """
     with requests.Session() as session:
         jobs = []
@@ -25,17 +29,20 @@ def wttj_query_and_parsing(
 
                 data_job_request = generate_payload(query=query, page=page)
 
+                algolia_url = (
+                    "https://csekhvms53-dsn.algolia.net/1/indexes/*/queries"
+                    "?x-algolia-agent=Algolia%20for%20JavaScript%20(4.20.0)%3B%20Browser"
+                    "&search_origin=job_search_client"
+                )
+
                 response = session.post(
-                    "https://csekhvms53-dsn.algolia.net/1/indexes/*/queries?x-algolia-agent=Algolia%20for%20JavaScript%20(4.20.0)%3B%20Browser&search_origin=job_search_client",
-                    headers=headers_jobs,
-                    data=data_job_request,
+                    algolia_url, headers=headers_jobs, data=data_job_request
                 )
                 response_json = response.json()
                 for i in range(30):  # Mettre le meme nb que en entree de la fonction
                     company_json_tmp = response_json["results"][0]["hits"][i]
-                    # Note: pour le moment, on se contente juste de  chercher parmi le titre des offres. on donne l'url mais
-                    # il faudrait aller sur cet url pour afficher details de l'offre.
-                    #
+                    # TODO: search offer details
+
                     company_name_tmp = company_json_tmp["organization"].get("name")
                     slug_tmp = company_json_tmp.get("slug")
                     company_slug_tmp = company_json_tmp["organization"].get("slug")

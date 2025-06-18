@@ -1,6 +1,4 @@
 import pandas as pd
-import numpy as np
-from sklearn.preprocessing import OneHotEncoder
 from sklearn.linear_model import SGDClassifier
 from sklearn.feature_extraction.text import TfidfVectorizer
 
@@ -12,11 +10,14 @@ def load_and_merge_feedback(feedback: pd.DataFrame, jobs: pd.DataFrame) -> pd.Da
     Merge user feedback with the corresponding job offers.
 
     Args:
-        feedback (pd.DataFrame): Dictionary-like structure {reference: "like"/"dislike"}.
-        jobs (pd.DataFrame): DataFrame containing job offers, including at least "reference" and "name" columns.
+        feedback (pd.DataFrame): Dictionary-like structure {reference:
+                                "like"/"dislike"}.
+        jobs (pd.DataFrame): DataFrame containing job offers,
+                            including at least "reference" and "name" columns.
 
     Returns:
-        pd.DataFrame: Merged DataFrame including a new 'reward' column (+1 for like, -1 for dislike).
+        pd.DataFrame: Merged DataFrame including a new 'reward'
+                    column (+1 for like, -1 for dislike).
     """
     feedback_df = pd.DataFrame(
         {"reference": feedback.keys(), "feedback": feedback.values()}
@@ -76,7 +77,8 @@ def score_all_offers(jobs: pd.DataFrame, model):
         model (SGDClassifier): Trained model to predict the probability of a like.
 
     Returns:
-        dict: Dictionary mapping each job reference to its relevance score (likelihood of being liked).
+        dict: Dictionary mapping each job reference to its
+            relevance score (likelihood of being liked).
     """
     features = tfidf_vectorizer.transform(jobs["name"])
     scores = model.predict_proba(features)[:, 1]
