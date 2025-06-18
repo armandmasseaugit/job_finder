@@ -6,6 +6,8 @@ import json
 import boto3
 from io import BytesIO
 from streamlit_lottie import st_lottie
+from kedro.config import OmegaConfigLoader
+
 
 from kedro.framework.startup import bootstrap_project
 from kedro.framework.session import KedroSession
@@ -18,7 +20,13 @@ bootstrap_project(project_path)
 # Open a Kedro session
 with KedroSession.create(project_path) as session:
     context = session.load_context()
-    df = context.catalog.load("wttj_jobs_output")
+
+df = context.catalog.load("wttj_jobs_output")
+job_likes = context.catalog.load("job_likes")
+
+config_loader: OmegaConfigLoader = context.config_loader
+credentials = config_loader.get("credentials")
+aws_creds = credentials.get("aws_credentials")
 
 df.sort_values(by="publication_date", ascending=False, inplace=True)
 # --------- Multi-page navigation ----------
@@ -63,8 +71,6 @@ def load_lottie_url(url: str):
         return None
     return r.json()
 
-
-# Animation d’un robot assistant
 lottie_url = "https://lottie.host/653a1188-a13c-4548-96ee-eee1f66e0023/3BFOn9nV58.json"
 lottie_json = load_lottie_url(lottie_url)
 
@@ -89,13 +95,11 @@ if tabs == "Home":
         )
 
 # --------- Explore offers page ----------
-
-# --- Configurer le client S3 ---
 s3 = boto3.client(
     "s3",
-    aws_access_key_id="AKIAT2BOKVQCSHQRHA4O",
-    aws_secret_access_key="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",
-    region_name="us-east-1",
+    aws_access_key_id=aws_creds["key"],
+    aws_secret_access_key=aws_creds["secret"],
+    region_name=aws_creds["client_kwargs"]["region_name"],
 )
 
 BUCKET = "wttj-scraping"
@@ -118,6 +122,23 @@ def load_likes_from_s3() -> dict:
     except Exception:
         return {}
 
+KEY_RELEVANCE = "scored_jobs.json"
+
+@st.cache_data(ttl=300)
+def load_relevance_from_s3() -> dict:
+    """
+    Load the job relevance scores JSON from S3.
+    Returns a dict { job_reference: relevance_score (float) }.
+    Returns {} if file not found.
+    """
+    try:
+        obj = s3.get_object(Bucket=BUCKET, Key=KEY_RELEVANCE)
+        data = obj["Body"].read().decode("utf-8")
+        return json.loads(data)
+    except s3.exceptions.NoSuchKey:
+        return {}
+    except Exception:
+        return {}
 
 def update_like_in_s3(job_ref: str, feedback: str):
     """
@@ -152,12 +173,13 @@ def update_like_in_s3(job_ref: str, feedback: str):
 
 # Charge les likes en mémoire
 likes_dict = load_likes_from_s3()
+relevance_dict = load_relevance_from_s3()
 
 # … passer à la partie navigation et affichage
 if tabs == "Explore Offers":
     st.title("🔍 Available Offers")
 
-    # --- Filtre par date ---
+    # --- Filters by date ---
     min_date = pd.to_datetime(df["publication_date"]).min().date()
     max_date = pd.to_datetime(df["publication_date"]).max().date()
     selected_date = st.date_input(
@@ -170,6 +192,18 @@ if tabs == "Explore Offers":
     df["publication_date"] = pd.to_datetime(df["publication_date"])
     filtered_df = df[df["publication_date"].dt.date >= selected_date]
 
+    sort_option = st.selectbox(
+        "Sort offers by:",
+        options=["Publication date (newest first)", "Relevance score (high to low)"],
+    )
+
+    if sort_option == "Relevance score (high to low)":
+        # Ajouter une colonne 'relevance' avec le score, défaut 0 si pas trouvé
+        filtered_df["relevance"] = filtered_df["reference"].map(lambda ref: relevance_dict.get(ref, 0))
+        filtered_df = filtered_df.sort_values(by="relevance", ascending=False)
+    else:
+        filtered_df = filtered_df.sort_values(by="publication_date", ascending=False)
+
     st.write(
         f"Displaying {filtered_df.shape[0]} offers published since {selected_date}:"
     )
@@ -180,7 +214,7 @@ if tabs == "Explore Offers":
         ref = row["reference"]
         is_recent = row["publication_date"] >= recent_threshold
 
-        # Vérifie si déjà liké/disliké
+        # Verifies if already liked or disliked
         liked = likes_dict.get(ref) == "like"
         disliked = likes_dict.get(ref) == "dislike"
 
@@ -209,7 +243,10 @@ if tabs == "Explore Offers":
                     f"Reference: `{row['reference']}`"
                 )  # TODO: enlever la reference
 
-                # --- Boutons dynamiques ---
+                relevance_score = relevance_dict.get(row["reference"], None)
+                if relevance_score is not None:
+                    st.markdown(f"**Relevance score:** {relevance_score:.3f}")
+
                 col_like, col_dislike = st.columns([1, 1])
                 like_key = f"{ref}_like"
                 dislike_key = f"{ref}_dislike"
