@@ -18,6 +18,11 @@ PACKAGE = $(shell grep "^name" pyproject.toml | awk -F'"' '{print $$2}')
 # Build cache directory (egg-info folder)
 BUILD_CACHE = $(PACKAGE).egg-info
 
+# Alias target to create venv and install dependencies for user
+user_install: | $(VENV) $(BUILD_CACHE)
+
+# Alias for install target
+install: $(BUILD_CACHE)
 # Create a Python virtual environment if it doesn't exist
 $(VENV):
 	$(SYSTEM_PYTHON) -m venv $(VENV)
@@ -31,11 +36,7 @@ $(BUILD_CACHE): pyproject.toml | $(VENV)
 	# Install the current package in editable mode (-e)
 	$(PYTHON) -m pip install -e .
 
-# Alias target to create venv and install dependencies for user
-user_install: | $(VENV) $(BUILD_CACHE)
-
-# Alias for install target
-install: $(BUILD_CACHE)
+.PHONY: user_install install
 
 SRC = src tests
 
@@ -52,7 +53,7 @@ lint:
 
 # Run tests using pytest
 test:
-	pytest
+	$(PYTHON) -m pytest
 
 # Additional options for kedro run can be set here (empty by default)
 ADD_OPTS = # None by default
