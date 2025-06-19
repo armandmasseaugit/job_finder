@@ -3,7 +3,8 @@ from kedro.pipeline import Pipeline, node, pipeline
 from .nodes import wttj_query_and_parsing, jobs_filtering, s3_uploading
 
 
-def create_pipeline(**kwargs) -> Pipeline:
+def create_pipeline() -> Pipeline:
+    "Welcome to the Jungle pipeline."
     return pipeline(
         [
             node(

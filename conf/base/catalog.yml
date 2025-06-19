@@ -16,13 +16,13 @@ job_likes:
   credentials: aws_credentials
 
 rl_model_old:
-  type: job_finder.datasets.OptionalPickleDataset
+  type: pickle.PickleDataset #job_finder.datasets.OptionalPickleDataset
   filepath: "s3://wttj-scraping/rl_model.pkl"
   versioned: true
   credentials: aws_credentials
 
 rl_model_new:
-  type: pickle.PickleDataset
+  type: pickle.PickleDataset #job_finder.datasets.OptionalPickleDataset
   filepath: "s3://wttj-scraping/rl_model.pkl"
   versioned: true
   credentials: aws_credentials

@@ -1,4 +1,3 @@
-# Virtual environment directory
 VENV = .venv
 
 # Path to the virtual environment's activate script (if the venv exists)
@@ -19,6 +18,11 @@ PACKAGE = $(shell grep "^name" pyproject.toml | awk -F'"' '{print $$2}')
 # Build cache directory (egg-info folder)
 BUILD_CACHE = $(PACKAGE).egg-info
 
+# Alias target to create venv and install dependencies for user
+user_install: | $(VENV) $(BUILD_CACHE)
+
+# Alias for install target
+install: $(BUILD_CACHE)
 # Create a Python virtual environment if it doesn't exist
 $(VENV):
 	$(SYSTEM_PYTHON) -m venv $(VENV)
@@ -32,41 +36,36 @@ $(BUILD_CACHE): pyproject.toml | $(VENV)
 	# Install the current package in editable mode (-e)
 	$(PYTHON) -m pip install -e .
 
-# Alias target to create venv and install dependencies for user
-user_install: | $(VENV) $(BUILD_CACHE)
+.PHONY: user_install install
 
-# Alias for install target
-install: $(BUILD_CACHE)
-
-# Source directories to be used in formatting, linting and testing
-SRC = src tests streamlit_app
+SRC = src tests
 
 # Declare these targets as phony (not actual files)
 .PHONY: format lint test kedro-run
 
 # Format all Python files in SRC using Black
 format:
-	black $(SRC)
+	$(PYTHON) -m black $(SRC)
 
 # Lint all Python files in SRC using pylint
 lint:
-	pylint $(SRC)
+	$(PYTHON) -m pylint $(SRC)
 
 # Run tests using pytest
 test:
-	pytest
+	$(PYTHON) -m pytest
 
 # Additional options for kedro run can be set here (empty by default)
 ADD_OPTS = # None by default
 
 # Run Kedro pipeline with optional extra arguments
 run:
-	kedro run $(ADD_OPTS)
+	$(PYTHON) -m kedro run $(ADD_OPTS)
 
 .PHONY: kedro-run
 
 # Run the Streamlit web app
 web_app:
-	streamlit run streamlit_app/app.py
+	$(PYTHON) -m streamlit run streamlit_app/app.py
 	
 .PHONY: web_app
