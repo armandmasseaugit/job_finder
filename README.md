@@ -1,24 +1,43 @@
-# job_finder
+# Job Finder — Automated Job Search and Ranking
 
-[![Powered by Kedro](https://img.shields.io/badge/powered_by-kedro-ffc900?logo=kedro)](https://kedro.org)
-
-## Overview
+## Project Overview
 
 The goal of this project is to automatically search for new job postings that match specific keywords 
 (such as "data", "AI", etc.) across multiple websites. Each day, the system emails me summarizing 
 the latest relevant job offers. These job listings are also displayed on a Streamlit web app.
 
+On the web app, users can browse the latest offers and provide feedback by liking or disliking each job. 
+This feedback is used to train a reinforcement learning model that ranks future offers by relevance. 
+Users can then sort the listings based on these relevance scores to see the most personalized opportunities first.
+
+
+## Features
+
+- Automated web scraping of multiple job platforms for targeted keywords.
+- Daily email notifications with summarized relevant job offers.
+- Interactive Streamlit app for browsing, liking, and disliking job offers.
+- Reinforcement learning model that learns user preferences to rank offers.
+- Storage and versioning of data and models on AWS S3.
+
+## Technology Stack
+
+- **Python 3.8+**
+- **Kedro**: for building reproducible and modular data pipelines.
+- **Pandas, NumPy**: data manipulation and processing.
+- **scikit-learn**: for machine learning (SGDClassifier, TF-IDF vectorization).
+- **Streamlit**: web app frontend.
+- **AWS S3**: storage of scraped data, models, and results.
+- **Email service**: to send daily summaries (SMTP or any email API).
+- **Optional**: Docker for containerized deployment.
 
 
 credit: Streamlit app sidebar was taken from https://medium.com/@ericdennis7/5-components-that-beautify-your-streamlit-app-79039f405ae1
+
+
 Take a look at the [Kedro documentation](https://docs.kedro.org) to get started.
 
 ## Rules and guidelines
 
-In order to get the best out of the template:
-
-* Don't remove any lines from the `.gitignore` file we provide
-* Make sure your results can be reproduced by following a [data engineering convention](https://docs.kedro.org/en/stable/faq/faq.html#what-is-data-engineering-convention)
 * Don't commit data to your repository
 * Don't commit any credentials or your local configuration to your repository. Keep all your credentials and local configuration in `conf/local/`
 
@@ -43,61 +62,70 @@ make run
 Have a look at the files `src/tests/test_run.py` and `src/tests/pipelines/data_science/test_pipeline.py` for instructions on how to write your tests. Run the tests as follows:
 
 ```
-pytest
+make test
 ```
 
 To configure the coverage threshold, look at the `.coveragerc` file.
 
 ## Project dependencies
 
-To see and update the dependency requirements for your project use `requirements.txt`. Install the project requirements with `pip install -r requirements.txt`.
+To see and update the dependency requirements for your project use `pyproject.toml`.
 
 [Further information about project dependencies](https://docs.kedro.org/en/stable/kedro_project_setup/dependencies.html#project-specific-dependencies)
 
-## How to work with Kedro and notebooks
 
-> Note: Using `kedro jupyter` or `kedro ipython` to run your notebook provides these variables in scope: `catalog`, `context`, `pipelines` and `session`.
->
-> Jupyter, JupyterLab, and IPython are already included in the project requirements by default, so once you have run `pip install -r requirements.txt` you will not need to take any extra steps before you use them.
+## Git Workflow & Naming Conventions
 
-### Jupyter
-To use Jupyter notebooks in your Kedro project, you need to install Jupyter:
+To ensure clarity and consistency in version control, this project follows a set of conventional branch and commit naming standards inspired by common Git practices.
 
-```
-pip install jupyter
-```
+### Branch Types
 
-After installing Jupyter, you can start a local notebook server:
+| Type      | Purpose                                                                 |
+|-----------|-------------------------------------------------------------------------|
+| fix       | For fixing non-critical bugs during development                         |
+| hotfix    | For urgent bug fixes made directly on the `main` branch                 |
+| feature   | For developing new features                                             |
+| release   | For preparing code for production (e.g., version bump, final tests)     |
+| chore     | For routine tasks like updating documentation or dependencies           |
+| refactor  | For restructuring code without changing its behavior or functionality   |
 
-```
-kedro jupyter notebook
-```
-
-### JupyterLab
-To use JupyterLab, you need to install it:
+Branch names typically follow this format:
 
 ```
-pip install jupyterlab
+<type>/<short-description>
 ```
 
-You can also start JupyterLab:
+Example: `feature/job-scoring`, `fix/missing-logo-url`
+
+### Commit Types
+
+
+| Prefix     | Use Case                                                       |
+|------------|----------------------------------------------------------------|
+| feat       | For introducing a new feature                                  |
+| fix        | For fixing a bug                                               |
+| docs       | For documentation changes only                                 |
+| style      | For code formatting, white-space, etc. (no code behavior change)|
+| refactor   | For code changes that neither fix bugs nor add features        |
+| perf       | For performance improvements                                   |
+| test       | For adding or updating tests                                   |
+| ci         | For changes to CI/CD configuration files and scripts           |
+| chore      | For minor tasks like dependency updates or file renaming       |
+
+Commit message format:
 
 ```
-kedro jupyter lab
+<type>: short description of the change
 ```
 
-### IPython
-And if you want to run an IPython session:
+Example:
 
 ```
-kedro ipython
+feat: add job relevance scoring model
+fix: correct scraping URL construction
+chore: update requirements.txt
 ```
 
-### How to ignore notebook output cells in `git`
-To automatically strip out all output cell contents before committing to `git`, you can use tools like [`nbstripout`](https://github.com/kynan/nbstripout). For example, you can add a hook in `.git/config` with `nbstripout --install`. This will run `nbstripout` before anything is committed to `git`.
+This structure makes it easier to automate release notes, understand project history, and onboard contributors.
 
-> *Note:* Your output cells will be retained locally.
 
-## Package your Kedro project
-
-[Further information about building project documentation and packaging your project](https://docs.kedro.org/en/stable/tutorial/package_a_project.html)

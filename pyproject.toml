@@ -24,7 +24,11 @@ dependencies = [
     "boto3",
     "pandas",
     "streamlit",
-    "PIL",
+    "Pillow",
+    "sentence_transformers",
+    "pytest",
+    "pytest-cov",
+    "pylint",
 
 ]
 

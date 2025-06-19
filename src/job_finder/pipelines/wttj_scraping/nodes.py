@@ -1,12 +1,27 @@
+from datetime import datetime
+import requests
 from job_finder.utils import generate_payload
 import pandas as pd
-import requests
-from datetime import datetime
 
 
 def wttj_query_and_parsing(
     headers_jobs: dict, queries: list, number_of_pages_to_search_into: int
 ) -> pd.DataFrame:
+    """
+    Query the Welcome to the Jungle (WTTJ) API and parse job offers into a DataFrame.
+
+    Args:
+        headers_jobs (dict): HTTP headers used for the API
+                            request (e.g., with Algolia credentials).
+        queries (list): List of search terms to use in the API requests.
+        number_of_pages_to_search_into (int): Number of result pages
+                                            to iterate through for each query.
+
+    Returns:
+        pd.DataFrame: DataFrame containing parsed job offer
+                        data with metadata (company, location,
+                        publication date, etc.).
+    """
     with requests.Session() as session:
         jobs = []
         for query in queries:
@@ -14,17 +29,20 @@ def wttj_query_and_parsing(
 
                 data_job_request = generate_payload(query=query, page=page)
 
+                algolia_url = (
+                    "https://csekhvms53-dsn.algolia.net/1/indexes/*/queries"
+                    "?x-algolia-agent=Algolia%20for%20JavaScript%20(4.20.0)%3B%20Browser"
+                    "&search_origin=job_search_client"
+                )
+
                 response = session.post(
-                    "https://csekhvms53-dsn.algolia.net/1/indexes/*/queries?x-algolia-agent=Algolia%20for%20JavaScript%20(4.20.0)%3B%20Browser&search_origin=job_search_client",
-                    headers=headers_jobs,
-                    data=data_job_request,
+                    algolia_url, headers=headers_jobs, data=data_job_request
                 )
                 response_json = response.json()
                 for i in range(30):  # Mettre le meme nb que en entree de la fonction
                     company_json_tmp = response_json["results"][0]["hits"][i]
-                    # Note: pour le moment, on se contente juste de  chercher parmi le titre des offres. on donne l'url mais
-                    # il faudrait aller sur cet url pour afficher details de l'offre.
-                    #
+                    # TODO: search offer details
+
                     company_name_tmp = company_json_tmp["organization"].get("name")
                     slug_tmp = company_json_tmp.get("slug")
                     company_slug_tmp = company_json_tmp["organization"].get("slug")
@@ -62,6 +80,16 @@ def jobs_filtering(
     wttj_jobs: pd.DataFrame,
     queries: list,
 ) -> pd.DataFrame:
+    """
+    Filter job offers based on whether the job title contains one of the query terms.
+
+    Args:
+        wttj_jobs (pd.DataFrame): DataFrame containing job offers.
+        queries (list): List of keywords to match in the 'name' (title) of the job offers.
+
+    Returns:
+        pd.DataFrame: Filtered DataFrame with unique job offers whose titles match any query term.
+    """
     wttj_jobs = wttj_jobs.loc[
         wttj_jobs["name"].str.contains("|".join(queries), case=False)
     ]
@@ -70,6 +98,17 @@ def jobs_filtering(
 
 
 def s3_uploading(wttj_jobs: pd.DataFrame) -> [pd.DataFrame, dict]:
+    """
+    Prepare job data for S3 uploading by adding metadata and timestamping the scrape.
+
+    Args:
+        wttj_jobs (pd.DataFrame): DataFrame containing job offers to be uploaded.
+
+    Returns:
+        tuple:
+            - pd.DataFrame: DataFrame with a new 'provider' column added.
+            - dict: Dictionary containing a timestamp under the key 'last_scrape'.
+    """
     wttj_jobs["provider"] = "Welcome to the jungle"
 
     now = datetime.now().isoformat()

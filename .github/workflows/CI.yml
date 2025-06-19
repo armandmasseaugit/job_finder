@@ -1,0 +1,50 @@
+name: CI for job_finder
+
+on:
+  push:
+    branches:
+      - 'main'
+      - 'develop'
+  pull_request:
+    branches:
+      - 'main'
+      - 'develop'
+
+env:
+  PYTHON_VERSION: "3.12.3"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: "${{ env.PYTHON_VERSION }}"
+
+      - name: Install packages
+        run: |
+          make install
+
+      - name: Run Pytest
+        run: |
+          echo "Running tests"
+          make test
+
+      - name: Format code
+        run: |
+          echo "formatting the code"
+          make format
+      
+          
+  
+
+
+
+          
+          
+      
+
