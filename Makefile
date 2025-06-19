@@ -45,11 +45,11 @@ SRC = src tests
 
 # Format all Python files in SRC using Black
 format:
-	black $(SRC)
+	$(PYTHON) -m black $(SRC)
 
 # Lint all Python files in SRC using pylint
 lint:
-	pylint $(SRC)
+	$(PYTHON) -m pylint $(SRC)
 
 # Run tests using pytest
 test:
@@ -60,12 +60,12 @@ ADD_OPTS = # None by default
 
 # Run Kedro pipeline with optional extra arguments
 run:
-	kedro run $(ADD_OPTS)
+	$(PYTHON) -m kedro run $(ADD_OPTS)
 
 .PHONY: kedro-run
 
 # Run the Streamlit web app
 web_app:
-	streamlit run streamlit_app/app.py
+	$(PYTHON) -m streamlit run streamlit_app/app.py
 	
 .PHONY: web_app
