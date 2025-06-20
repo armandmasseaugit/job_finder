@@ -1,85 +1,52 @@
+from datetime import datetime, timedelta
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 import pandas as pd
-from sklearn.linear_model import SGDClassifier
-from sklearn.feature_extraction.text import TfidfVectorizer
-
-tfidf_vectorizer = TfidfVectorizer()
+from job_finder.settings import credentials
 
 
-def load_and_merge_feedback(feedback: pd.DataFrame, jobs: pd.DataFrame) -> pd.DataFrame:
-    """
-    Merge user feedback with the corresponding job offers.
+def filter_new_jobs(wttj_jobs: pd.DataFrame) -> list:
+    """Filter jobs published in the last 7 days.
 
     Args:
-        feedback (pd.DataFrame): Dictionary-like structure {reference:
-                                "like"/"dislike"}.
-        jobs (pd.DataFrame): DataFrame containing job offers,
-                            including at least "reference" and "name" columns.
+        wttj_jobs (pd.DataFrame): DataFrame containing all current scraped job offers.
 
     Returns:
-        pd.DataFrame: Merged DataFrame including a new 'reward'
-                    column (+1 for like, -1 for dislike).
+        list: List of recent job offers (published within 7 days), converted to dicts.
     """
-    feedback_df = pd.DataFrame(
-        {"reference": feedback.keys(), "feedback": feedback.values()}
+    wttj_jobs["publication_date"] = pd.to_datetime(wttj_jobs["publication_date"], errors="coerce")
+    cutoff_date = datetime.now() - timedelta(days=7)
+    recent_jobs = wttj_jobs[wttj_jobs["publication_date"] >= cutoff_date]
+    return recent_jobs.to_dict(orient="records")
+
+
+def send_email(new_jobs: list, config: dict) -> None:
+    """Send an email notification if new job offers are found.
+
+    Args:
+        new_jobs (list): List of new job offers as dictionaries.
+        config (dict): Email configuration with sender and recipient.
+
+    Returns:
+        None
+    """
+    # if not new_jobs:
+    #     print("No new job offers to notify.")
+    #     return
+
+    subject = f"{len(new_jobs)} new job offer(s) this week 🚀"
+    body = "\n\n".join(
+        [f"{job['name']} at {job['company_name']}\n{job.get('url', 'No URL')}" for job in new_jobs]
     )
-    df = feedback_df.merge(jobs, left_on="reference", right_on="reference", how="inner")
-    df["reward"] = df["feedback"].map({"like": 1, "dislike": -1})
-    return df
 
+    message = MIMEMultipart()
+    message["From"] = config["email_from"]
+    message["To"] = config["email_to"]
+    message["Subject"] = subject
+    message.attach(MIMEText(body, "plain"))
 
-def feature_engineering(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Convert job titles into TF-IDF features and append reward labels.
-
-    Args:
-        df (pd.DataFrame): DataFrame with at least 'name' and 'reward' columns.
-
-    Returns:
-        pd.DataFrame: Feature matrix including the reward column.
-    """
-    tfidf_matrix = tfidf_vectorizer.fit_transform(df["name"])
-    df_features = pd.DataFrame(tfidf_matrix.toarray())
-    df_features["reward"] = df["reward"].values
-    return df_features
-
-
-def train_rl_model(df_features: pd.DataFrame, previous_model=None):
-    """
-    Train or update a logistic regression model (SGD) based on user feedback.
-
-    Args:
-        df_features (pd.DataFrame): Feature matrix with a 'reward' column.
-        previous_model (SGDClassifier, optional): Existing model to continue training.
-
-    Returns:
-        SGDClassifier: A trained or updated logistic regression model.
-    """
-    X = df_features.drop(columns=["reward"])
-    y = df_features["reward"] > 0  # 1 pour like, 0 pour dislike
-
-    if previous_model is None:
-        model = SGDClassifier(loss="log_loss", max_iter=1, warm_start=True)
-    else:
-        model = previous_model
-        model.max_iter += 1  # augmenter un peu le nombre d'itérations
-        model.warm_start = True
-
-    model.fit(X, y)
-    return model
-
-
-def score_all_offers(jobs: pd.DataFrame, model):
-    """
-    Score all job offers based on their predicted relevance.
-
-    Args:
-        jobs (pd.DataFrame): Job offers with 'reference' and 'name' columns.
-        model (SGDClassifier): Trained model to predict the probability of a like.
-
-    Returns:
-        dict: Dictionary mapping each job reference to its
-            relevance score (likelihood of being liked).
-    """
-    features = tfidf_vectorizer.transform(jobs["name"])
-    scores = model.predict_proba(features)[:, 1]
-    return dict(zip(jobs["reference"], scores))
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+        server.login(config["email_from"], credentials.get("sender_email_password"))
+        server.sendmail(config["email_from"], config["email_to"], message.as_string())
+        print(f"Sent email with {len(new_jobs)} new offers.")
