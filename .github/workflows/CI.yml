@@ -4,11 +4,9 @@ on:
   push:
     branches:
       - 'main'
-      - 'develop'
   pull_request:
     branches:
       - 'main'
-      - 'develop'
 
 env:
   PYTHON_VERSION: "3.12.3"
@@ -34,10 +32,10 @@ jobs:
           echo "Running tests"
           make test
 
-      - name: Format code
+      - name: Run pylint and fail if score < 7.0
         run: |
-          echo "formatting the code"
-          make format
+          echo "Running pylint..."
+          pylint src/ tests/
       
           
   

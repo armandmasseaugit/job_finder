@@ -4,7 +4,7 @@ VENV = .venv
 VENV_ACTIVATE = $(shell test -d $(VENV) && find $(VENV) -name "activate")
 
 # Python interpreter path inside the virtual environment (if it exists and can be activated)
-VENV_PYTHON = $(shell test -d $(VENV) && . $(VENV)/bin/activate && which python)
+VENV_PYTHON = $(shell test -d $(VENV) && . $(VENV_ACTIVATE); where python | head -n 1)
 
 # System-wide Python interpreter path
 SYSTEM_PYTHON = $(shell which python)
@@ -45,27 +45,28 @@ SRC = src tests
 
 # Format all Python files in SRC using Black
 format:
-	$(PYTHON) -m black $(SRC)
+	black $(SRC)
 
 # Lint all Python files in SRC using pylint
 lint:
-	$(PYTHON) -m pylint $(SRC)
+	pylint $(SRC)
 
 # Run tests using pytest
 test:
-	$(PYTHON) -m pytest
+	pytest
 
 # Additional options for kedro run can be set here (empty by default)
-ADD_OPTS = # None by default
+ADD_OPTS = # None by default. If wanted, you can run a specific pipeline
+# with the value "--pipeline=the pipeline you want to run"
 
 # Run Kedro pipeline with optional extra arguments
 run:
-	$(PYTHON) -m kedro run $(ADD_OPTS)
+	kedro run $(ADD_OPTS)
 
 .PHONY: kedro-run
 
 # Run the Streamlit web app
 web_app:
-	$(PYTHON) -m streamlit run streamlit_app/app.py
+	streamlit run streamlit_app/app.py
 	
 .PHONY: web_app
