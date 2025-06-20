@@ -35,7 +35,7 @@ jobs:
       - name: Run pylint and fail if score < 7.0
         run: |
           echo "Running pylint..."
-          score=$(pylint src tests --score=y | tee pylint-report.txt | grep "Your code has been rated at" | awk '{print $7}' | cut -d'/' -f1)
+          score=$(python -m pylint src tests --score=y | tee pylint-report.txt | grep "Your code has been rated at" | awk '{print $7}' | cut -d'/' -f1)
           threshold=7.0
           result=$(awk "BEGIN {print ($score >= $threshold) ? 0 : 1}")
           if [ "$result" -ne 0 ]; then
