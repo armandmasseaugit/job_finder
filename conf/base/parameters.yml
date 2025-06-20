@@ -21,3 +21,7 @@ wttj_params:
   }
   queries: ["data", "IA", "Machine learning",] # "data scientist"
   number_of_pages_to_search_into: 10
+
+email_config:
+  email_from: "armand.masseau@gmail.com"
+  email_to: "armandbali23@gmail.com"
