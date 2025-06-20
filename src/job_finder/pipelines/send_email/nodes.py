@@ -7,16 +7,16 @@ from job_finder.settings import credentials
 
 
 def filter_new_jobs(wttj_jobs: pd.DataFrame) -> list:
-    """Filter jobs published in the last 7 days.
+    """Filter jobs published in the last 2 days.
 
     Args:
         wttj_jobs (pd.DataFrame): DataFrame containing all current scraped job offers.
 
     Returns:
-        list: List of recent job offers (published within 7 days), converted to dicts.
+        list: List of recent job offers (published within 2 days), converted to dicts.
     """
     wttj_jobs["publication_date"] = pd.to_datetime(wttj_jobs["publication_date"], errors="coerce")
-    cutoff_date = datetime.now() - timedelta(days=7)
+    cutoff_date = datetime.now() - timedelta(days=2)
     recent_jobs = wttj_jobs[wttj_jobs["publication_date"] >= cutoff_date]
     return recent_jobs.to_dict(orient="records")
 
