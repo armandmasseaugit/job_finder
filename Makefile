@@ -56,7 +56,8 @@ test:
 	$(PYTHON) -m pytest
 
 # Additional options for kedro run can be set here (empty by default)
-ADD_OPTS = # None by default
+ADD_OPTS = # None by default. If wanted, you can run a specific pipeline
+# with the value "--pipeline=the pipeline you want to run"
 
 # Run Kedro pipeline with optional extra arguments
 run:
