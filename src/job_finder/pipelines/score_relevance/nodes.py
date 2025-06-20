@@ -1,8 +1,8 @@
 import pandas as pd
 from sklearn.linear_model import SGDClassifier
-from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import HashingVectorizer
 
-tfidf_vectorizer = TfidfVectorizer()
+vectorizer = HashingVectorizer(n_features=1024, alternate_sign=False)
 
 
 def load_and_merge_feedback(feedback: pd.DataFrame, jobs: pd.DataFrame) -> pd.DataFrame:
@@ -29,7 +29,7 @@ def load_and_merge_feedback(feedback: pd.DataFrame, jobs: pd.DataFrame) -> pd.Da
 
 def feature_engineering(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Convert job titles into TF-IDF features and append reward labels.
+    Convert job titles into features and append reward labels.
 
     Args:
         df (pd.DataFrame): DataFrame with at least 'name' and 'reward' columns.
@@ -37,8 +37,8 @@ def feature_engineering(df: pd.DataFrame) -> pd.DataFrame:
     Returns:
         pd.DataFrame: Feature matrix including the reward column.
     """
-    tfidf_matrix = tfidf_vectorizer.fit_transform(df["name"])
-    df_features = pd.DataFrame(tfidf_matrix.toarray())
+    vector_matrix = vectorizer.transform(df["name"])
+    df_features = pd.DataFrame(vector_matrix.toarray())
     df_features["reward"] = df["reward"].values
     return df_features
 
@@ -57,11 +57,14 @@ def train_rl_model(df_features: pd.DataFrame, previous_model=None):
     X = df_features.drop(columns=["reward"])
     y = df_features["reward"] > 0  # 1 pour like, 0 pour dislike
 
-    if previous_model is None:
+    if y.nunique() < 2:
+        return previous_model
+
+    if previous_model is None or X.shape[1] != previous_model.coef_.shape[1]:
         model = SGDClassifier(loss="log_loss", max_iter=1, warm_start=True)
     else:
         model = previous_model
-        model.max_iter += 1  # augmenter un peu le nombre d'itérations
+        model.max_iter += 1
         model.warm_start = True
 
     model.fit(X, y)
@@ -80,6 +83,6 @@ def score_all_offers(jobs: pd.DataFrame, model):
         dict: Dictionary mapping each job reference to its
             relevance score (likelihood of being liked).
     """
-    features = tfidf_vectorizer.transform(jobs["name"])
+    features = vectorizer.transform(jobs["name"])
     scores = model.predict_proba(features)[:, 1]
     return dict(zip(jobs["reference"], scores))
