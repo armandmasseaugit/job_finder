@@ -3,6 +3,7 @@ from .nodes import filter_new_jobs, send_email
 
 
 def create_pipeline() -> Pipeline:
+    """Pipeline for email sending."""
     return pipeline(
         [
             node(
