@@ -15,7 +15,9 @@ def filter_new_jobs(wttj_jobs: pd.DataFrame) -> list:
     Returns:
         list: List of recent job offers (published within 2 days), converted to dicts.
     """
-    wttj_jobs["publication_date"] = pd.to_datetime(wttj_jobs["publication_date"], errors="coerce")
+    wttj_jobs["publication_date"] = pd.to_datetime(
+        wttj_jobs["publication_date"], errors="coerce"
+    )
     cutoff_date = datetime.now() - timedelta(days=2)
     recent_jobs = wttj_jobs[wttj_jobs["publication_date"] >= cutoff_date]
     return recent_jobs.to_dict(orient="records")
@@ -37,7 +39,10 @@ def send_email(new_jobs: list, config: dict) -> None:
 
     subject = f"{len(new_jobs)} new job offer(s) this week 🚀"
     body = "\n\n".join(
-        [f"{job['name']} at {job['company_name']}\n{job.get('url', 'No URL')}" for job in new_jobs]
+        [
+            f"{job['name']} at {job['company_name']}\n{job.get('url', 'No URL')}"
+            for job in new_jobs
+        ]
     )
 
     message = MIMEMultipart()
