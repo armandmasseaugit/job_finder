@@ -1,9 +1,11 @@
-import streamlit as st
-import pandas as pd
-from PIL import Image
+import os
 import requests
 import json
 import boto3
+import pandas as pd
+
+import streamlit as st
+from PIL import Image
 from io import BytesIO
 from streamlit_lottie import st_lottie
 from kedro.config import OmegaConfigLoader
@@ -11,7 +13,8 @@ from kedro.config import OmegaConfigLoader
 
 from kedro.framework.startup import bootstrap_project
 from kedro.framework.session import KedroSession
-import os
+from st_on_hover_tabs import on_hover_tabs
+
 
 # Bootstrap the Kedro project
 project_path = os.getcwd()
@@ -32,7 +35,6 @@ df.sort_values(by="publication_date", ascending=False, inplace=True)
 # --------- Multi-page navigation ----------
 st.set_page_config(page_title="Job Finder", layout="wide")
 
-from st_on_hover_tabs import on_hover_tabs
 
 # Importing stylesheet
 st.markdown(
