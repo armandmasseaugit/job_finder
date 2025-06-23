@@ -36,9 +36,6 @@ jobs:
         run: |
           echo "Running pylint..."
           pylint src/ tests/
-      
-          
-  
 
 
 

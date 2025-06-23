@@ -10,6 +10,11 @@ On the web app, users can browse the latest offers and provide feedback by likin
 This feedback is used to train a reinforcement learning model that ranks future offers by relevance. 
 Users can then sort the listings based on these relevance scores to see the most personalized opportunities first.
 
+The screenshot below shows the interface with job offers sorted by relevance, 
+and the mouse hovering over the "like" button, ready to provide feedback to the model.
+
+![Screenshot of the job finder app with job listings sorted by relevance. The mouse is hovering over the 'like' button, ready to provide feedback.](https://github.com/user-attachments/assets/c1b122b6-6656-4089-8b0e-8e333a92ee2e)
+
 
 ## Features
 
@@ -28,7 +33,7 @@ Users can then sort the listings based on these relevance scores to see the most
 - **Streamlit**: web app frontend.
 - **AWS S3**: storage of scraped data, models, and results.
 - **Email service**: to send daily summaries (SMTP or any email API).
-- **Optional**: Docker for containerized deployment.
+- **Docker**: for containerized deployment.
 
 
 credit: Streamlit app sidebar was taken from https://medium.com/@ericdennis7/5-components-that-beautify-your-streamlit-app-79039f405ae1

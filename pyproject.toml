@@ -25,7 +25,6 @@ dependencies = [
     "pandas",
     "streamlit",
     "Pillow",
-    "sentence_transformers",
     "pytest",
     "pytest-cov",
     "pylint",
