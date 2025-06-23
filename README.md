@@ -28,7 +28,7 @@ Users can then sort the listings based on these relevance scores to see the most
 - **Streamlit**: web app frontend.
 - **AWS S3**: storage of scraped data, models, and results.
 - **Email service**: to send daily summaries (SMTP or any email API).
-- **Optional**: Docker for containerized deployment.
+- **Docker**: for containerized deployment.
 
 
 credit: Streamlit app sidebar was taken from https://medium.com/@ericdennis7/5-components-that-beautify-your-streamlit-app-79039f405ae1
