@@ -1,0 +1,80 @@
+.git
+.env
+.venv/
+venv/
+env/
+
+# All Kedro project files, except data/ and conf/
+.ipython/
+docs/
+notebooks/
+.gitignore
+.isort.cfg
+pyproject.toml
+README.md
+setup.cfg
+src/requirements.txt
+src/dist/
+src/build/
+__pycache__/
+*.py[cod]
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Pytest / Coverage
+.coverage
+htmlcov/
+.tox/
+.cache/
+.pytest_cache/
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Kedro specific
+data/
+conf/local/
+conf/base/credentials*
+logs/.git
+.env
+.venv/
+venv/
+env/
+
+# All Kedro project files, except data/ and conf/
+.ipython/
+docs/
+notebooks/
+.gitignore
+.isort.cfg
+pyproject.toml
+README.md
+setup.cfg
+src/requirements.txt
+src/dist/
+src/build/
+__pycache__/
+*.py[cod]
+*.egg
+dist/
+build/
+.eggs/
+
+# Pytest / Coverage
+.coverage
+htmlcov/
+.tox/
+.cache/
+.pytest_cache/
+
+
+# Kedro specific
+data/
+conf/local/
+conf/base/credentials*
+logs/
