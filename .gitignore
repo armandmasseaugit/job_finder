@@ -159,5 +159,3 @@ venv.bak/
 
 # mlflow local runs
 mlruns/*
-
-.dockerignore
