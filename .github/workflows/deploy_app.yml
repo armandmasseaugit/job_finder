@@ -1,4 +1,4 @@
-name: Deploy Kedro Docker Image
+name: Deploy Streamlit App Docker Image
 
 on:
   workflow_dispatch:
@@ -25,6 +25,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: Dockerfile
+          file: streamlit_app/Dockerfile.streamlit
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/job_finder:${{ github.event.inputs.tag }}
+          tags: ${{ secrets.DOCKER_USERNAME }}/job_finder_web_app:${{ github.event.inputs.tag }}

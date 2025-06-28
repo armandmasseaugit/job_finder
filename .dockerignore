@@ -10,7 +10,6 @@ docs/
 notebooks/
 .gitignore
 .isort.cfg
-pyproject.toml
 README.md
 setup.cfg
 src/requirements.txt
@@ -52,7 +51,6 @@ docs/
 notebooks/
 .gitignore
 .isort.cfg
-pyproject.toml
 README.md
 setup.cfg
 src/requirements.txt

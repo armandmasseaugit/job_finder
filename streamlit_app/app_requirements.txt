@@ -1,0 +1,12 @@
+# Core Python packages
+requests
+pandas
+boto3
+Pillow
+streamlit
+streamlit-lottie
+st-on-hover-tabs
+
+# Kedro (core and config loader)
+kedro
+omegaconf
