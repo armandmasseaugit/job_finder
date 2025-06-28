@@ -24,7 +24,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
-          context: ./streamlit_app
-          file: streamlit.Dockerfile
+          context: .
+          file: streamlit_app/streamlit.Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/job_finder_web_app:${{ github.event.inputs.tag }}
