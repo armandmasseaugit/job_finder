@@ -26,6 +26,5 @@ jobs:
         with:
           context: .
           file: Dockerfile
-          dockerignore: .dockerignore
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/job_finder:${{ github.event.inputs.tag }}

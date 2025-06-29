@@ -26,6 +26,5 @@ jobs:
         with:
           context: .
           file: streamlit.Dockerfile
-          dockerignore: .dockerignore.streamlit
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/job_finder_web_app:${{ github.event.inputs.tag }}
