@@ -11,14 +11,6 @@ and the mouse hovering over the "like" button, ready to provide feedback to the 
 ![Screenshot of the job finder app with job listings sorted by relevance. The mouse is hovering over the 'like' button, ready to provide feedback.](https://github.com/user-attachments/assets/c1b122b6-6656-4089-8b0e-8e333a92ee2e)
 
 
-## Features
-
-- Automated web scraping of multiple job platforms for targeted keywords.
-- Daily email notifications with summarized relevant job offers.
-- Interactive Streamlit app for browsing, liking, and disliking job offers.
-- Reinforcement learning model that learns user preferences to rank offers.
-- Storage and versioning of data and models on AWS S3.
-
 ## Technology Stack
 
 - **Python 3.8+**
@@ -29,7 +21,7 @@ and the mouse hovering over the "like" button, ready to provide feedback to the 
 - **AWS S3**: storage of scraped data, models, and results.
 - **Email service**: to send daily summaries (SMTP or any email API).
 - **Docker**: for containerized deployment.
-- - **Airflow** (coming soon) – Workflow orchestration for scheduling pipelines.
+- **Airflow** (coming soon) – Workflow orchestration for scheduling pipelines.
 - **Kubernetes** (coming soon) – Scalable deployment and job orchestration.
 
 
