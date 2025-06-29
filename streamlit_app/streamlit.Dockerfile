@@ -1,7 +1,7 @@
 FROM python:3.12-slim
 
 WORKDIR /app
-
+RUN ls
 COPY ./streamlit_app/ /app
 COPY ./conf/ /app
 
