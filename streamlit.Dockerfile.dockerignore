@@ -1,0 +1,13 @@
+# .dockerignore.streamlit
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+*.DS_Store
+.env
+.venv
+venv/
+.idea/
+.ipynb_checkpoints/
+.git
