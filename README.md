@@ -24,7 +24,10 @@ and the mouse hovering over the "like" button, ready to provide feedback to the 
 - **Airflow** (coming soon) – Workflow orchestration for scheduling pipelines.
 - **Kubernetes** (coming soon) – Scalable deployment and job orchestration.
 
-<img src="docs/source/architecture.png" alt="Architecture Diagram" height="650"/>
+<div align="center">
+  <img src="docs/source/architecture.png" alt="Architecture Diagram" height="600"/>
+</div>
+
 
 ## Rules and guidelines
 
