@@ -25,6 +25,7 @@ and the mouse hovering over the "like" button, ready to provide feedback to the 
 - **AWS S3**: storage of scraped data, models, and results.
 - **Email service**: to send daily summaries (SMTP or any email API).
 - **Docker**: for containerized deployment.
+- **GitHub Actions**: CI/CD for testing, building, and deploying Docker containers.
 - **Airflow** (coming soon) – Workflow orchestration for scheduling pipelines.
 - **Kubernetes** (coming soon) – Scalable deployment and job orchestration.
 
