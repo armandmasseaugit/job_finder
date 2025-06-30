@@ -24,12 +24,7 @@ and the mouse hovering over the "like" button, ready to provide feedback to the 
 - **Airflow** (coming soon) – Workflow orchestration for scheduling pipelines.
 - **Kubernetes** (coming soon) – Scalable deployment and job orchestration.
 
-<img src="docs/source/architecture.png" alt="Architecture Diagram" height="400"/>
-
-credit: Streamlit app sidebar was taken from https://medium.com/@ericdennis7/5-components-that-beautify-your-streamlit-app-79039f405ae1
-
-
-Take a look at the [Kedro documentation](https://docs.kedro.org) to get started.
+<img src="docs/source/architecture.png" alt="Architecture Diagram" height="650"/>
 
 ## Rules and guidelines
 
@@ -122,5 +117,9 @@ chore: update requirements.txt
 ```
 
 This structure makes it easier to automate release notes, understand project history, and onboard contributors.
+
+## Credits
+
+- Streamlit app sidebar was taken from https://medium.com/@ericdennis7/5-components-that-beautify-your-streamlit-app-79039f405ae1
 
 
