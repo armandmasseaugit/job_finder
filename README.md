@@ -8,7 +8,11 @@ The system combines data collection via web scraping, model training, and deploy
 The screenshot below shows the interface with job offers sorted by relevance, 
 and the mouse hovering over the "like" button, ready to provide feedback to the model.
 
-![Screenshot of the job finder app with job listings sorted by relevance. The mouse is hovering over the 'like' button, ready to provide feedback.](https://github.com/user-attachments/assets/c1b122b6-6656-4089-8b0e-8e333a92ee2e)
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/c1b122b6-6656-4089-8b0e-8e333a92ee2e" 
+       alt="Screenshot of the job finder app with job listings sorted by relevance. The mouse is hovering over the 'like' button, ready to provide feedback." 
+       height="450"/>
+</div>
 
 
 ## Technology Stack
