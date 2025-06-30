@@ -104,3 +104,9 @@ project_id = "84f2a5011cb64f25b29537279ed0754b"
 
 [tool.pylint.main]
 fail-under = 7
+
+[tool.poetry]
+name = "job_finder"
+version = "0.1.0"
+description = "An app to find jobs"
+authors = ["Armand Masseau armand.masseau@gmail.com"]
