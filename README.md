@@ -24,7 +24,7 @@ and the mouse hovering over the "like" button, ready to provide feedback to the 
 - **Airflow** (coming soon) – Workflow orchestration for scheduling pipelines.
 - **Kubernetes** (coming soon) – Scalable deployment and job orchestration.
 
-![Architecture Diagram](docs/source/architecture.jpg)
+<img src="docs/source/architecture.png" alt="Architecture Diagram" style="max-width: 100%; height: auto;" />
 
 credit: Streamlit app sidebar was taken from https://medium.com/@ericdennis7/5-components-that-beautify-your-streamlit-app-79039f405ae1
 
