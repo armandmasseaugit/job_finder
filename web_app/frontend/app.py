@@ -38,8 +38,6 @@ with st.sidebar:
 
 if tabs == "Home":
     home.run()
-    # pass
 
 if tabs == "Explore Offers":
     explore_offers.run()
-    # pass

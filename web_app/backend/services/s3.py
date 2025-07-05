@@ -19,20 +19,30 @@ s3 = boto3.client(
 )
 
 BUCKET = "wttj-scraping"
-KEY_LIKES = "job_likes.json"
 
 def get_likes():
     try:
-        obj = s3.get_object(Bucket=BUCKET, Key=KEY_LIKES)
+        obj = s3.get_object(Bucket=BUCKET, Key="job_likes.json")
         return json.loads(obj["Body"].read().decode("utf-8"))
     except s3.exceptions.NoSuchKey:
         return {}
     except Exception:
         return {}
 
+
+def get_relevance():
+    try:
+        obj = s3.get_object(Bucket=BUCKET, Key="scored_jobs.json")
+        return json.loads(obj["Body"].read().decode("utf-8"))
+    except s3.exceptions.NoSuchKey:
+        return {}
+    except Exception:
+        return {}
+
+
 def update_like(job_ref: str, feedback: str):
     try:
-        obj = s3.get_object(Bucket=BUCKET, Key=KEY_LIKES)
+        obj = s3.get_object(Bucket=BUCKET, Key="job_likes.json")
         existing_data = json.loads(obj["Body"].read().decode("utf-8"))
     except s3.exceptions.NoSuchKey:
         existing_data = {}
@@ -43,7 +53,7 @@ def update_like(job_ref: str, feedback: str):
 
     s3.put_object(
         Bucket=BUCKET,
-        Key=KEY_LIKES,
+        Key="job_likes.json",
         Body=json.dumps(existing_data, indent=2),
         ContentType="application/json",
     )
