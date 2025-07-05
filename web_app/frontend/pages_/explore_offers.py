@@ -1,6 +1,12 @@
 import streamlit as st
 import pandas as pd
-from web_app.frontend.utils.api_client import get_offers, get_likes, get_relevance, post_like
+from web_app.frontend.utils.api_client import (
+    get_offers,
+    get_likes,
+    get_relevance,
+    post_like,
+)
+
 
 def run():
     st.title("🔍 Available Offers")
@@ -28,12 +34,16 @@ def run():
     )
 
     if sort_option == "Relevance score (high to low)":
-        filtered_df["relevance"] = filtered_df["reference"].map(lambda ref: relevance_dict.get(ref, 0))
+        filtered_df["relevance"] = filtered_df["reference"].map(
+            lambda ref: relevance_dict.get(ref, 0)
+        )
         filtered_df = filtered_df.sort_values(by="relevance", ascending=False)
     else:
         filtered_df = filtered_df.sort_values(by="publication_date", ascending=False)
 
-    st.write(f"Displaying {filtered_df.shape[0]} offers published since {selected_date}:")
+    st.write(
+        f"Displaying {filtered_df.shape[0]} offers published since {selected_date}:"
+    )
 
     recent_threshold = pd.Timestamp.now() - pd.Timedelta(days=3)
 
@@ -51,14 +61,16 @@ def run():
                 title = f'<h3><a href="{row["url"]}">{row["name"]}</a>'
                 if is_recent:
                     title += ' <span style="color:red;">🔴 NEW!</span>'
-                title += '</h3>'
+                title += "</h3>"
                 st.markdown(title, unsafe_allow_html=True)
 
                 st.markdown(f"**Company:** {row['company_name']}")
                 st.markdown(f"🗓️ Published on: {row['publication_date'].date()}")
                 st.markdown(f"🔁 Remote: `{row['remote']}`")
                 st.markdown(f"🌐 Website: `{row['provider']}`")
-                st.markdown(f"Reference: `{row['reference']}`")  # TODO: peut être retiré
+                st.markdown(
+                    f"Reference: `{row['reference']}`"
+                )  # TODO: peut être retiré
 
                 # Affichage du score de pertinence si disponible
                 relevance_score = relevance_dict.get(ref)

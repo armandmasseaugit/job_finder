@@ -5,6 +5,7 @@ from kedro.framework.session import KedroSession
 
 bootstrap_project(os.getcwd())
 
+
 def load_offers():
     with KedroSession.create(os.getcwd()) as session:
         context = session.load_context()

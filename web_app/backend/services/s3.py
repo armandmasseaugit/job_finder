@@ -4,12 +4,14 @@ import json
 from kedro.config import OmegaConfigLoader
 
 # TODO: replace credentials source from local to kubernetes secrets
-creds = (OmegaConfigLoader(
+creds = (
+    OmegaConfigLoader(
         conf_source="conf/",
         config_patterns={
             "credentials": ["**/credentials*", "credentials*", "credentials*/**"],
         },
-    )).get("credentials")["aws_credentials"]
+    )
+).get("credentials")["aws_credentials"]
 
 s3 = boto3.client(
     "s3",
@@ -19,6 +21,7 @@ s3 = boto3.client(
 )
 
 BUCKET = "wttj-scraping"
+
 
 def get_likes():
     try:

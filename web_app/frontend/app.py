@@ -34,7 +34,7 @@ with st.sidebar:
             },
         },
         key="1",
-)
+    )
 
 if tabs == "Home":
     home.run()
