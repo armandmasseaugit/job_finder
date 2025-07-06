@@ -1,0 +1,8 @@
+fastapi
+uvicorn[standard]
+numpy
+pandas
+boto3
+redis
+kedro
+python-dotenv

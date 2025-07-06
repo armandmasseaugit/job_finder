@@ -28,9 +28,6 @@ dependencies = [
     "pytest",
     "pytest-cov",
     "pylint",
-    "apache-airflow",
-    "kedro-airflow",
-
 ]
 
 [project.scripts]

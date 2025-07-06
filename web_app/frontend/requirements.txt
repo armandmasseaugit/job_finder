@@ -1,12 +1,6 @@
 # Core Python packages
 requests
 pandas
-boto3
-Pillow
 streamlit
 streamlit-lottie
 streamlit-on-Hover-tabs
-
-# Kedro (core and config loader)
-kedro
-omegaconf
