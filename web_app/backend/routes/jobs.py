@@ -1,17 +1,19 @@
 from fastapi import APIRouter, Query
 from web_app.backend.services.s3 import (
+    get_offers as get_offers_,
     get_likes as get_likes_,
     get_relevance as get_relevance_,
     update_like,
+
 )
-from web_app.backend.services.kedro_context import load_offers
+
 
 router = APIRouter()
 
 
 @router.get("/offers")
 def get_offers():
-    return load_offers()
+    return get_offers_()
 
 
 @router.get("/likes")

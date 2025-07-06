@@ -1,4 +1,6 @@
 import os
+import numpy as np
+import pandas as pd
 import boto3
 import json
 from kedro.config import OmegaConfigLoader
@@ -21,6 +23,19 @@ s3 = boto3.client(
 )
 
 BUCKET = "wttj-scraping"
+obj = s3.get_object(Bucket=BUCKET, Key="wttj_jobs.xlsx")["Body"]
+print(obj)
+
+def get_offers():
+    try:
+        obj = s3.get_object(Bucket=BUCKET, Key="wttj_jobs.xlsx")
+        df = pd.read_excel(obj["Body"])
+        df = df.replace({np.nan: None, np.inf: None, -np.inf: None})
+        return df.to_dict(orient="records")
+    except s3.exceptions.NoSuchKey:
+        return []
+    except Exception:
+        return []
 
 
 def get_likes():
