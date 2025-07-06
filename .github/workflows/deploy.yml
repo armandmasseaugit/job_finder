@@ -22,11 +22,7 @@ on:
         required: false
         type: boolean
         default: false
-      deploy_worker:
-        description: 'Deploy worker image'
-        required: false
-        type: boolean
-        default: false
+
 
 jobs:
   deploy:
@@ -50,6 +46,15 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/job_finder_streamlit:${{ github.event.inputs.tag }}
 
+      - name: Build and push Kedro image
+        if: ${{ github.event.inputs.deploy_worker == 'true' }}
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: kedro.Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/job_finder_kedro:${{ github.event.inputs.tag }}
+
       - name: Build and push FastAPI image
         if: ${{ github.event.inputs.deploy_fastapi == 'true' }}
         uses: docker/build-push-action@v5
@@ -58,12 +63,3 @@ jobs:
           file: fastapi.Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/job_finder_fastapi:${{ github.event.inputs.tag }}
-
-      - name: Build and push Worker image
-        if: ${{ github.event.inputs.deploy_worker == 'true' }}
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: worker.Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/job_finder_worker:${{ github.event.inputs.tag }}
