@@ -5,25 +5,16 @@ import pandas as pd
 import boto3
 import json
 import redis
-from kedro.config import OmegaConfigLoader
 
 # -------------------------
 # AWS S3 CONFIG
 # -------------------------
-creds = (
-    OmegaConfigLoader(
-        conf_source="conf/",
-        config_patterns={
-            "credentials": ["**/credentials*", "credentials*", "credentials*/**"],
-        },
-    )
-).get("credentials")["aws_credentials"]
 
 s3 = boto3.client(
     "s3",
-    aws_access_key_id=creds["key"],
-    aws_secret_access_key=creds["secret"],
-    region_name=creds["client_kwargs"]["region_name"],
+    aws_access_key_id=os.environ["AWS_ACCESS_KEY_ID"],
+    aws_secret_access_key=os.environ["AWS_SECRET_ACCESS_KEY"],
+    region_name=os.environ["AWS_REGION"],
 )
 
 BUCKET = "wttj-scraping"
