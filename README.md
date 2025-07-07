@@ -21,11 +21,13 @@ and the mouse hovering over the "like" button, ready to provide feedback to the 
 - **Kedro**: for building reproducible and modular data pipelines.
 - **Pandas, NumPy**: data manipulation and processing.
 - **scikit-learn**: for machine learning (SGDClassifier, TF-IDF vectorization).
+- **FastAPI**: backend API serving job offers, relevance scores, and feedback handling.
 - **Streamlit**: web app frontend.
 - **AWS S3**: storage of scraped data, models, and results.
 - **Email service**: to send daily summaries (SMTP or any email API).
 - **Docker**: for containerized deployment.
 - **GitHub Actions**: CI/CD for testing, building, and deploying Docker containers.
+- **Redis**: in-memory key-value store used for caching and fast data access.
 - **Airflow** (coming soon) – Workflow orchestration for scheduling pipelines.
 - **Kubernetes** (coming soon) – Scalable deployment and job orchestration.
 
