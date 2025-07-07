@@ -77,4 +77,4 @@ conf/local/
 conf/base/credentials*
 logs/
 
-streamlit_app/
+web_app/
