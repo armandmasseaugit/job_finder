@@ -18,19 +18,28 @@ CONFIG_LOADER_CLASS = OmegaConfigLoader
 project_path = os.getcwd()
 bootstrap_project(project_path)
 
-# Open a Kedro session
-with KedroSession.create(project_path) as session:
-    context = session.load_context()
 
-config_loader: CONFIG_LOADER_CLASS = context.config_loader
-credentials = config_loader.get("credentials")
+def load_credentials():
+    """Function to load credentials from env variables (for production) or
+    from conf/local if we are in local."""
+    try:
+        return {
+            "aws_credentials": {
+                "key": os.environ["AWS_ACCESS_KEY_ID"],
+                "secret": os.environ["AWS_SECRET_ACCESS_KEY"],
+                "client_kwargs": {
+                    "region_name": os.environ["AWS_REGION"],
+                },
+            },
+            "sender_email_password": os.environ["SENDER_EMAIL_PASSWORD"],
+        }
+    except KeyError:
+        # Open a Kedro session
+        with KedroSession.create(project_path) as session:
+            context = session.load_context()
 
-# Keyword arguments to pass to the `CONFIG_LOADER_CLASS` constructor.
+        config_loader: CONFIG_LOADER_CLASS = context.config_loader
+        credentials = config_loader.get("credentials")
+        return credentials
 
-# Class that manages Kedro's library components.
-# from kedro.framework.context import KedroContext
-# CONTEXT_CLASS = KedroContext
-
-# Class that manages the Data Catalog.
-# from kedro.io import DataCatalog
-# DATA_CATALOG_CLASS = DataCatalog
+credentials = load_credentials()
