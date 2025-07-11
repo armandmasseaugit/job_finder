@@ -2,10 +2,6 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
-ENV AWS_ACCESS_KEY_ID=changeme
-ENV AWS_SECRET_ACCESS_KEY=changeme
-ENV AWS_REGION=us-east-1
-
 COPY web_app/backend /app
 COPY /conf /app
 
