@@ -6,6 +6,6 @@ COPY . /app
 
 RUN apt-get update && apt-get install -y build-essential && \
     pip install --upgrade pip && \
-    make install
+    pip install -r kedro_requirements.txt
 
 CMD ["bash"]
