@@ -23,11 +23,18 @@ dependencies = [
     "datetime",
     "boto3",
     "pandas",
-    "streamlit",
     "Pillow",
     "pytest",
     "pytest-cov",
     "pylint",
+    "fastapi",
+    "requests",
+    "streamlit",
+    "streamlit-lottie",
+    #"streamlit-on-Hover-tabs",
+    "uvicorn[standard]",
+    "redis",
+
 ]
 
 [project.scripts]
