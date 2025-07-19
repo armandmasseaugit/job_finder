@@ -1,12 +1,13 @@
 FROM python:3.12-slim
 
 WORKDIR /app
-COPY web_app/frontend/ /app
-COPY /conf /app
+COPY . /app
+
+ENV PYTHONPATH=.
 
 RUN apt-get update && apt-get install -y build-essential && \
     pip install --upgrade pip && \
-    pip install -r requirements.txt
+    pip install -r web_app/frontend/requirements.txt
 
 EXPOSE 8501
 
