@@ -1,3 +1,7 @@
-web_app/
+*
 
+!web_app/
 !web_app/backend/
+!web_app/backend/**
+
+web_app/frontend/
