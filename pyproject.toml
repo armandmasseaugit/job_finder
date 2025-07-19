@@ -23,13 +23,17 @@ dependencies = [
     "datetime",
     "boto3",
     "pandas",
-    "streamlit",
     "Pillow",
     "pytest",
     "pytest-cov",
     "pylint",
-    "apache-airflow",
-    "kedro-airflow",
+    "fastapi",
+    "requests",
+    "streamlit",
+    "streamlit-lottie",
+    #"streamlit-on-Hover-tabs",
+    "uvicorn[standard]",
+    "redis",
 
 ]
 

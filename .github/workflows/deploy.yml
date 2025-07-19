@@ -1,4 +1,4 @@
-name: Deploy Kedro Docker Image
+name: Deploy Docker Images
 
 on:
   workflow_dispatch:
@@ -7,12 +7,28 @@ on:
         description: 'Docker tag to use'
         required: true
         default: 'latest'
+      deploy_kedro:
+        description: 'Deploy Kedro image'
+        required: false
+        type: boolean
+        default: true
+      deploy_streamlit:
+        description: 'Deploy Streamlit image'
+        required: false
+        type: boolean
+        default: true
+      deploy_fastapi:
+        description: 'Deploy FastAPI image'
+        required: false
+        type: boolean
+        default: false
+
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout repo
         uses: actions/checkout@v4
 
       - name: Log in to Docker Hub
@@ -21,10 +37,29 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and push Docker image
+      - name: Build and push Streamlit image
+        if: ${{ github.event.inputs.deploy_streamlit == 'true' }}
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: Dockerfile
+          file: streamlit.Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/job_finder:${{ github.event.inputs.tag }}
+          tags: ${{ secrets.DOCKER_USERNAME }}/job_finder_streamlit:${{ github.event.inputs.tag }}
+
+      - name: Build and push Kedro image
+        if: ${{ github.event.inputs.deploy_worker == 'true' }}
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: kedro.Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/job_finder_kedro:${{ github.event.inputs.tag }}
+
+      - name: Build and push FastAPI image
+        if: ${{ github.event.inputs.deploy_fastapi == 'true' }}
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: fastapi.Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/job_finder_fastapi:${{ github.event.inputs.tag }}

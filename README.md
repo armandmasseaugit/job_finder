@@ -1,28 +1,15 @@
-# Job Finder — Automated Job Search and Ranking
+# Job Finder
 
-## Project Overview
+## Turned job hunting into a personalized daily briefing
 
-The goal of this project is to automatically search for new job postings that match specific keywords 
-(such as "data", "AI", etc.) across multiple websites. Each day, the system emails me summarizing 
-the latest relevant job offers. These job listings are also displayed on a Streamlit web app.
-
-On the web app, users can browse the latest offers and provide feedback by liking or disliking each job. 
-This feedback is used to train a reinforcement learning model that ranks future offers by relevance. 
-Users can then sort the listings based on these relevance scores to see the most personalized opportunities first.
+End-to-end system that automates job offer discovery across platforms and uses user feedback to train a machine learning model ranking jobs by relevance. 
+The system combines data collection via web scraping, model training, and deployment in a streamlined pipeline that delivers daily personalized recommendations via email and an interactive web app.
 
 The screenshot below shows the interface with job offers sorted by relevance, 
 and the mouse hovering over the "like" button, ready to provide feedback to the model.
 
 ![Screenshot of the job finder app with job listings sorted by relevance. The mouse is hovering over the 'like' button, ready to provide feedback.](https://github.com/user-attachments/assets/c1b122b6-6656-4089-8b0e-8e333a92ee2e)
 
-
-## Features
-
-- Automated web scraping of multiple job platforms for targeted keywords.
-- Daily email notifications with summarized relevant job offers.
-- Interactive Streamlit app for browsing, liking, and disliking job offers.
-- Reinforcement learning model that learns user preferences to rank offers.
-- Storage and versioning of data and models on AWS S3.
 
 ## Technology Stack
 
@@ -34,7 +21,10 @@ and the mouse hovering over the "like" button, ready to provide feedback to the 
 - **AWS S3**: storage of scraped data, models, and results.
 - **Email service**: to send daily summaries (SMTP or any email API).
 - **Docker**: for containerized deployment.
+- **Airflow** (coming soon) – Workflow orchestration for scheduling pipelines.
+- **Kubernetes** (coming soon) – Scalable deployment and job orchestration.
 
+![Architecture Diagram](docs/source/architecture.jpg)
 
 credit: Streamlit app sidebar was taken from https://medium.com/@ericdennis7/5-components-that-beautify-your-streamlit-app-79039f405ae1
 
@@ -133,4 +123,15 @@ chore: update requirements.txt
 
 This structure makes it easier to automate release notes, understand project history, and onboard contributors.
 
+### Secrets Management
+
+In a typical Kedro setup, secrets are managed by placing credential files inside the `conf/` 
+directory, excluding them via `.gitignore`, and injecting them through GitHub Actions using 
+GitHub Secrets. This allows the secret YAML files to be recreated at build time before pushing 
+to Docker Hub. This approach is suitable for **private images**, as credentials can safely be embedded 
+inside the Docker image.
+
+However, since my Docker image is **public**, I avoid embedding any secrets directly in the image. 
+Instead, I prefer using **environment variables** to handle credentials securely, depending on the 
+environment (e.g., local, Kubernetes, or CI/CD pipelines).
 

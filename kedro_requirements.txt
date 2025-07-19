@@ -1,0 +1,14 @@
+ipython>=8.10
+jupyterlab>=3.0
+notebook
+kedro
+s3fs
+kedro[jupyter]~=0.19.13
+kedro-datasets[pandas-csvdataset, pandas-exceldataset, pandas-parquetdataset, json-jsondataset]>=3.0
+kedro-viz>=6.7.0
+scikit-learn~=1.5.1
+seaborn~=0.12.1
+setuptools; python_version >= "3.12"
+boto3
+pandas
+Pillow
