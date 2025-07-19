@@ -8,7 +8,11 @@ The system combines data collection via web scraping, model training, and deploy
 The screenshot below shows the interface with job offers sorted by relevance, 
 and the mouse hovering over the "like" button, ready to provide feedback to the model.
 
-![Screenshot of the job finder app with job listings sorted by relevance. The mouse is hovering over the 'like' button, ready to provide feedback.](https://github.com/user-attachments/assets/c1b122b6-6656-4089-8b0e-8e333a92ee2e)
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/c1b122b6-6656-4089-8b0e-8e333a92ee2e" 
+       alt="Screenshot of the job finder app with job listings sorted by relevance. The mouse is hovering over the 'like' button, ready to provide feedback." 
+       height="450"/>
+</div>
 
 
 ## Technology Stack
@@ -17,19 +21,20 @@ and the mouse hovering over the "like" button, ready to provide feedback to the 
 - **Kedro**: for building reproducible and modular data pipelines.
 - **Pandas, NumPy**: data manipulation and processing.
 - **scikit-learn**: for machine learning (SGDClassifier, TF-IDF vectorization).
+- **FastAPI**: backend API serving job offers, relevance scores, and feedback handling.
 - **Streamlit**: web app frontend.
 - **AWS S3**: storage of scraped data, models, and results.
 - **Email service**: to send daily summaries (SMTP or any email API).
 - **Docker**: for containerized deployment.
+- **GitHub Actions**: CI/CD for testing, building, and deploying Docker containers.
+- **Redis**: in-memory key-value store used for caching and fast data access.
 - **Airflow** (coming soon) – Workflow orchestration for scheduling pipelines.
 - **Kubernetes** (coming soon) – Scalable deployment and job orchestration.
 
-![Architecture Diagram](docs/source/architecture.jpg)
+<div align="center">
+  <img src="docs/source/architecture.png" alt="Architecture Diagram" height="600"/>
+</div>
 
-credit: Streamlit app sidebar was taken from https://medium.com/@ericdennis7/5-components-that-beautify-your-streamlit-app-79039f405ae1
-
-
-Take a look at the [Kedro documentation](https://docs.kedro.org) to get started.
 
 ## Rules and guidelines
 
@@ -123,7 +128,7 @@ chore: update requirements.txt
 
 This structure makes it easier to automate release notes, understand project history, and onboard contributors.
 
-### Secrets Management
+## Secrets Management
 
 In a typical Kedro setup, secrets are managed by placing credential files inside the `conf/` 
 directory, excluding them via `.gitignore`, and injecting them through GitHub Actions using 
@@ -135,3 +140,6 @@ However, since my Docker image is **public**, I avoid embedding any secrets dire
 Instead, I prefer using **environment variables** to handle credentials securely, depending on the 
 environment (e.g., local, Kubernetes, or CI/CD pipelines).
 
+## Credits
+
+- Streamlit app sidebar was taken from https://medium.com/@ericdennis7/5-components-that-beautify-your-streamlit-app-79039f405ae1
