@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Query
-from web_app.backend.services.s3 import (
+from services.s3 import (
     get_offers as get_offers_,
     get_likes as get_likes_,
     get_relevance as get_relevance_,
