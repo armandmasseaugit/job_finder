@@ -34,8 +34,6 @@ dependencies = [
     #"streamlit-on-Hover-tabs",
     "uvicorn[standard]",
     "redis",
-    "routes",
-
 
 ]
 
