@@ -6,21 +6,13 @@ conf/local/**
 !conf/local/.gitkeep
 
 # ignore potentially sensitive credentials files
-conf/**/*credentials*
+#conf/**/*credentials*
 
 # ignore everything in the following folders
 data/**
 
-# except their sub-folders
-!data/**/
-
 # also keep all .gitkeep files
 !.gitkeep
-
-# also keep the example dataset
-!data/01_raw/companies.csv
-!data/01_raw/reviews.csv
-!data/01_raw/shuttles.xlsx
 
 # ignore kedro-viz metadata
 .viz
@@ -159,3 +151,5 @@ venv.bak/
 
 # mlflow local runs
 mlruns/*
+
+#data

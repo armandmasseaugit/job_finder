@@ -1,13 +1,7 @@
-# .dockerignore.streamlit
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-*.log
-*.DS_Store
-.env
-.venv
-venv/
-.idea/
-.ipynb_checkpoints/
-.git
+*
+
+!web_app/
+!web_app/frontend/
+!web_app/frontend/**
+
+web_app/backend/

@@ -128,8 +128,18 @@ chore: update requirements.txt
 
 This structure makes it easier to automate release notes, understand project history, and onboard contributors.
 
+## Secrets Management
+
+In a typical Kedro setup, secrets are managed by placing credential files inside the `conf/` 
+directory, excluding them via `.gitignore`, and injecting them through GitHub Actions using 
+GitHub Secrets. This allows the secret YAML files to be recreated at build time before pushing 
+to Docker Hub. This approach is suitable for **private images**, as credentials can safely be embedded 
+inside the Docker image.
+
+However, since my Docker image is **public**, I avoid embedding any secrets directly in the image. 
+Instead, I prefer using **environment variables** to handle credentials securely, depending on the 
+environment (e.g., local, Kubernetes, or CI/CD pipelines).
+
 ## Credits
 
 - Streamlit app sidebar was taken from https://medium.com/@ericdennis7/5-components-that-beautify-your-streamlit-app-79039f405ae1
-
-
