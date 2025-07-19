@@ -2,12 +2,15 @@ from fastapi.testclient import TestClient
 from unittest.mock import patch
 import os
 
-with patch.dict(os.environ, {
-    "AWS_ACCESS_KEY_ID": "fake-access-key",
-    "AWS_SECRET_ACCESS_KEY": "fake-secret-key",
-    "AWS_BUCKET_NAME": "fake-bucket",
-    "AWS_REGION": "fake-region"
-}):
+with patch.dict(
+    os.environ,
+    {
+        "AWS_ACCESS_KEY_ID": "fake-access-key",
+        "AWS_SECRET_ACCESS_KEY": "fake-secret-key",
+        "AWS_BUCKET_NAME": "fake-bucket",
+        "AWS_REGION": "fake-region",
+    },
+):
     from web_app.backend.main import app
 
 client = TestClient(app)

@@ -22,7 +22,6 @@ def test_get_offers_from_s3(mock_s3, mock_redis):
     mock_redis.setex.assert_called_once()
 
 
-
 @patch.object(s3_module, "redis_client")
 @patch.object(s3_module, "s3")
 def test_get_offers_from_cache(mock_s3, mock_redis):

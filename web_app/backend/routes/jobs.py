@@ -4,7 +4,6 @@ from services.s3 import (
     get_likes as get_likes_,
     get_relevance as get_relevance_,
     update_like,
-
 )
 
 

@@ -25,6 +25,7 @@ CONFIG_LOADER_CLASS = OmegaConfigLoader
 project_path = os.getcwd()
 bootstrap_project(project_path)
 
+
 def load_credentials():
     """Function to load credentials from env variables (for production) or
     from conf/local if we are in local."""
@@ -37,6 +38,7 @@ def load_credentials():
             },
         },
         "sender_email_password": os.environ["SENDER_EMAIL_PASSWORD"],
-        }
+    }
+
 
 credentials = load_credentials()
