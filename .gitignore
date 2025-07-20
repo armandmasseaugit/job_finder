@@ -152,4 +152,7 @@ venv.bak/
 # mlflow local runs
 mlruns/*
 
-#data
+# kubernetes
+k8s/secrets*
+
+minikube*
