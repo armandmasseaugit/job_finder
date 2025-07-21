@@ -48,6 +48,7 @@ To pull the image:
 
 ```bash
 docker pull armandbmasseaugit/job-finder
+```
 
 
 ## Git Workflow & Naming Conventions
