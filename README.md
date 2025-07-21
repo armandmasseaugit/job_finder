@@ -32,8 +32,8 @@ and the mouse hovering over the "like" button, ready to provide feedback to the 
 - **Docker**: for containerized deployment.
 - **GitHub Actions**: CI/CD for testing, building, and deploying Docker containers.
 - **Redis**: in-memory key-value store used for caching and fast data access.
-- **Airflow** (coming soon) – Workflow orchestration for scheduling pipelines.
-- **Kubernetes** (coming soon) – Scalable deployment and job orchestration.
+- **Airflow** – Workflow orchestration for scheduling pipelines.
+- **Kubernetes** – Scalable deployment and job orchestration.
 
 <div align="center">
   <img src="docs/source/architecture.png" alt="Architecture Diagram" height="600"/>
