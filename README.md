@@ -6,8 +6,7 @@
 
 This project was born out of that exact pain. Job hunting shouldn't be tedious or chaotic.  
 
-That's why this end-to-end system automates job offer discovery across platforms and uses user feedback to train a machine learning model that ranks jobs by relevance.  
-It combines data collection via web scraping, model training, and deployment in a streamlined pipeline that delivers daily personalized recommendations via email and an interactive web app.
+That's why this end-to-end system automates job offer discovery across platforms and uses user feedback to train a machine learning model that ranks jobs by relevance. It combines data collection via web scraping, model training, and deployment in a streamlined pipeline that delivers daily personalized recommendations via email and an interactive web app.
 
 The screenshot below shows the interface with job offers sorted by relevance, 
 and the mouse hovering over the "like" button, ready to provide feedback to the model.
@@ -40,42 +39,15 @@ and the mouse hovering over the "like" button, ready to provide feedback to the 
 </div>
 
 
-## Rules and guidelines
+## 🐳 Docker
 
-* Don't commit data to your repository
-* Don't commit any credentials or your local configuration to your repository. Keep all your credentials and local configuration in `conf/local/`
+The Docker images for this project are available on Docker Hub:  
+👉 [https://hub.docker.com/repositories/armandbmasseaugit](https://hub.docker.com/repositories/armandbmasseaugit)
 
-## How to install dependencies
+To pull the image:
 
-To install them, run:
-
-```
-make user_install
-```
-
-## How to run your Kedro pipeline
-
-You can run your Kedro project with:
-
-```
-make run
-```
-
-## How to test your Kedro project
-
-Have a look at the files `src/tests/test_run.py` and `src/tests/pipelines/data_science/test_pipeline.py` for instructions on how to write your tests. Run the tests as follows:
-
-```
-make test
-```
-
-To configure the coverage threshold, look at the `.coveragerc` file.
-
-## Project dependencies
-
-To see and update the dependency requirements for your project use `pyproject.toml`.
-
-[Further information about project dependencies](https://docs.kedro.org/en/stable/kedro_project_setup/dependencies.html#project-specific-dependencies)
+```bash
+docker pull armandbmasseaugit/job-finder
 
 
 ## Git Workflow & Naming Conventions
