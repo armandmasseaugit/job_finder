@@ -3,7 +3,9 @@
 ## Turned job hunting into a personalized daily briefing
 
 **Ever spent hours scrolling through job boards, jumping from site to site, only to find the same irrelevant listings—or worse, miss the good ones entirely?**  
+
 This project was born out of that exact pain. Job hunting shouldn't be tedious or chaotic.  
+
 That's why this end-to-end system automates job offer discovery across platforms and uses user feedback to train a machine learning model that ranks jobs by relevance.  
 It combines data collection via web scraping, model training, and deployment in a streamlined pipeline that delivers daily personalized recommendations via email and an interactive web app.
 
