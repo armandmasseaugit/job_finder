@@ -1,72 +1,263 @@
+# ==================================================================================
+# CONFIGURATION
+# ==================================================================================
+
+# Project configuration
 VENV = .venv
+PACKAGE = job_finder
+PYTHON_VERSION = 3.9
 
-# Path to the virtual environment's activate script (if the venv exists)
-VENV_ACTIVATE = $(shell test -d $(VENV) && find $(VENV) -name "activate")
+# Platform-specific commands
+ifeq ($(OS),Windows_NT)
+    VENV_BIN = $(VENV)/Scripts
+    PYTHON = $(VENV_BIN)/python.exe
+    PIP = $(VENV_BIN)/pip.exe
+    ACTIVATE = $(VENV_BIN)/activate
+else
+    VENV_BIN = $(VENV)/bin
+    PYTHON = $(VENV_BIN)/python
+    PIP = $(VENV_BIN)/pip
+    ACTIVATE = $(VENV_BIN)/activate
+endif
 
-# Python interpreter path inside the virtual environment (if it exists and can be activated)
-VENV_PYTHON = $(shell test -d $(VENV) && . $(VENV_ACTIVATE); where python | head -n 1)
+# Source directories
+SRC_DIRS = src tests web_app streamlit_app
 
-# System-wide Python interpreter path
-SYSTEM_PYTHON = $(shell which python)
+# ==================================================================================
+# MAIN TARGETS
+# ==================================================================================
 
-# Use Python from virtualenv if available, else fallback to system Python, else show error
-PYTHON = $(or $(VENV_PYTHON), $(SYSTEM_PYTHON), "PYTHONNOTFOUND")
+.DEFAULT_GOAL := help
 
-# Package name extracted from pyproject.toml
-PACKAGE = $(shell grep "^name" pyproject.toml | awk -F'"' '{print $$2}')
+.PHONY: help
+help: ## 📖 Show this help message
+	@echo "🚀 Job Finder - Available Commands"
+	@echo "=================================="
+	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
-# Build cache directory (egg-info folder)
-BUILD_CACHE = $(PACKAGE).egg-info
+# ==================================================================================
+# ENVIRONMENT SETUP
+# ==================================================================================
 
-# Alias target to create venv and install dependencies for user
-user_install: | $(VENV) $(BUILD_CACHE)
+.PHONY: install
+install: $(VENV) ## 🔧 Install project in development mode
+	$(PIP) install --upgrade pip setuptools wheel
+	$(PIP) install -e ".[dev]"
+	@echo "✅ Development environment ready!"
 
-# Alias for install target
-install: $(BUILD_CACHE)
-# Create a Python virtual environment if it doesn't exist
-$(VENV):
-	$(SYSTEM_PYTHON) -m venv $(VENV)
+.PHONY: install-prod
+install-prod: $(VENV) ## 🏭 Install project for production
+	$(PIP) install --upgrade pip setuptools wheel
+	$(PIP) install -e .
+	@echo "✅ Production environment ready!"
 
-# Install project dependencies in the virtual environment.
-# This target depends on pyproject.toml and the virtual environment existing.
-$(BUILD_CACHE): pyproject.toml | $(VENV)
-	@echo "Installing dependencies with $(PYTHON)"
-	# Upgrade pip to the latest version
-	$(PYTHON) -m pip install --upgrade pip
-	# Install the current package in editable mode (-e)
-	$(PYTHON) -m pip install -e .
+$(VENV): ## 🐍 Create virtual environment
+	python -m venv $(VENV)
+	$(PIP) install --upgrade pip
+	@echo "✅ Virtual environment created at $(VENV)"
 
-.PHONY: user_install install
+.PHONY: clean-venv
+clean-venv: ## 🧹 Remove virtual environment
+	rm -rf $(VENV)
+	@echo "✅ Virtual environment removed"
 
-SRC = src tests
+# ==================================================================================
+# DEVELOPMENT TOOLS
+# ==================================================================================
 
-# Declare these targets as phony (not actual files)
-.PHONY: format lint test kedro-run
+.PHONY: format
+format: ## 🎨 Format code with black and isort
+	$(PYTHON) -m black $(SRC_DIRS)
+	$(PYTHON) -m isort $(SRC_DIRS)
+	@echo "✅ Code formatted"
 
-# Format all Python files in SRC using Black
-format:
-	black $(SRC)
+.PHONY: format-check
+format-check: ## 🔍 Check code formatting without making changes
+	$(PYTHON) -m black --check $(SRC_DIRS)
+	$(PYTHON) -m isort --check-only $(SRC_DIRS)
 
-# Lint all Python files in SRC using pylint
-lint:
-	pylint $(SRC)
+.PHONY: lint
+lint: ## 🔬 Run linting with pylint and ruff
+	$(PYTHON) -m pylint $(SRC_DIRS)
+	$(PYTHON) -m ruff check $(SRC_DIRS)
+	@echo "✅ Linting completed"
 
-# Run tests using pytest
-test:
-	pytest
+.PHONY: type-check
+type-check: ## 🔍 Run type checking with mypy
+	$(PYTHON) -m mypy src/$(PACKAGE)
+	@echo "✅ Type checking completed"
 
-# Additional options for kedro run can be set here (empty by default)
-ADD_OPTS = # None by default. If wanted, you can run a specific pipeline
-# with the value "--pipeline=the pipeline you want to run"
+.PHONY: security
+security: ## 🔒 Run security checks with bandit
+	$(PYTHON) -m bandit -r src/$(PACKAGE)
+	@echo "✅ Security check completed"
 
-# Run Kedro pipeline with optional extra arguments
-run:
-	kedro run $(ADD_OPTS)
+.PHONY: check-all
+check-all: format-check lint type-check security ## 🧪 Run all code quality checks
+	@echo "✅ All checks passed!"
 
-.PHONY: kedro-run
+# ==================================================================================
+# TESTING
+# ==================================================================================
 
-# Run the Streamlit web app
-web_app:
-	streamlit run streamlit_app/app.py
-	
-.PHONY: web_app
+.PHONY: test
+test: ## 🧪 Run tests with pytest
+	$(PYTHON) -m pytest tests/ -v --tb=short
+
+.PHONY: test-cov
+test-cov: ## 📊 Run tests with coverage report
+	$(PYTHON) -m pytest tests/ --cov=src/$(PACKAGE) --cov-report=html --cov-report=term-missing
+
+.PHONY: test-fast
+test-fast: ## ⚡ Run tests without coverage (faster)
+	$(PYTHON) -m pytest tests/ -x -q
+
+.PHONY: test-watch
+test-watch: ## 👀 Run tests in watch mode
+	$(PYTHON) -m pytest-watch tests/
+
+# ==================================================================================
+# KEDRO PIPELINE
+# ==================================================================================
+
+.PHONY: run
+run: ## 🏃 Run Kedro pipeline
+	$(PYTHON) -m kedro run
+
+.PHONY: run-pipeline
+run-pipeline: ## 🏃 Run specific Kedro pipeline (use PIPELINE=name)
+	$(PYTHON) -m kedro run --pipeline=$(PIPELINE)
+
+.PHONY: kedro-viz
+kedro-viz: ## 📊 Launch Kedro-Viz
+	$(PYTHON) -m kedro viz --autoreload
+
+.PHONY: kedro-jupyter
+kedro-jupyter: ## 📓 Start Jupyter with Kedro context
+	$(PYTHON) -m kedro jupyter notebook
+
+# ==================================================================================
+# WEB APPLICATIONS
+# ==================================================================================
+
+.PHONY: api
+api: ## 🚀 Start FastAPI backend server
+	cd web_app/backend && $(PYTHON) -m uvicorn main:app --reload --host 0.0.0.0 --port 8000
+
+.PHONY: web
+web: ## 🌐 Start Streamlit frontend
+	$(PYTHON) -m streamlit run web_app/frontend/app.py
+
+.PHONY: web-streamlit-app
+web-streamlit-app: ## 🌐 Start standalone Streamlit app
+	$(PYTHON) -m streamlit run streamlit_app/app.py
+
+# ==================================================================================
+# DOCKER
+# ==================================================================================
+
+.PHONY: docker-build
+docker-build: ## 🐳 Build all Docker images
+	docker build -f fastapi.Dockerfile -t job-finder-api .
+	docker build -f streamlit.Dockerfile -t job-finder-web .
+	docker build -f kedro.Dockerfile -t job-finder-kedro .
+
+.PHONY: docker-run-api
+docker-run-api: ## 🐳 Run FastAPI container
+	docker run -p 8000:8000 job-finder-api
+
+.PHONY: docker-run-web
+docker-run-web: ## 🐳 Run Streamlit container
+	docker run -p 8501:8501 job-finder-web
+
+.PHONY: docker-compose-up
+docker-compose-up: ## 🐳 Start all services with docker-compose
+	docker-compose up -d
+
+.PHONY: docker-compose-down
+docker-compose-down: ## 🐳 Stop all services
+	docker-compose down
+
+# ==================================================================================
+# DATABASE & STORAGE
+# ==================================================================================
+
+.PHONY: setup-s3
+setup-s3: ## ☁️ Setup S3 buckets (requires AWS CLI)
+	@echo "Setting up S3 buckets..."
+	# Add your S3 setup commands here
+
+.PHONY: backup-data
+backup-data: ## 💾 Backup data to S3
+	$(PYTHON) -c "from src.$(PACKAGE).utils import backup_to_s3; backup_to_s3()"
+
+# ==================================================================================
+# UTILITIES
+# ==================================================================================
+
+.PHONY: clean
+clean: ## 🧹 Clean build artifacts and cache
+	find . -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
+	find . -type f -name "*.pyc" -delete 2>/dev/null || true
+	find . -type d -name "*.egg-info" -exec rm -rf {} + 2>/dev/null || true
+	rm -rf build/ dist/ .coverage htmlcov/ .pytest_cache/ .ruff_cache/
+	@echo "✅ Cleaned build artifacts"
+
+.PHONY: deps-update
+deps-update: ## 📦 Update dependencies
+	$(PIP) install --upgrade pip setuptools wheel
+	$(PIP) list --outdated
+
+.PHONY: deps-tree
+deps-tree: ## 🌳 Show dependency tree
+	$(PYTHON) -m pipdeptree
+
+.PHONY: notebook
+notebook: ## 📓 Start Jupyter notebook server
+	$(PYTHON) -m jupyter notebook
+
+.PHONY: lab
+lab: ## 🧪 Start JupyterLab server
+	$(PYTHON) -m jupyter lab
+
+# ==================================================================================
+# CI/CD
+# ==================================================================================
+
+.PHONY: ci
+ci: install check-all test-cov ## 🤖 Run full CI pipeline locally
+	@echo "✅ CI pipeline completed successfully!"
+
+.PHONY: pre-commit
+pre-commit: format lint test-fast ## 🔄 Run pre-commit checks
+	@echo "✅ Pre-commit checks passed!"
+
+# ==================================================================================
+# DOCUMENTATION
+# ==================================================================================
+
+.PHONY: docs
+docs: ## 📚 Build documentation
+	cd docs && make html
+
+.PHONY: docs-serve
+docs-serve: ## 📚 Serve documentation locally
+	cd docs && python -m http.server 8080
+
+# ==================================================================================
+# ALIASES FOR CONVENIENCE
+# ==================================================================================
+
+.PHONY: dev
+dev: install ## 🔧 Alias for install
+
+.PHONY: start
+start: web ## 🌐 Alias for web
+
+.PHONY: fmt
+fmt: format ## 🎨 Alias for format
+
+.PHONY: check
+check: check-all ## 🧪 Alias for check-all
+
+
