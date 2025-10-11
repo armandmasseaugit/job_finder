@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastapi-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fastapi-backend
+  template:
+    metadata:
+      labels:
+        app: fastapi-backend
+    spec:
+      containers:
+        - name: backend
+          image: armandbmasseaugit/fastapi-backend:latest
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - secretRef:
+                name: secret
+            - configMapRef:
+                name: redis-config

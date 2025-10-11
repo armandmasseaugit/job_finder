@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: kedro-daily-job
+spec:
+  schedule: "0 7 * * *"  # Every day at 7 AM (UTC)
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: kedro
+              image: armandbmasseaugit/kedro-image:latest
+              envFrom:
+                - secretRef:
+                    name: secrets
+              command: ["kedro", "run"]
+          restartPolicy: OnFailure
+  backoffLimit: 1

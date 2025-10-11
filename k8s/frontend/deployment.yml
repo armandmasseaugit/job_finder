@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: streamlit-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: streamlit-frontend
+  template:
+    metadata:
+      labels:
+        app: streamlit-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: armandbmassseaugit/streamlit-frontend:latest
+          ports:
+            - containerPort: 8501
+          envFrom:
+            - secretRef:
+                name: secret
