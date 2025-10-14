@@ -1,6 +1,7 @@
-from fastapi.testclient import TestClient
-from unittest.mock import patch
 import os
+from unittest.mock import patch
+
+from fastapi.testclient import TestClient
 
 with patch.dict(
     os.environ,

@@ -147,5 +147,3 @@ start: web ## 🌐 Alias for web
 
 .PHONY: fmt
 fmt: format ## 🎨 Alias for format
-
-

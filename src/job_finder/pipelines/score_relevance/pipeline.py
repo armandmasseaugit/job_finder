@@ -1,9 +1,10 @@
 from kedro.pipeline import Pipeline, node, pipeline
+
 from .nodes import (
-    load_and_merge_feedback,
     feature_engineering,
-    train_rl_model,
+    load_and_merge_feedback,
     score_all_offers,
+    train_rl_model,
 )
 
 

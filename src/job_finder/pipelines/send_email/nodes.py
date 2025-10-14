@@ -1,9 +1,13 @@
-from datetime import datetime, timedelta
+import logging
 import smtplib
-from email.mime.text import MIMEText
+from datetime import datetime, timedelta
 from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
 import pandas as pd
 from job_finder.settings import credentials
+
+logger = logging.getLogger(__name__)
 
 
 def filter_new_jobs(wttj_jobs: pd.DataFrame) -> list:
@@ -54,4 +58,4 @@ def send_email(new_jobs: list, config: dict) -> None:
     with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
         server.login(config["email_from"], credentials.get("sender_email_password"))
         server.sendmail(config["email_from"], config["email_to"], message.as_string())
-        print(f"Sent email with {len(new_jobs)} new offers.")
+        logger.info("Sent email with %d new offers.", len(new_jobs))

@@ -3,11 +3,10 @@ from the Kedro defaults. For further information, including these default values
 https://docs.kedro.org/en/stable/kedro_project_setup/settings.html."""
 
 import os
+
 from kedro.config import OmegaConfigLoader  # noqa: E402
-from kedro.framework.session import KedroSession
 from kedro.framework.startup import bootstrap_project
 from omegaconf.resolvers import oc
-
 
 CONFIG_LOADER_ARGS = {
     "custom_resolvers": {

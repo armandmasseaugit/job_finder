@@ -1,9 +1,9 @@
 import pandas as pd
 from job_finder.pipelines.score_relevance.nodes import (
-    load_and_merge_feedback,
     feature_engineering,
-    train_rl_model,
+    load_and_merge_feedback,
     score_all_offers,
+    train_rl_model,
 )
 
 

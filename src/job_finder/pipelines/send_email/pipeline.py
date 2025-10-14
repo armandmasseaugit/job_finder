@@ -1,4 +1,5 @@
 from kedro.pipeline import Pipeline, node, pipeline
+
 from .nodes import filter_new_jobs, send_email
 
 

@@ -1,9 +1,10 @@
+import json
 import os
 from io import BytesIO
+
+import boto3
 import numpy as np
 import pandas as pd
-import boto3
-import json
 import redis
 
 # -------------------------

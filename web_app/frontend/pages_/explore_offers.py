@@ -1,8 +1,9 @@
-import streamlit as st
 import pandas as pd
+import streamlit as st
+
 from web_app.frontend.utils.api_client import (
-    get_offers,
     get_likes,
+    get_offers,
     get_relevance,
     post_like,
 )

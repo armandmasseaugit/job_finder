@@ -1,8 +1,10 @@
 import json
 import types
 from io import BytesIO
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
+
 import pandas as pd
+
 import web_app.backend.services.s3 as s3_module
 
 
