@@ -37,6 +37,10 @@ def generate_payload(query, page=0, hits_per_page=30):
         "-rank_group_3",
         "-sectors",
         "-source_stage",
+        "description",
+        "content",
+        "details",
+        "summary",
     ]
 
     response_fields = [
