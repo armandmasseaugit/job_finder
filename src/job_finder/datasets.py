@@ -1,9 +1,14 @@
 # import pickle
 # import fsspec
 import logging
+import pickle
+from typing import Any, Dict, List, Optional
 
-from kedro.io.core import DatasetError
+import chromadb
+import pandas as pd
+from kedro.io.core import AbstractDataset, DatasetError
 from kedro_datasets.pickle import PickleDataset
+from sentence_transformers import SentenceTransformer
 
 # from kedro.io.core import get_filepath_str, get_protocol_and_path
 # from pathlib import PurePosixPath
@@ -28,7 +33,7 @@ class OptionalPickleDataset(PickleDataset):
                 f"{self._filepath} introuvable, retourne None."
             )
             return None
-        except EOFError:
+        except (EOFError, pickle.UnpicklingError):
             log.warning(
                 f"[OptionalPickleDataset] Fichier "
                 f"{self._filepath} vide ou corrompu, retourne None."
@@ -42,6 +47,201 @@ class OptionalPickleDataset(PickleDataset):
                 )
                 return None
             raise e
+
+
+class ChromaDataset(AbstractDataset):
+    """Custom dataset for ChromaDB integration with job data."""
+
+    def __init__(
+        self,
+        collection_name: str = "jobs",
+        persist_directory: str = "./data/chroma",
+        embedding_model: str = "paraphrase-multilingual-MiniLM-L12-v2",
+        **kwargs
+    ):
+        """Initialize ChromaDB dataset.
+        
+        Args:
+            collection_name: Name of the Chroma collection
+            persist_directory: Directory to persist ChromaDB data
+            embedding_model: SentenceTransformers model for embeddings
+        """
+        self._collection_name = collection_name
+        self._persist_directory = persist_directory
+        self._embedding_model = embedding_model
+        self._client = None
+        self._collection = None
+        self._sentence_transformer = None
+
+    def _get_client(self) -> chromadb.Client:
+        """Get or create ChromaDB client."""
+        if self._client is None:
+            self._client = chromadb.PersistentClient(path=self._persist_directory)
+        return self._client
+
+    def _get_collection(self) -> chromadb.Collection:
+        """Get or create ChromaDB collection."""
+        if self._collection is None:
+            client = self._get_client()
+            # Try to get existing collection, create if doesn't exist
+            try:
+                self._collection = client.get_collection(self._collection_name)
+                log.info(f"Retrieved existing collection: {self._collection_name}")
+            except Exception:
+                self._collection = client.create_collection(self._collection_name)
+                log.info(f"Created new collection: {self._collection_name}")
+        return self._collection
+
+    def _get_embedding_model(self) -> SentenceTransformer:
+        """Get or create sentence transformer model."""
+        if self._sentence_transformer is None:
+            log.info(f"Loading embedding model: {self._embedding_model}")
+            self._sentence_transformer = SentenceTransformer(self._embedding_model)
+        return self._sentence_transformer
+
+    def _create_embeddings(self, texts: List[str]) -> List[List[float]]:
+        """Create embeddings for a list of texts."""
+        model = self._get_embedding_model()
+        embeddings = model.encode(texts, convert_to_tensor=False)
+        return embeddings.tolist()
+
+    def _prepare_job_data(self, jobs_df: pd.DataFrame) -> tuple:
+        """Prepare job data for ChromaDB storage.
+        
+        Returns:
+            Tuple of (ids, embeddings, documents, metadatas)
+        """
+        ids = []
+        documents = []
+        metadatas = []
+
+        for idx, job in jobs_df.iterrows():
+            # Create unique ID for each job
+            job_id = f"job_{job.get('reference', idx)}_{job.get('company_slug', 'unknown')}"
+            ids.append(job_id)
+
+            # Create document text for embedding (title + description)
+            doc_text = f"{job.get('name', '')} {job.get('description', '')}"
+            documents.append(doc_text)
+
+            # Store all other fields as metadata
+            metadata = {
+                "company_name": job.get("company_name", ""),
+                "company_slug": job.get("company_slug", ""),
+                "publication_date": str(job.get("publication_date", "")),
+                "city": job.get("city", ""),
+                "country": job.get("country", ""),
+                "remote": job.get("remote", ""),
+                "education_level": job.get("education_level", ""),
+                "url": job.get("url", ""),
+                "reference": str(job.get("reference", "")),
+                "name": job.get("name", ""),
+                "slug": job.get("slug", ""),
+                "salary_min": str(job.get("salary_min", "")),
+                "salary_max": str(job.get("salary_max", "")),
+                "salary_currency": job.get("salary_currency", ""),
+            }
+            # Remove empty values to keep metadata clean
+            metadata = {k: v for k, v in metadata.items() if v and v != "nan"}
+            metadatas.append(metadata)
+
+        # Create embeddings for all documents
+        embeddings = self._create_embeddings(documents)
+
+        return ids, embeddings, documents, metadatas
+
+    def _load(self) -> pd.DataFrame:
+        """Load data from ChromaDB and return as DataFrame."""
+        collection = self._get_collection()
+        
+        # Get all documents from collection
+        results = collection.get(include=["metadatas", "documents", "embeddings"])
+        
+        if not results["ids"]:
+            log.warning("No data found in ChromaDB collection")
+            return pd.DataFrame()
+
+        # Convert back to DataFrame
+        data = []
+        for metadata in results["metadatas"]:
+            data.append(metadata)
+        
+        df = pd.DataFrame(data)
+        log.info(f"Loaded {len(df)} jobs from ChromaDB")
+        return df
+
+    def _save(self, data: pd.DataFrame) -> None:
+        """Save job data to ChromaDB."""
+        if data.empty:
+            log.warning("Empty DataFrame provided, nothing to save")
+            return
+
+        collection = self._get_collection()
+        
+        # Prepare data for ChromaDB
+        ids, embeddings, documents, metadatas = self._prepare_job_data(data)
+        
+        log.info(f"Saving {len(ids)} jobs to ChromaDB collection: {self._collection_name}")
+        
+        # Upsert data (add or update)
+        collection.upsert(
+            ids=ids,
+            embeddings=embeddings,
+            documents=documents,
+            metadatas=metadatas
+        )
+        
+        log.info(f"Successfully saved {len(ids)} jobs to ChromaDB")
+
+    def query_similar_jobs(
+        self, 
+        query_text: str, 
+        n_results: int = 5, 
+        where_filter: Optional[Dict] = None
+    ) -> List[Dict]:
+        """Query similar jobs based on text similarity.
+        
+        Args:
+            query_text: Text to search for (e.g., CV content)
+            n_results: Number of similar jobs to return
+            where_filter: Optional metadata filter
+            
+        Returns:
+            List of similar jobs with metadata and similarity scores
+        """
+        collection = self._get_collection()
+        
+        # Create embedding for query
+        query_embedding = self._create_embeddings([query_text])[0]
+        
+        # Search similar jobs
+        results = collection.query(
+            query_embeddings=[query_embedding],
+            n_results=n_results,
+            where=where_filter,
+            include=["metadatas", "documents", "distances"]
+        )
+        
+        # Format results
+        similar_jobs = []
+        for i in range(len(results["ids"][0])):
+            job = {
+                "id": results["ids"][0][i],
+                "metadata": results["metadatas"][0][i],
+                "document": results["documents"][0][i],
+                "similarity_score": 1 - results["distances"][0][i],  # Convert distance to similarity
+            }
+            similar_jobs.append(job)
+        
+        return similar_jobs
+
+    def _describe(self) -> Dict[str, Any]:
+        """Describe the dataset."""
+        return {
+            "collection_name": self._collection_name,
+            "persist_directory": self._persist_directory,
+            "embedding_model": self._embedding_model,
+        }
 
 
 # class OptionalPickleDataset(AbstractVersionedDataset):
