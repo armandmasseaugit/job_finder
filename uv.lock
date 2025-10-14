@@ -2271,6 +2271,7 @@ dependencies = [
     { name = "huggingface-hub" },
     { name = "ipython", version = "8.18.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.10'" },
     { name = "ipython", version = "8.37.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10'" },
+    { name = "jinja2" },
     { name = "jupyterlab" },
     { name = "kedro", extra = ["jupyter"] },
     { name = "kedro-datasets", version = "4.1.0", source = { registry = "https://pypi.org/simple" }, extra = ["pandas-csvdataset", "pandas-exceldataset", "pandas-parquetdataset"], marker = "python_full_version < '3.10'" },
@@ -2280,6 +2281,7 @@ dependencies = [
     { name = "onnxruntime" },
     { name = "pandas" },
     { name = "pillow" },
+    { name = "python-multipart" },
     { name = "redis" },
     { name = "requests" },
     { name = "s3fs" },
@@ -2378,6 +2380,7 @@ requires-dist = [
     { name = "ipython", specifier = ">=8.10.0" },
     { name = "ipywidgets", marker = "extra == 'dev'", specifier = ">=8.0.0" },
     { name = "isort", marker = "extra == 'dev'", specifier = ">=5.12.0" },
+    { name = "jinja2", specifier = ">=3.1.0" },
     { name = "jinja2", marker = "extra == 'docs'", specifier = "<3.2.0" },
     { name = "job-finder", extras = ["dev", "docs"], marker = "extra == 'all'" },
     { name = "jupyterlab", specifier = ">=3.6.0" },
@@ -2402,6 +2405,7 @@ requires-dist = [
     { name = "pytest-mock", marker = "extra == 'dev'", specifier = ">=1.7.1" },
     { name = "pytest-watch", marker = "extra == 'dev'", specifier = ">=4.2.0" },
     { name = "pytest-xdist", marker = "extra == 'dev'", specifier = ">=3.0.0" },
+    { name = "python-multipart", specifier = ">=0.0.6" },
     { name = "redis", specifier = ">=4.5.0" },
     { name = "requests", specifier = ">=2.28.0" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.1.8" },
@@ -5397,6 +5401,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/29/bf/eca6a3d43db1dae7070f70e160ab20b807627ba953663ba07928cdd3dc58/python_json_logger-4.0.0.tar.gz", hash = "sha256:f58e68eb46e1faed27e0f574a55a0455eecd7b8a5b88b85a784519ba3cff047f", size = 17683, upload-time = "2025-10-06T04:15:18.984Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/51/e5/fecf13f06e5e5f67e8837d777d1bc43fac0ed2b77a676804df5c34744727/python_json_logger-4.0.0-py3-none-any.whl", hash = "sha256:af09c9daf6a813aa4cc7180395f50f2a9e5fa056034c9953aec92e381c5ba1e2", size = 15548, upload-time = "2025-10-06T04:15:17.553Z" },
+]
+
+[[package]]
+name = "python-multipart"
+version = "0.0.20"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/f3/87/f44d7c9f274c7ee665a29b885ec97089ec5dc034c7f3fafa03da9e39a09e/python_multipart-0.0.20.tar.gz", hash = "sha256:8dd0cab45b8e23064ae09147625994d090fa46f5b0d1e13af944c331a7fa9d13", size = 37158, upload-time = "2024-12-16T19:45:46.972Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/45/58/38b5afbc1a800eeea951b9285d3912613f2603bdf897a4ab0f4bd7f405fc/python_multipart-0.0.20-py3-none-any.whl", hash = "sha256:8a62d3a8335e06589fe01f2a3e178cdcc632f3fbe0d492ad9ee0ec35aab1f104", size = 24546, upload-time = "2024-12-16T19:45:44.423Z" },
 ]
 
 [[package]]

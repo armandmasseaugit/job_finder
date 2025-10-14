@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Finder - Modern</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- HTMX -->
+    <script src="https://unpkg.com/htmx.org@1.9.6"></script>
+    
+    <!-- Alpine.js for interactive components -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- App JavaScript -->
+    <script src="app.js"></script>
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Custom animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        /* Modern glassmorphism effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #3b82f6;
+            border-radius: 4px;
+        }
+        
+        /* Loading animation */
+        .htmx-request {
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+    
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50" x-data="{ currentPage: 'home' }">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                            <i class="fas fa-briefcase mr-2"></i>Job Finder
+                        </h1>
+                    </div>
+                </div>
+                
+                <!-- Navigation Links -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <button 
+                        data-nav="home"
+                        class="px-3 py-2 text-sm font-medium transition-colors text-blue-600 border-b-2 border-blue-600"
+                    >
+                        <i class="fas fa-home mr-1"></i>Home
+                    </button>
+                    
+                    <button 
+                        data-nav="explore"
+                        class="px-3 py-2 text-sm font-medium transition-colors text-gray-500 hover:text-gray-700"
+                    >
+                        <i class="fas fa-search mr-1"></i>Explore Jobs
+                    </button>
+                    
+                    <button 
+                        data-nav="cv-match"
+                        class="px-3 py-2 text-sm font-medium transition-colors text-gray-500 hover:text-gray-700"
+                    >
+                        <i class="fas fa-file-user mr-1"></i>CV Match <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full ml-1">NEW</span>
+                    </button>
+                        hx-get="/cv-match"
+                        hx-target="#main-content"
+                        hx-swap="innerHTML"
+                    >
+                        <i class="fas fa-file-user mr-1"></i>CV Match <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full ml-1">NEW</span>
+                    </button>
+                </div>
+                
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="main-content" class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <!-- Home Page Content (Default) -->
+        <div class="fade-in">
+            <!-- Hero Section -->
+            <div class="text-center mb-12">
+                <div class="mx-auto w-32 h-32 mb-6 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full flex items-center justify-center">
+                    <i class="fas fa-robot text-4xl text-white"></i>
+                </div>
+                <h1 class="text-4xl font-bold text-gray-900 mb-4">
+                    👋 Hi, I'm <span class="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">JobBot!</span>
+                </h1>
+                <p class="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+                    I'm here to help you find your dream job using AI-powered matching and smart filtering.
+                </p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                    <div class="flex items-center">
+                        <div class="bg-blue-100 rounded-lg p-3 mr-4">
+                            <i class="fas fa-briefcase text-blue-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">Available Jobs</p>
+                            <p class="text-2xl font-bold text-gray-900" 
+                               hx-get="http://localhost:8000/offers" 
+                               hx-trigger="load"
+                               hx-swap="innerHTML"
+                               hx-vals='{}'>
+                                Loading...
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                    <div class="flex items-center">
+                        <div class="bg-green-100 rounded-lg p-3 mr-4">
+                            <i class="fas fa-heart text-green-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">Jobs Liked</p>
+                            <p class="text-2xl font-bold text-gray-900">23</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                    <div class="flex items-center">
+                        <div class="bg-purple-100 rounded-lg p-3 mr-4">
+                            <i class="fas fa-chart-line text-purple-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">Match Score</p>
+                            <p class="text-2xl font-bold text-gray-900">87%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Explore Jobs Card -->
+                <div class="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl p-8 text-white hover:from-blue-600 hover:to-indigo-700 transition-all cursor-pointer transform hover:scale-105"
+                     hx-get="/explore"
+                     hx-target="#main-content"
+                     hx-swap="innerHTML">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-search text-3xl mr-4"></i>
+                        <h3 class="text-2xl font-bold">Explore Jobs</h3>
+                    </div>
+                    <p class="text-blue-100 mb-6">
+                        Browse through our curated list of job opportunities. Filter by date, sort by relevance, and find your perfect match.
+                    </p>
+                    <div class="flex items-center text-blue-100">
+                        <span class="mr-2">Start exploring</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+                
+                <!-- CV Match Card -->
+                <div class="bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl p-8 text-white hover:from-purple-600 hover:to-pink-700 transition-all cursor-pointer transform hover:scale-105"
+                     hx-get="/cv-match"
+                     hx-target="#main-content"
+                     hx-swap="innerHTML">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-magic text-3xl mr-4"></i>
+                        <h3 class="text-2xl font-bold">AI CV Matching</h3>
+                        <span class="bg-yellow-400 text-yellow-900 text-xs px-2 py-1 rounded-full ml-2">NEW</span>
+                    </div>
+                    <p class="text-purple-100 mb-6">
+                        Upload your CV and let our AI find the jobs that match your skills and experience perfectly.
+                    </p>
+                    <div class="flex items-center text-purple-100">
+                        <span class="mr-2">Try AI matching</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Floating Action Button -->
+    <div class="fixed bottom-6 right-6">
+        <button class="bg-blue-600 hover:bg-blue-700 text-white rounded-full w-14 h-14 shadow-lg hover:shadow-xl transition-all flex items-center justify-center"
+                hx-get="/cv-match"
+                hx-target="#main-content"
+                hx-swap="innerHTML">
+            <i class="fas fa-plus text-xl"></i>
+        </button>
+    </div>
+
+    <!-- Loading indicator -->
+    <div id="loading" class="htmx-indicator fixed top-4 right-4 bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg">
+        <i class="fas fa-spinner fa-spin mr-2"></i>Loading...
+    </div>
+
+    <script>
+        // Custom HTMX event handlers
+        document.addEventListener('htmx:afterRequest', function(event) {
+            // Add fade-in animation to new content
+            if (event.detail.target.id === 'main-content') {
+                event.detail.target.classList.add('fade-in');
+            }
+        });
+
+        // Count animation for offers
+        function animateCount(element, target) {
+            let current = 0;
+            const increment = target / 30;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                element.textContent = Math.floor(current);
+            }, 50);
+        }
+    </script>
+</body>
+</html>
