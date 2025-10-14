@@ -42,3 +42,10 @@ scored_offers:
   type: json.JSONDataset
   filepath: "s3://wttj-scraping/scored_jobs.json"
   credentials: aws_credentials
+
+# ChromaDB vector database for job embeddings and semantic search
+jobs_vector_db:
+  type: job_finder.datasets.ChromaDataset
+  collection_name: "jobs"
+  persist_directory: "./data/chroma"
+  embedding_model: "paraphrase-multilingual-MiniLM-L12-v2"

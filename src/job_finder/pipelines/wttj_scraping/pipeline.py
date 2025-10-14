@@ -32,7 +32,13 @@ def create_pipeline() -> Pipeline:
                     "wttj_jobs_filtered",
                 ],
                 outputs=["wttj_jobs_output", "wttj_last_scrape"],
-                name="node_3_js3_uploading",
+                name="node_3_s3_uploading",
+            ),
+            node(
+                func=lambda x: x,  # Pass-through function
+                inputs="wttj_jobs_filtered",
+                outputs="jobs_vector_db",
+                name="node_4_vector_db_uploading",
             ),
         ]
     )
