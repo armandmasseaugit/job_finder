@@ -9,7 +9,7 @@ on:
       - 'main'
 
 env:
-  PYTHON_VERSION: "3.12.3"
+  PYTHON_VERSION: "3.9"
 
 jobs:
   build:
@@ -23,6 +23,11 @@ jobs:
         with:
           python-version: "${{ env.PYTHON_VERSION }}"
 
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: "latest"
+
       - name: Install packages
         run: |
           make install
@@ -35,4 +40,4 @@ jobs:
       - name: Run pylint and fail if score < 7.0
         run: |
           echo "Running pylint..."
-          pylint src/ tests/
+          uv run pylint src/ tests/
