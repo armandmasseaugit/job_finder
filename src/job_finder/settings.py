@@ -30,14 +30,29 @@ def load_credentials():
     from conf/local if we are in local."""
     return {
         "aws_credentials": {
-            "key": os.environ["AWS_ACCESS_KEY_ID"],
-            "secret": os.environ["AWS_SECRET_ACCESS_KEY"],
+            "key": os.environ.get("AWS_ACCESS_KEY_ID"),
+            "secret": os.environ.get("AWS_SECRET_ACCESS_KEY"),
             "client_kwargs": {
-                "region_name": os.environ["AWS_REGION"],
+                "region_name": os.environ.get("AWS_REGION"),
             },
         },
-        "sender_email_password": os.environ["SENDER_EMAIL_PASSWORD"],
+        "sender_email_password": os.environ.get("SENDER_EMAIL_PASSWORD"),
     }
 
 
-credentials = load_credentials()
+# Lazy loading: credentials are loaded only when accessed
+_credentials = None
+
+
+def get_credentials():
+    """Get credentials with lazy loading."""
+    global _credentials
+    if _credentials is None:
+        _credentials = load_credentials()
+    return _credentials
+
+
+# For backward compatibility
+credentials = type('Credentials', (), {
+    'get': lambda self, key: get_credentials().get(key)
+})()
