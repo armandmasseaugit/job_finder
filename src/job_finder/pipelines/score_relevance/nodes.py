@@ -1,6 +1,6 @@
 import pandas as pd
-from sklearn.linear_model import SGDClassifier
 from sklearn.feature_extraction.text import HashingVectorizer
+from sklearn.linear_model import SGDClassifier
 
 vectorizer = HashingVectorizer(n_features=1024, alternate_sign=False)
 

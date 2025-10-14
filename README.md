@@ -2,18 +2,18 @@
 
 ## Turned job hunting into a personalized daily briefing
 
-**Ever spent hours scrolling through job boards, jumping from site to site, only to find the same irrelevant listings—or worse, miss the good ones entirely?**  
+**Ever spent hours scrolling through job boards, jumping from site to site, only to find the same irrelevant listings—or worse, miss the good ones entirely?**
 
-This project was born out of that exact pain. Job hunting shouldn't be tedious or chaotic.  
+This project was born out of that exact pain. Job hunting shouldn't be tedious or chaotic.
 
 That's why this end-to-end system automates job offer discovery across platforms and uses user feedback to train a machine learning model that ranks jobs by relevance. It combines data collection via web scraping, model training, and deployment in a streamlined pipeline that delivers daily personalized recommendations via email and an interactive web app.
 
-The screenshot below shows the interface with job offers sorted by relevance, 
+The screenshot below shows the interface with job offers sorted by relevance,
 and the mouse hovering over the "like" button, ready to provide feedback to the model.
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/c1b122b6-6656-4089-8b0e-8e333a92ee2e" 
-       alt="Screenshot of the job finder app with job listings sorted by relevance. The mouse is hovering over the 'like' button, ready to provide feedback." 
+  <img src="https://github.com/user-attachments/assets/c1b122b6-6656-4089-8b0e-8e333a92ee2e"
+       alt="Screenshot of the job finder app with job listings sorted by relevance. The mouse is hovering over the 'like' button, ready to provide feedback."
        height="450"/>
 </div>
 
@@ -41,7 +41,7 @@ and the mouse hovering over the "like" button, ready to provide feedback to the 
 
 ## 🐳 Docker
 
-The Docker images for this project are available on Docker Hub:  
+The Docker images for this project are available on Docker Hub:
 👉 [https://hub.docker.com/repositories/armandbmasseaugit](https://hub.docker.com/repositories/armandbmasseaugit)
 
 To pull the image:
@@ -107,14 +107,14 @@ This structure makes it easier to automate release notes, understand project his
 
 ## Secrets Management
 
-In a typical Kedro setup, secrets are managed by placing credential files inside the `conf/` 
-directory, excluding them via `.gitignore`, and injecting them through GitHub Actions using 
-GitHub Secrets. This allows the secret YAML files to be recreated at build time before pushing 
-to Docker Hub. This approach is suitable for **private images**, as credentials can safely be embedded 
+In a typical Kedro setup, secrets are managed by placing credential files inside the `conf/`
+directory, excluding them via `.gitignore`, and injecting them through GitHub Actions using
+GitHub Secrets. This allows the secret YAML files to be recreated at build time before pushing
+to Docker Hub. This approach is suitable for **private images**, as credentials can safely be embedded
 inside the Docker image.
 
-However, since my Docker image is **public**, I avoid embedding any secrets directly in the image. 
-Instead, I prefer using **environment variables** to handle credentials securely, depending on the 
+However, since my Docker image is **public**, I avoid embedding any secrets directly in the image.
+Instead, I prefer using **environment variables** to handle credentials securely, depending on the
 environment (e.g., local, Kubernetes, or CI/CD pipelines).
 
 ## Credits

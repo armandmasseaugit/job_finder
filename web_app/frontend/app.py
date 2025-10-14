@@ -1,7 +1,7 @@
 import streamlit as st
 from st_on_hover_tabs import on_hover_tabs
-from web_app.frontend.pages_ import home, explore_offers
 
+from web_app.frontend.pages_ import explore_offers, home
 
 st.set_page_config(page_title="Job Finder", layout="wide")
 

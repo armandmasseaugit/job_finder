@@ -11,4 +11,4 @@
 - [ ] Opened this PR as a 'Draft Pull Request' if it is work-in-progress
 - [ ] Updated the documentation to reflect the code changes
 - [ ] Added tests to cover my changes
-- [ ] Ran the precommit hook 
+- [ ] Ran the precommit hook
