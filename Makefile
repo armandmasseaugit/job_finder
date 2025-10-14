@@ -7,18 +7,11 @@ VENV = .venv
 PACKAGE = job_finder
 PYTHON_VERSION = 3.9
 
-# Platform-specific commands
-ifeq ($(OS),Windows_NT)
-    VENV_BIN = $(VENV)/Scripts
-    PYTHON = $(VENV_BIN)/python.exe
-    PIP = $(VENV_BIN)/pip.exe
-    ACTIVATE = $(VENV_BIN)/activate
-else
-    VENV_BIN = $(VENV)/bin
-    PYTHON = $(VENV_BIN)/python
-    PIP = $(VENV_BIN)/pip
-    ACTIVATE = $(VENV_BIN)/activate
-endif
+# uv-based commands
+PYTHON = uv run python
+PIP = uv add
+UV_SYNC = uv sync
+UV_INSTALL = uv install
 
 # Source directories
 SRC_DIRS = src tests web_app streamlit_app
@@ -41,25 +34,23 @@ help: ## 📖 Show this help message
 
 .PHONY: install
 install: $(VENV) ## 🔧 Install project in development mode
-	$(PIP) install --upgrade pip setuptools wheel
-	$(PIP) install -e ".[dev]"
+	$(UV_SYNC) --extra dev
 	@echo "✅ Development environment ready!"
 
 .PHONY: install-prod
 install-prod: $(VENV) ## 🏭 Install project for production
-	$(PIP) install --upgrade pip setuptools wheel
-	$(PIP) install -e .
+	$(UV_SYNC)
 	@echo "✅ Production environment ready!"
 
-$(VENV): ## 🐍 Create virtual environment
-	python -m venv $(VENV)
-	$(PIP) install --upgrade pip
-	@echo "✅ Virtual environment created at $(VENV)"
+$(VENV): ## 🐍 Create virtual environment and sync dependencies
+	uv sync
+	@echo "✅ Virtual environment created and dependencies synced"
 
 .PHONY: clean-venv
 clean-venv: ## 🧹 Remove virtual environment
 	rm -rf $(VENV)
-	@echo "✅ Virtual environment removed"
+	rm -f uv.lock
+	@echo "✅ Virtual environment and lock file removed"
 
 # ==================================================================================
 # DEVELOPMENT TOOLS
@@ -142,7 +133,7 @@ kedro-jupyter: ## 📓 Start Jupyter with Kedro context
 
 .PHONY: api
 api: ## 🚀 Start FastAPI backend server
-	cd web_app/backend && $(PYTHON) -m uvicorn main:app --reload --host 0.0.0.0 --port 8000
+	cd web_app/backend && uv run uvicorn main:app --reload --host 0.0.0.0 --port 8000
 
 .PHONY: web
 web: ## 🌐 Start Streamlit frontend
@@ -205,12 +196,20 @@ clean: ## 🧹 Clean build artifacts and cache
 
 .PHONY: deps-update
 deps-update: ## 📦 Update dependencies
-	$(PIP) install --upgrade pip setuptools wheel
-	$(PIP) list --outdated
+	uv sync --upgrade
+	@echo "✅ Dependencies updated"
 
 .PHONY: deps-tree
 deps-tree: ## 🌳 Show dependency tree
 	$(PYTHON) -m pipdeptree
+
+.PHONY: deps-add
+deps-add: ## 📦 Add a new dependency (use DEP=package_name)
+	uv add $(DEP)
+
+.PHONY: deps-add-dev
+deps-add-dev: ## 📦 Add a new dev dependency (use DEP=package_name)
+	uv add --dev $(DEP)
 
 .PHONY: notebook
 notebook: ## 📓 Start Jupyter notebook server
