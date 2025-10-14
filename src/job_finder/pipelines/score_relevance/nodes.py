@@ -29,48 +29,60 @@ def load_and_merge_feedback(feedback: pd.DataFrame, jobs: pd.DataFrame) -> pd.Da
 
 def feature_engineering(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Convert job titles and descriptions into features and append reward labels.
+    Convert job titles into features and append reward labels.
 
     Args:
-        df (pd.DataFrame): DataFrame with at least 'name', 'description', and 'reward' columns.
+        df (pd.DataFrame): DataFrame with at least 'name' and 'reward' columns.
 
     Returns:
         pd.DataFrame: Feature matrix including the reward column.
     """
-    # Combiner le titre, la description et le résumé pour l'analyse
-    df["combined_text"] = (
-        df["name"].fillna("") + " " + 
-        df.get("description", "").fillna("") + " " + 
-        df.get("summary", "").fillna("") + " " + 
-        str(df.get("key_missions", "")).replace("[", "").replace("]", "").replace("'", "")
-    )
-    
-    vector_matrix = vectorizer.transform(df["combined_text"])
+    vector_matrix = vectorizer.transform(df["name"])
     df_features = pd.DataFrame(vector_matrix.toarray())
     df_features["reward"] = df["reward"].values
     return df_features
 
 
-def score_all_offers(jobs: pd.DataFrame, model):
+def train_rl_model(df_features: pd.DataFrame, previous_model=None):
     """
-    Score all job offers based on their predicted relevance using title, description, and summary.
+    Train or update a logistic regression model (SGD) based on user feedback.
 
     Args:
-        jobs (pd.DataFrame): Job offers with 'reference', 'name', 'description' columns.
+        df_features (pd.DataFrame): Feature matrix with a 'reward' column.
+        previous_model (SGDClassifier, optional): Existing model to continue training.
+
+    Returns:
+        SGDClassifier: A trained or updated logistic regression model.
+    """
+    X = df_features.drop(columns=["reward"])
+    y = df_features["reward"] > 0  # 1 pour like, 0 pour dislike
+
+    if y.nunique() < 2:
+        return previous_model
+
+    if previous_model is None or X.shape[1] != previous_model.coef_.shape[1]:
+        model = SGDClassifier(loss="log_loss", max_iter=1, warm_start=True)
+    else:
+        model = previous_model
+        model.max_iter += 1
+        model.warm_start = True
+
+    model.fit(X, y)
+    return model
+
+
+def score_all_offers(jobs: pd.DataFrame, model):
+    """
+    Score all job offers based on their predicted relevance.
+
+    Args:
+        jobs (pd.DataFrame): Job offers with 'reference' and 'name' columns.
         model (SGDClassifier): Trained model to predict the probability of a like.
 
     Returns:
         dict: Dictionary mapping each job reference to its
             relevance score (likelihood of being liked).
     """
-    # Combiner le titre, la description et le résumé pour le scoring
-    jobs["combined_text"] = (
-        jobs["name"].fillna("") + " " + 
-        jobs.get("description", "").fillna("") + " " + 
-        jobs.get("summary", "").fillna("") + " " + 
-        str(jobs.get("key_missions", "")).replace("[", "").replace("]", "").replace("'", "")
-    )
-    
-    features = vectorizer.transform(jobs["combined_text"])
+    features = vectorizer.transform(jobs["name"])
     scores = model.predict_proba(features)[:, 1]
     return dict(zip(jobs["reference"], scores))
