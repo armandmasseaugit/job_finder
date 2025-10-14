@@ -1,11 +1,9 @@
 from fastapi import APIRouter, Query
-from web_app.backend.services.s3 import (
-    get_offers as get_offers_,
-    get_likes as get_likes_,
-    get_relevance as get_relevance_,
-    update_like,
-)
 
+from web_app.backend.services.s3 import get_likes as get_likes_
+from web_app.backend.services.s3 import get_offers as get_offers_
+from web_app.backend.services.s3 import get_relevance as get_relevance_
+from web_app.backend.services.s3 import update_like
 
 router = APIRouter()
 

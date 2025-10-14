@@ -2,15 +2,18 @@
 
 ## Turned job hunting into a personalized daily briefing
 
-End-to-end system that automates job offer discovery across platforms and uses user feedback to train a machine learning model ranking jobs by relevance. 
-The system combines data collection via web scraping, model training, and deployment in a streamlined pipeline that delivers daily personalized recommendations via email and an interactive web app.
+**Ever spent hours scrolling through job boards, jumping from site to site, only to find the same irrelevant listings—or worse, miss the good ones entirely?**
 
-The screenshot below shows the interface with job offers sorted by relevance, 
+This project was born out of that exact pain. Job hunting shouldn't be tedious or chaotic.
+
+That's why this end-to-end system automates job offer discovery across platforms and uses user feedback to train a machine learning model that ranks jobs by relevance. It combines data collection via web scraping, model training, and deployment in a streamlined pipeline that delivers daily personalized recommendations via email and an interactive web app.
+
+The screenshot below shows the interface with job offers sorted by relevance,
 and the mouse hovering over the "like" button, ready to provide feedback to the model.
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/c1b122b6-6656-4089-8b0e-8e333a92ee2e" 
-       alt="Screenshot of the job finder app with job listings sorted by relevance. The mouse is hovering over the 'like' button, ready to provide feedback." 
+  <img src="https://github.com/user-attachments/assets/c1b122b6-6656-4089-8b0e-8e333a92ee2e"
+       alt="Screenshot of the job finder app with job listings sorted by relevance. The mouse is hovering over the 'like' button, ready to provide feedback."
        height="450"/>
 </div>
 
@@ -28,50 +31,24 @@ and the mouse hovering over the "like" button, ready to provide feedback to the 
 - **Docker**: for containerized deployment.
 - **GitHub Actions**: CI/CD for testing, building, and deploying Docker containers.
 - **Redis**: in-memory key-value store used for caching and fast data access.
-- **Airflow** (coming soon) – Workflow orchestration for scheduling pipelines.
-- **Kubernetes** (coming soon) – Scalable deployment and job orchestration.
+- **Airflow** – Workflow orchestration for scheduling pipelines.
+- **Kubernetes** – Scalable deployment and job orchestration.
 
 <div align="center">
   <img src="docs/source/architecture.png" alt="Architecture Diagram" height="600"/>
 </div>
 
 
-## Rules and guidelines
+## 🐳 Docker
 
-* Don't commit data to your repository
-* Don't commit any credentials or your local configuration to your repository. Keep all your credentials and local configuration in `conf/local/`
+The Docker images for this project are available on Docker Hub:
+👉 [https://hub.docker.com/repositories/armandbmasseaugit](https://hub.docker.com/repositories/armandbmasseaugit)
 
-## How to install dependencies
+To pull the image:
 
-To install them, run:
-
+```bash
+docker pull armandbmasseaugit/job-finder
 ```
-make user_install
-```
-
-## How to run your Kedro pipeline
-
-You can run your Kedro project with:
-
-```
-make run
-```
-
-## How to test your Kedro project
-
-Have a look at the files `src/tests/test_run.py` and `src/tests/pipelines/data_science/test_pipeline.py` for instructions on how to write your tests. Run the tests as follows:
-
-```
-make test
-```
-
-To configure the coverage threshold, look at the `.coveragerc` file.
-
-## Project dependencies
-
-To see and update the dependency requirements for your project use `pyproject.toml`.
-
-[Further information about project dependencies](https://docs.kedro.org/en/stable/kedro_project_setup/dependencies.html#project-specific-dependencies)
 
 
 ## Git Workflow & Naming Conventions
@@ -130,14 +107,14 @@ This structure makes it easier to automate release notes, understand project his
 
 ## Secrets Management
 
-In a typical Kedro setup, secrets are managed by placing credential files inside the `conf/` 
-directory, excluding them via `.gitignore`, and injecting them through GitHub Actions using 
-GitHub Secrets. This allows the secret YAML files to be recreated at build time before pushing 
-to Docker Hub. This approach is suitable for **private images**, as credentials can safely be embedded 
+In a typical Kedro setup, secrets are managed by placing credential files inside the `conf/`
+directory, excluding them via `.gitignore`, and injecting them through GitHub Actions using
+GitHub Secrets. This allows the secret YAML files to be recreated at build time before pushing
+to Docker Hub. This approach is suitable for **private images**, as credentials can safely be embedded
 inside the Docker image.
 
-However, since my Docker image is **public**, I avoid embedding any secrets directly in the image. 
-Instead, I prefer using **environment variables** to handle credentials securely, depending on the 
+However, since my Docker image is **public**, I avoid embedding any secrets directly in the image.
+Instead, I prefer using **environment variables** to handle credentials securely, depending on the
 environment (e.g., local, Kubernetes, or CI/CD pipelines).
 
 ## Credits

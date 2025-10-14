@@ -47,7 +47,7 @@ jobs:
           tags: ${{ secrets.DOCKER_USERNAME }}/job_finder_streamlit:${{ github.event.inputs.tag }}
 
       - name: Build and push Kedro image
-        if: ${{ github.event.inputs.deploy_worker == 'true' }}
+        if: ${{ github.event.inputs.deploy_kedro == 'true' }}
         uses: docker/build-push-action@v5
         with:
           context: .

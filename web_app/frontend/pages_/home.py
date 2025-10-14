@@ -1,7 +1,8 @@
+import requests
 import streamlit as st
 from streamlit_lottie import st_lottie
+
 from web_app.frontend.utils.api_client import get_offers
-import requests
 
 
 def load_lottie_url(url: str):
@@ -25,8 +26,8 @@ def run():
     with col2:
         st.markdown(
             f"""
-        ## 👋 Hi, I'm JobBot!  
-        I'm here to help you find your dream job.  
+        ## 👋 Hi, I'm JobBot!
+        I'm here to help you find your dream job.
         👉 Click on *Explore Offers* on the left to start applying!
 
         You have <span style='color:#007bff;font-weight:bold;'>{len(offers)}</span> new offers to check out.

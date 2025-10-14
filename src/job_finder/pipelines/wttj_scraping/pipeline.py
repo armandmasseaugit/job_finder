@@ -1,6 +1,6 @@
 from kedro.pipeline import Pipeline, node, pipeline
 
-from .nodes import wttj_query_and_parsing, jobs_filtering, s3_uploading
+from .nodes import jobs_filtering, s3_uploading, wttj_query_and_parsing
 
 
 def create_pipeline() -> Pipeline:
