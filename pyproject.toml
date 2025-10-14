@@ -25,8 +25,8 @@ classifiers = [
 
 dependencies = [
     # Core ML & Data Science
-    "kedro>=0.19.13",
-    "kedro[jupyter]>=0.19.13",
+    "kedro>=1.0.0",
+    "kedro[jupyter]>=1.0.0",
     "kedro-datasets[pandas-csvdataset,pandas-exceldataset,pandas-parquetdataset,json-jsondataset]>=3.0",
     "kedro-viz>=6.7.0",
     "pandas>=1.5.0",
@@ -110,7 +110,7 @@ packages = ["src/job_finder"]
 [tool.kedro]
 package_name = "job_finder"
 project_name = "job_finder"
-kedro_init_version = "0.19.13"
+kedro_init_version = "1.0.0"
 tools = "['Linting', 'Testing', 'Custom Logging', 'Documentation', 'Data Structure', 'PySpark']"
 example_pipeline = "True"
 source_dir = "src"
@@ -144,3 +144,11 @@ ignore = ["E501"]  # Ruff format takes care of line-too-long
 
 [tool.pylint.main]
 fail-under = 7
+
+[dependency-groups]
+dev = [
+    "pipdeptree>=2.28.0",
+]
+
+[tool.kedro_telemetry]
+project_id = "768acdb585b449b5a92086407653f15c"
