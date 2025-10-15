@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-from web_app.backend.routes import jobs
+from web_app.backend.routes import jobs, cv
 
 app = FastAPI(
     title="Job Finder API",
@@ -23,3 +23,4 @@ app.add_middleware(
 )
 
 app.include_router(jobs.router)
+app.include_router(cv.router)
