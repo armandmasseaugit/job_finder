@@ -113,7 +113,73 @@ const pageTemplates = {
         </div>
     `,
     
-    explore: null, // Will be loaded from explore.html
+    explore: `
+        <div class="fade-in">
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900">
+                        <i class="fas fa-search text-blue-600 mr-3"></i>Explore Job Offers
+                    </h1>
+                    <p class="text-gray-600 mt-2">Discover your next career opportunity</p>
+                </div>
+                <button onclick="navigateTo('home')" 
+                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
+                    <i class="fas fa-home mr-2"></i>Back to Home
+                </button>
+            </div>
+
+            <!-- Filters -->
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Search</label>
+                        <input 
+                            type="text" 
+                            id="job-search"
+                            placeholder="Job title or company..."
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            onchange="filterJobs()"
+                        >
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Sort by</label>
+                        <select 
+                            id="job-sort"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            onchange="filterJobs()"
+                        >
+                            <option value="date">Publication Date</option>
+                            <option value="relevance">Relevance Score</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Date from</label>
+                        <input 
+                            type="date" 
+                            id="job-date"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            onchange="filterJobs()"
+                        >
+                    </div>
+                    <div class="flex items-end">
+                        <button 
+                            onclick="loadJobOffers()"
+                            class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
+                            <i class="fas fa-search mr-2"></i>Refresh Jobs
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jobs Container -->
+            <div id="jobs-container">
+                <div class="bg-white rounded-xl shadow-lg p-8 text-center">
+                    <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mb-4"></div>
+                    <p class="text-gray-500">Loading job offers...</p>
+                </div>
+            </div>
+        </div>
+    `,
     cvMatch: null  // Will be loaded from cv_matching.html
 };
 
@@ -132,14 +198,12 @@ async function navigateTo(page) {
         if (page === 'home') {
             content = pageTemplates.home;
         } else if (page === 'explore') {
-            if (!pageTemplates.explore) {
-                const response = await fetch('/web_app/modern_frontend/explore.html');
-                pageTemplates.explore = await response.text();
-            }
             content = pageTemplates.explore;
+            // Load jobs after page renders
+            setTimeout(() => loadJobOffers(), 100);
         } else if (page === 'cv-match') {
             if (!pageTemplates.cvMatch) {
-                const response = await fetch('/web_app/modern_frontend/cv_matching.html');
+                const response = await fetch('/cv-match');
                 pageTemplates.cvMatch = await response.text();
             }
             content = pageTemplates.cvMatch;
@@ -286,10 +350,211 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+// Job management functions
+let currentJobs = [];
+
+async function loadJobOffers() {
+    try {
+        console.log('🔍 Starting loadJobOffers function...');
+        
+        const container = document.getElementById('jobs-container');
+        if (!container) {
+            console.error('❌ jobs-container element not found!');
+            return;
+        }
+        
+        console.log('✅ Container found, showing loading state...');
+        
+        // Show loading
+        container.innerHTML = `
+            <div class="bg-white rounded-xl shadow-lg p-8 text-center">
+                <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mb-4"></div>
+                <p class="text-gray-500">Loading job offers...</p>
+            </div>
+        `;
+        
+        // Get filter values
+        const search = document.getElementById('job-search')?.value || '';
+        const sortBy = document.getElementById('job-sort')?.value || 'date';
+        const dateFilter = document.getElementById('job-date')?.value || '';
+        
+        console.log('📊 Filter values:', { search, sortBy, dateFilter });
+        
+        // Build API URL with filters
+        const params = new URLSearchParams();
+        if (search) params.append('search', search);
+        if (sortBy) params.append('sort_by', sortBy);
+        if (dateFilter) params.append('date_filter', dateFilter);
+        
+        const apiUrl = `http://localhost:8000/offers?${params.toString()}`;
+        console.log('🌐 Making API call to:', apiUrl);
+        
+        const response = await fetch(apiUrl);
+        
+        console.log('📡 Response status:', response.status);
+        console.log('📡 Response ok:', response.ok);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        console.log('📥 Parsing JSON response...');
+        const jobs = await response.json();
+        console.log('✅ Jobs received:', jobs.length);
+        
+        currentJobs = jobs;
+        
+        displayJobs(jobs);
+        
+    } catch (error) {
+        console.error('❌ Error in loadJobOffers:', error);
+        const container = document.getElementById('jobs-container');
+        if (container) {
+            container.innerHTML = `
+                <div class="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
+                    <i class="fas fa-exclamation-triangle text-red-500 text-2xl mb-3"></i>
+                    <h3 class="text-lg font-semibold text-red-700 mb-2">Error loading jobs</h3>
+                    <p class="text-red-600">Failed to load job offers: ${error.message}</p>
+                    <button onclick="loadJobOffers()" class="mt-4 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors">
+                        <i class="fas fa-refresh mr-2"></i>Retry
+                    </button>
+                </div>
+            `;
+        }
+    }
+}
+
+function displayJobs(jobs) {
+    const container = document.getElementById('jobs-container');
+    if (!container) return;
+    
+    if (jobs.length === 0) {
+        container.innerHTML = `
+            <div class="bg-white rounded-xl shadow-lg p-8 text-center">
+                <i class="fas fa-search text-gray-400 text-4xl mb-4"></i>
+                <h3 class="text-xl font-semibold text-gray-700 mb-2">No jobs found</h3>
+                <p class="text-gray-500">Try adjusting your filters or search terms.</p>
+            </div>
+        `;
+        return;
+    }
+    
+    let html = `
+        <div class="mb-6 text-center">
+            <p class="text-blue-800 bg-blue-50 inline-block px-4 py-2 rounded-lg">
+                <i class="fas fa-briefcase mr-2"></i>Displaying ${jobs.length} job offers
+            </p>
+        </div>
+        <div class="space-y-6">
+    `;
+    
+    jobs.forEach(job => {
+        const relevanceScore = job.relevance_score || 0;
+        const scoreClass = relevanceScore > 7 ? 'bg-green-100 text-green-800' : 
+                          relevanceScore > 5 ? 'bg-yellow-100 text-yellow-800' : 
+                          'bg-blue-100 text-blue-800';
+        const remoteIcon = job.remote === 'full_remote' ? 'fa-home' : 
+                          job.remote === 'hybrid' || job.remote === 'partial' ? 'fa-building' : 'fa-map-marker-alt';
+        const remoteText = job.remote === 'full_remote' ? 'Full Remote' :
+                          job.remote === 'hybrid' || job.remote === 'partial' ? 'Hybrid' :
+                          job.remote === 'no' ? 'On-site' : job.remote || 'Unknown';
+        
+        html += `
+            <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow border border-gray-100">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="flex-1">
+                        <div class="flex items-center mb-3">
+                            <img src="${job.logo_url || 'https://via.placeholder.com/48x48/3B82F6/FFFFFF?text=?'}" 
+                                 alt="${job.company_name} logo" 
+                                 class="w-12 h-12 rounded-lg mr-4 object-cover"
+                                 onerror="this.src='https://via.placeholder.com/48x48/3B82F6/FFFFFF?text=${(job.company_name || 'C')[0]}'">
+                            <div>
+                                <h3 class="text-xl font-semibold text-gray-900">${job.name || 'No title'}</h3>
+                                <p class="text-blue-600 font-medium">${job.company_name || 'Unknown Company'}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex flex-wrap items-center text-gray-600 text-sm space-x-4 mb-3">
+                            <div class="flex items-center">
+                                <i class="fas ${remoteIcon} mr-2"></i>
+                                <span>${job.city || 'Remote'} • ${remoteText}</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-calendar mr-2"></i>
+                                <span>Published: ${job.publication_date || 'Unknown'}</span>
+                            </div>
+                        </div>
+                        
+                        ${job.description_preview ? `
+                            <p class="text-gray-700 text-sm leading-relaxed">${job.description_preview.substring(0, 200)}${job.description_preview.length > 200 ? '...' : ''}</p>
+                        ` : ''}
+                    </div>
+                    
+                    <div class="flex flex-col items-end space-y-3 ml-6">
+                        <div class="${scoreClass} px-3 py-1 rounded-full text-sm font-medium">
+                            Score: ${relevanceScore.toFixed(1)}
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="bg-green-100 hover:bg-green-200 text-green-600 p-2 rounded-lg transition-colors"
+                                    onclick="likeJob('${job.reference}', 'like')"
+                                    title="Like this job">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                            <button class="bg-red-100 hover:bg-red-200 text-red-600 p-2 rounded-lg transition-colors"
+                                    onclick="likeJob('${job.reference}', 'dislike')"
+                                    title="Dislike this job">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex justify-between items-center pt-4 border-t border-gray-100">
+                    <a href="${job.url || '#'}" 
+                       target="_blank"
+                       class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors text-sm font-medium">
+                        <i class="fas fa-external-link-alt mr-2"></i>View Job
+                    </a>
+                    <span class="text-xs text-gray-500">Ref: ${job.reference || 'N/A'}</span>
+                </div>
+            </div>
+        `;
+    });
+    
+    html += '</div>';
+    container.innerHTML = html;
+}
+
+function filterJobs() {
+    if (currentJobs.length > 0) {
+        loadJobOffers(); // Reload with new filters
+    }
+}
+
+async function likeJob(jobRef, feedback) {
+    try {
+        const response = await fetch(`http://localhost:8000/likes/${jobRef}?feedback=${feedback}`, {
+            method: 'POST'
+        });
+        
+        if (response.ok) {
+            showNotification(`Job ${feedback === 'like' ? 'liked' : 'disliked'}!`, 'success');
+            loadUserStats(); // Refresh stats
+        } else {
+            showNotification('Failed to save feedback', 'error');
+        }
+    } catch (error) {
+        console.error('Error liking job:', error);
+        showNotification('Error saving feedback', 'error');
+    }
+}
+
 // Export functions for global access
 window.jobFinderApp = {
     navigateTo,
     loadUserStats,
     showNotification,
+    loadJobOffers,
+    likeJob,
     appState
 };
