@@ -53,8 +53,8 @@ async def upload_cv_and_match(
             cv_text, matches = matcher.process_cv_file_and_match(
                 file_content=file_content,
                 filename=cv_file.filename,
-                top_k=min(top_k, 50),  # Limit to 50 max
-                min_score=max(0.0, min(min_score, 1.0))  # Clamp between 0-1
+                top_k=top_k,  # Enlever la limite de 50
+                min_score=min_score
             )
             
             return JSONResponse(content={
@@ -104,9 +104,9 @@ async def match_cv_text(
         matcher = get_cv_matcher()
         
         matches = matcher.find_matching_jobs(
-            cv_text=cv_text.strip(),
-            top_k=min(top_k, 50),
-            min_score=max(0.0, min(min_score, 1.0))
+            cv_text=cv_text,
+            top_k=top_k,  # Enlever la limite de 50
+            min_score=min_score
         )
         
         return JSONResponse(content={

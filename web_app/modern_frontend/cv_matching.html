@@ -6,7 +6,7 @@
             <i class="fas fa-file-alt text-green-600 mr-3"></i>CV Job Matching
         </h1>
         <p class="text-gray-600 max-w-2xl mx-auto">
-            Upload your CV and discover the top 5 job offers that match your profile using AI-powered semantic analysis
+            Upload your CV and discover job offers that match your profile using AI-powered semantic analysis
         </p>
     </div>
     
@@ -139,7 +139,7 @@ function cvMatching() {
             
             const formData = new FormData();
             formData.append('cv_file', file);
-            formData.append('top_k', '5');
+            formData.append('top_k', '20');  // Augmenté de 5 à 20
             formData.append('min_score', '0.1');
             
             try {
