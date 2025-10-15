@@ -133,17 +133,29 @@ async def serve_app_js():
     js_path = os.path.join(frontend_dir, "app.js")
     return FileResponse(js_path, media_type="application/javascript")
 
-@app.get("/explore.html")
+@app.get("/explore", response_class=HTMLResponse)
+@app.get("/explore.html", response_class=HTMLResponse)
 async def serve_explore():
     """Serve the explore page"""
     explore_path = os.path.join(frontend_dir, "explore.html")
-    return FileResponse(explore_path, media_type="text/html")
+    try:
+        with open(explore_path, "r", encoding="utf-8") as f:
+            content = f.read()
+        return HTMLResponse(content=content)
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail="Explore page not found")
 
-@app.get("/cv_matching.html")
+@app.get("/cv-match", response_class=HTMLResponse)
+@app.get("/cv_matching.html", response_class=HTMLResponse)
 async def serve_cv_matching():
     """Serve the CV matching page"""
     cv_path = os.path.join(frontend_dir, "cv_matching.html")
-    return FileResponse(cv_path, media_type="text/html")
+    try:
+        with open(cv_path, "r", encoding="utf-8") as f:
+            content = f.read()
+        return HTMLResponse(content=content)
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail="CV matching page not found")
 
 @app.get("/stats", response_model=UserStats)
 async def get_user_stats():

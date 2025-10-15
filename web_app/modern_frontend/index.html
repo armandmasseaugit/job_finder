@@ -85,6 +85,9 @@
                     <button 
                         data-nav="explore"
                         class="px-3 py-2 text-sm font-medium transition-colors text-gray-500 hover:text-gray-700"
+                        hx-get="/explore"
+                        hx-target="#main-content"
+                        hx-swap="innerHTML"
                     >
                         <i class="fas fa-search mr-1"></i>Explore Jobs
                     </button>
@@ -92,9 +95,6 @@
                     <button 
                         data-nav="cv-match"
                         class="px-3 py-2 text-sm font-medium transition-colors text-gray-500 hover:text-gray-700"
-                    >
-                        <i class="fas fa-file-user mr-1"></i>CV Match <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full ml-1">NEW</span>
-                    </button>
                         hx-get="/cv-match"
                         hx-target="#main-content"
                         hx-swap="innerHTML"
@@ -140,10 +140,10 @@
                         <div>
                             <p class="text-sm text-gray-600">Available Jobs</p>
                             <p class="text-2xl font-bold text-gray-900" 
-                               hx-get="http://localhost:8000/offers" 
+                               hx-get="http://localhost:8000/stats" 
                                hx-trigger="load"
-                               hx-swap="innerHTML"
-                               hx-vals='{}'>
+                               hx-target="this"
+                               hx-select="response.total_jobs">
                                 Loading...
                             </p>
                         </div>
@@ -157,7 +157,13 @@
                         </div>
                         <div>
                             <p class="text-sm text-gray-600">Jobs Liked</p>
-                            <p class="text-2xl font-bold text-gray-900">23</p>
+                            <p class="text-2xl font-bold text-gray-900"
+                               hx-get="http://localhost:8000/stats" 
+                               hx-trigger="load"
+                               hx-target="this"
+                               hx-select="response.liked_jobs">
+                                Loading...
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -168,8 +174,14 @@
                             <i class="fas fa-chart-line text-purple-600 text-xl"></i>
                         </div>
                         <div>
-                            <p class="text-sm text-gray-600">Match Score</p>
-                            <p class="text-2xl font-bold text-gray-900">87%</p>
+                            <p class="text-sm text-gray-600">Jobs Disliked</p>
+                            <p class="text-2xl font-bold text-gray-900"
+                               hx-get="http://localhost:8000/stats" 
+                               hx-trigger="load"
+                               hx-target="this"
+                               hx-select="response.disliked_jobs">
+                                Loading...
+                            </p>
                         </div>
                     </div>
                 </div>
