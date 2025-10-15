@@ -26,12 +26,21 @@ CONTAINERS = {
 # -------------------------
 # REDIS CONFIG
 # -------------------------
-redis_client = redis.Redis(
-    host=os.getenv("REDIS_HOST", "localhost"),
-    port=int(os.getenv("REDIS_PORT", 6379)),
-    db=0,
-    decode_responses=True,
-)
+try:
+    redis_client = redis.Redis(
+        host=os.getenv("REDIS_HOST", "localhost"),
+        port=int(os.getenv("REDIS_PORT", 6379)),
+        db=0,
+        decode_responses=True,
+    )
+    # Test Redis connection
+    redis_client.ping()
+    REDIS_AVAILABLE = True
+    print("✅ Redis connection successful")
+except Exception as e:
+    print(f"⚠️ Redis not available: {e}")
+    redis_client = None
+    REDIS_AVAILABLE = False
 
 CACHE_TTL = 300  # secondes (5 minutes)
 
@@ -39,7 +48,9 @@ CACHE_TTL = 300  # secondes (5 minutes)
 def get_offers():
     try:
         cache_key = "offers"
-        if redis_client.exists(cache_key):
+        
+        # Try cache first if Redis is available
+        if REDIS_AVAILABLE and redis_client.exists(cache_key):
             return json.loads(redis_client.get(cache_key))
         
         blob_client = blob_service_client.get_blob_client(
@@ -50,16 +61,22 @@ def get_offers():
         df = df.replace({np.nan: None, np.inf: None, -np.inf: None})
         offers = df.to_dict(orient="records")
 
-        redis_client.setex(cache_key, CACHE_TTL, json.dumps(offers))
+        # Cache result if Redis is available
+        if REDIS_AVAILABLE:
+            redis_client.setex(cache_key, CACHE_TTL, json.dumps(offers))
+        
         return offers
-    except Exception:
+    except Exception as e:
+        print(f"Error getting offers: {e}")
         return []
 
 
 def get_likes():
     try:
         cache_key = "job_likes"
-        if redis_client.exists(cache_key):
+        
+        # Try cache first if Redis is available
+        if REDIS_AVAILABLE and redis_client.exists(cache_key):
             return json.loads(redis_client.get(cache_key))
 
         blob_client = blob_service_client.get_blob_client(
@@ -68,16 +85,22 @@ def get_likes():
         blob_data = blob_client.download_blob().readall()
         likes = json.loads(blob_data.decode("utf-8"))
 
-        redis_client.setex(cache_key, CACHE_TTL, json.dumps(likes))
+        # Cache result if Redis is available
+        if REDIS_AVAILABLE:
+            redis_client.setex(cache_key, CACHE_TTL, json.dumps(likes))
+        
         return likes
-    except Exception:
+    except Exception as e:
+        print(f"Error getting likes: {e}")
         return {}
 
 
 def get_relevance():
     try:
         cache_key = "scored_jobs"
-        if redis_client.exists(cache_key):
+        
+        # Try cache first if Redis is available
+        if REDIS_AVAILABLE and redis_client.exists(cache_key):
             return json.loads(redis_client.get(cache_key))
 
         blob_client = blob_service_client.get_blob_client(
@@ -86,9 +109,13 @@ def get_relevance():
         blob_data = blob_client.download_blob().readall()
         relevance = json.loads(blob_data.decode("utf-8"))
 
-        redis_client.setex(cache_key, CACHE_TTL, json.dumps(relevance))
+        # Cache result if Redis is available
+        if REDIS_AVAILABLE:
+            redis_client.setex(cache_key, CACHE_TTL, json.dumps(relevance))
+        
         return relevance
-    except Exception:
+    except Exception as e:
+        print(f"Error getting relevance: {e}")
         return {}
 
 
@@ -117,4 +144,5 @@ def update_like(job_ref: str, feedback: str):
     )
 
     # MAJ du cache Redis
-    redis_client.setex("job_likes", CACHE_TTL, json.dumps(existing_data))
+    if REDIS_AVAILABLE:
+        redis_client.setex("job_likes", CACHE_TTL, json.dumps(existing_data))
