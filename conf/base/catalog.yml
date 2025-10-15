@@ -7,19 +7,21 @@ wttj_jobs_output:
   load_args:
     engine: openpyxl
 
-# JSON file containing the date of the last scrape
+# Scraping timestamp JSON file to track the last scraping date for wttj
 wttj_last_scrape:
-  type: json.JSONDataset
+  type: job_finder.datasets.OptionalJSONDataset
   filepath: "abfs://wttj-scraping/wttj_last_scrape.json"
   credentials: azure_credentials
+  default_data: {}
 
 # JSON file containing all the references of the jobs from wttj_jobs.xlsx file
 # that were liked or disliked. Its structure is {"ref of the offer 1": "like",
 # "ref of the offer 2": "dislike" ...}.
 job_likes:
-  type: json.JSONDataset
+  type: job_finder.datasets.OptionalJSONDataset
   filepath: "abfs://liked-jobs/job_likes.json"
   credentials: azure_credentials
+  default_data: {}
 
 # Previous model
 rl_model_old:
@@ -39,9 +41,10 @@ rl_model_new:
 # of all the jobs that were scraped. Its structure is: {"ref of the offer 1": 0.002,
 # "ref of the offer 2": 0.765 ...}.
 scored_offers:
-  type: json.JSONDataset
+  type: job_finder.datasets.OptionalJSONDataset
   filepath: "abfs://relevance-scores/scored_jobs.json"
   credentials: azure_credentials
+  default_data: {}
 
 # ChromaDB vector database for job embeddings and semantic search
 jobs_vector_db:

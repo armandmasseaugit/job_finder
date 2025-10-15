@@ -1,5 +1,6 @@
 # import pickle
 # import fsspec
+import json
 import logging
 import pickle
 from typing import Any, Dict, List, Optional
@@ -8,6 +9,7 @@ import chromadb
 import pandas as pd
 from kedro.io.core import AbstractDataset, DatasetError
 from kedro_datasets.pickle import PickleDataset
+from kedro_datasets.json import JSONDataset
 from sentence_transformers import SentenceTransformer
 
 # from kedro.io.core import get_filepath_str, get_protocol_and_path
@@ -299,3 +301,49 @@ class ChromaDataset(AbstractDataset):
 #             "version": self._version,
 #             "protocol": self._protocol,
 #         }
+
+
+class OptionalJSONDataset(JSONDataset):
+    """
+    JSON dataset that returns empty dict if file doesn't exist or is invalid.
+    Useful for optional files like job_likes.json that might not exist initially.
+    """
+    
+    def __init__(self, *args, default_data: Any = None, **kwargs):
+        """
+        Initialize OptionalJSONDataset.
+        
+        Args:
+            default_data: Default data to return if file doesn't exist or is invalid.
+                         Defaults to empty dict.
+        """
+        super().__init__(*args, **kwargs)
+        self._default_data = default_data if default_data is not None else {}
+    
+    def _load(self) -> Any:
+        """
+        Load JSON data, returning default_data if file doesn't exist or is invalid.
+        
+        Returns:
+            Loaded JSON data or default_data if file is missing/invalid.
+        """
+        try:
+            return super()._load()
+        except (FileNotFoundError, json.JSONDecodeError, DatasetError) as exc:
+            log.warning(
+                f"Could not load {self._filepath}: {exc}. "
+                f"Returning default data: {self._default_data}"
+            )
+            return self._default_data
+    
+    def _exists(self) -> bool:
+        """
+        Check if dataset exists, but don't fail if it doesn't.
+        
+        Returns:
+            True if file exists and is valid, False otherwise.
+        """
+        try:
+            return super()._exists()
+        except Exception:
+            return False
