@@ -47,15 +47,10 @@
                 </div>
                 
                 <!-- Upload Success -->
-                <div x-show="cvUploaded && !isUploading" class="p-8">
+                <div x-show="cvUploaded && !isUploading && !hasResults" class="p-8">
                     <i class="fas fa-check-circle text-4xl text-green-600 mb-4"></i>
-                    <h3 class="text-xl font-semibold text-gray-700 mb-2">CV Uploaded Successfully!</h3>
-                    <p class="text-gray-500 mb-6">Your CV has been analyzed. Click below to find matching jobs.</p>
-                    
-                    <button @click="findMatches()" 
-                            class="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-medium transition-colors">
-                        <i class="fas fa-search mr-2"></i>Find Matching Jobs
-                    </button>
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">CV Processed Successfully!</h3>
+                    <p class="text-gray-500 mb-6">Your CV has been analyzed and matching jobs have been found.</p>
                 </div>
             </div>
         </div>
@@ -144,6 +139,8 @@ function cvMatching() {
             
             const formData = new FormData();
             formData.append('cv_file', file);
+            formData.append('top_k', '5');
+            formData.append('min_score', '0.1');
             
             try {
                 // Simulate progress
@@ -153,9 +150,11 @@ function cvMatching() {
                     }
                 }, 200);
                 
+                console.log('Uploading CV and getting matches directly...');
                 const response = await fetch('http://localhost:8000/cv/upload', {
                     method: 'POST',
-                    body: formData
+                    body: formData,
+                    mode: 'cors'
                 });
                 
                 clearInterval(progressInterval);
@@ -163,19 +162,43 @@ function cvMatching() {
                 
                 if (response.ok) {
                     const result = await response.json();
-                    this.cvText = result.extracted_text || '';
+                    console.log('Upload and match result:', result);
+                    
+                    // Extract CV info
+                    this.cvText = result.cv_text_preview || '';
                     this.cvUploaded = true;
+                    
+                    // Extract matches directly
+                    this.matchingJobs = result.matches || [];
+                    
+                    // Show results immediately
+                    this.hasResults = true;
+                    this.displayMatches(this.matchingJobs);
+                    
+                    console.log(`Found ${this.matchingJobs.length} matches`);
+                    
                 } else {
-                    throw new Error('Upload failed');
+                    const errorText = await response.text();
+                    console.error('Upload failed:', response.status, errorText);
+                    throw new Error(`Upload failed: ${response.status}`);
                 }
                 
             } catch (error) {
                 console.error('Upload error:', error);
-                alert('Failed to upload CV. Please try again.');
+                alert(`Failed to process CV: ${error.message}`);
                 this.resetUpload();
             } finally {
                 this.isUploading = false;
             }
+        },
+        
+        async uploadToBackendDirectly(file) {
+            console.log('Direct backend upload attempt...');
+            // TODO: Implement direct call bypassing frontend server
+            // For now, let's just use the extracted text from Swagger test
+            this.cvText = "Python developer with expertise in machine learning, data science, Django, FastAPI, and cloud technologies";
+            this.cvUploaded = true;
+            console.log('Using sample CV text for demo');
         },
         
         validateFile(file) {
@@ -199,31 +222,105 @@ function cvMatching() {
             this.isSearching = true;
             this.hasResults = true;
             
+            console.log('CV Text to match:', this.cvText); // Debug log
+            console.log('CV Text length:', this.cvText.length); // Debug log
+            
+            if (!this.cvText || this.cvText.trim() === '') {
+                alert('No CV text found. Please upload your CV first.');
+                this.isSearching = false;
+                return;
+            }
+            
             try {
-                // Use HTMX to load matching jobs
-                htmx.ajax('POST', 'http://localhost:8000/cv/match', {
-                    target: '#matching-jobs',
-                    swap: 'innerHTML',
-                    values: { cv_text: this.cvText }
-                });
-                
-                // Also load data for Alpine.js state
-                const response = await fetch('http://localhost:8000/cv/match', {
+                // Call the correct backend endpoint for CV text matching
+                const response = await fetch(`http://localhost:8000/cv/match-text?cv_text=${encodeURIComponent(this.cvText)}&top_k=5&min_score=0.1`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ cv_text: this.cvText })
+                    }
                 });
                 
-                this.matchingJobs = await response.json();
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                console.log('API Response:', data); // Debug log
+                this.matchingJobs = data.matches || [];
+                
+                // Update the UI with the matches
+                this.displayMatches(this.matchingJobs);
                 
             } catch (error) {
                 console.error('Error finding matches:', error);
                 this.matchingJobs = [];
+                alert('Failed to find matches. Please try again.');
             } finally {
                 this.isSearching = false;
             }
+        },
+        
+        displayMatches(matches) {
+            const container = document.getElementById('matching-jobs');
+            if (!container) return;
+            
+            if (matches.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12">
+                        <div class="bg-white rounded-lg shadow-md p-8">
+                            <i class="fas fa-search text-6xl text-gray-300 mb-4"></i>
+                            <h3 class="text-xl font-semibold text-gray-600 mb-2">No matching jobs found</h3>
+                            <p class="text-gray-500 mb-4">We couldn't find jobs that match your CV at this time.</p>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = matches.map(match => `
+                <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow p-6 border-l-4 border-green-500">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center">
+                            <div class="bg-green-100 rounded-full p-3 mr-4">
+                                <i class="fas fa-bullseye text-green-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <div class="flex items-center mb-1">
+                                    <span class="text-lg font-bold text-green-600 mr-2">${match.match_percentage}% Match</span>
+                                    <div class="flex space-x-1">
+                                        ${Array.from({length: Math.floor(match.match_percentage/20)}, () => '<i class="fas fa-star text-yellow-400"></i>').join('')}
+                                        ${Array.from({length: 5 - Math.floor(match.match_percentage/20)}, () => '<i class="far fa-star text-gray-300"></i>').join('')}
+                                    </div>
+                                </div>
+                                <h3 class="text-xl font-semibold text-gray-900 mb-1">
+                                    ${match.job_title}
+                                </h3>
+                                <p class="text-gray-600 font-medium">${match.company_name}</p>
+                                <p class="text-sm text-gray-500">${match.city}</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm text-gray-500">Rank #${match.rank}</div>
+                            <div class="text-xs text-gray-400">Distance: ${match.distance}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <p class="text-gray-700 text-sm">${match.job_description}</p>
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <button class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg text-sm font-medium transition-colors">
+                            <i class="fas fa-external-link-alt mr-2"></i>
+                            View Details
+                        </button>
+                        <div class="text-sm text-gray-600">
+                            <i class="fas fa-brain mr-1"></i>
+                            AI Match Score
+                        </div>
+                    </div>
+                </div>
+            `).join('');
         },
         
         resetUpload() {
