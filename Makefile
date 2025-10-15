@@ -12,7 +12,7 @@ PYTHON = uv run python
 UV_SYNC = uv sync
 
 # Source directories
-SRC_DIRS = src tests web_app streamlit_app
+SRC_DIRS = src tests web_app
 
 # ==================================================================================
 # MAIN TARGETS
@@ -87,11 +87,21 @@ kedro-viz: ## 📊 Launch Kedro-Viz
 
 .PHONY: api
 api: ## 🚀 Start FastAPI backend server
-	cd web_app/backend && uv run uvicorn main:app --reload --host 0.0.0.0 --port 8000
+	cd web_app/backend && PYTHONPATH=../../:$$PYTHONPATH uv run uvicorn main:app --reload --host 0.0.0.0 --port 8000
 
 .PHONY: web
-web: ## 🌐 Start Streamlit frontend
-	$(PYTHON) -m streamlit run web_app/frontend/app.py
+web: ## 🌐 Start modern HTMX frontend
+	cd web_app/modern_frontend && uv run python server.py
+
+
+# ==================================================================================
+# REDIS CACHE
+# ==================================================================================
+
+.PHONY: redis-start
+redis-start: ## 🟥 Start Redis server
+	sudo systemctl start redis-server
+	@echo "✅ Redis server started"
 
 # ==================================================================================
 # DOCKER
