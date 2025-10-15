@@ -1,6 +1,8 @@
 from kedro.pipeline import Pipeline, node, pipeline
 
-from .nodes import jobs_filtering, s3_uploading, wttj_query_and_parsing
+from .nodes import jobs_filtering, wttj_query_and_parsing
+# from .nodes import s3_uploading  # DEPRECATED: S3 functionality disabled in favor of Azure
+from .nodes import save_to_azure_and_chromadb
 
 
 def create_pipeline() -> Pipeline:
@@ -26,17 +28,24 @@ def create_pipeline() -> Pipeline:
                 outputs="wttj_jobs_filtered",
                 name="node_2_jobs_filtering",
             ),
+            # DEPRECATED S3 NODE - Commented out in favor of Azure
+            # node(
+            #     func=s3_uploading,
+            #     inputs=[
+            #         "wttj_jobs_filtered",
+            #     ],
+            #     outputs=["wttj_jobs_output", "wttj_last_scrape"],
+            #     name="node_3_s3_uploading",
+            # ),
             node(
-                func=s3_uploading,
-                inputs=[
-                    "wttj_jobs_filtered",
-                ],
+                func=save_to_azure_and_chromadb,
+                inputs="wttj_jobs_filtered",
                 outputs=["wttj_jobs_output", "wttj_last_scrape"],
-                name="node_3_s3_uploading",
+                name="node_3_azure_uploading",
             ),
             node(
-                func=lambda x: x,  # Pass-through function
-                inputs="wttj_jobs_filtered",
+                func=lambda x: x,  # Pass-through for ChromaDB
+                inputs="wttj_jobs_output",  # Use the output from Azure node
                 outputs="jobs_vector_db",
                 name="node_4_vector_db_uploading",
             ),

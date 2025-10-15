@@ -325,8 +325,10 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 
-# Import your existing backend services
-from web_app.backend.services.s3 import get_offers_from_s3, get_likes_from_s3, get_relevance, update_like
+# Import your existing backend services - UPDATED to Azure
+from web_app.backend.services.azure_storage import get_offers, get_likes, get_relevance, update_like
+# DEPRECATED: S3 imports disabled
+# from web_app.backend.services.s3 import get_offers_from_s3, get_likes_from_s3, get_relevance, update_like
 
 app = FastAPI(title="Job Finder - Modern Interface", description="Modern HTMX-powered job finder")
 
@@ -347,7 +349,7 @@ class CVMatchRequest(BaseModel):
 async def home(request: Request):
     """Home page with modern design"""
     try:
-        offers = get_offers_from_s3()
+        offers = get_offers()
         offers_count = len(offers) if offers else 0
     except Exception:
         offers_count = 0
@@ -381,8 +383,8 @@ async def get_offers_api(
 ):
     """API endpoint for offers with filtering and sorting"""
     try:
-        offers = get_offers_from_s3()
-        likes = get_likes_from_s3()
+        offers = get_offers()
+        likes = get_likes()
         relevance = get_relevance()
         
         if not offers:

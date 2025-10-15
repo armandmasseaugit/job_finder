@@ -29,12 +29,17 @@ def load_credentials():
     """Function to load credentials from env variables (for production) or
     from conf/local if we are in local."""
     return {
-        "aws_credentials": {
-            "key": os.environ.get("AWS_ACCESS_KEY_ID"),
-            "secret": os.environ.get("AWS_SECRET_ACCESS_KEY"),
-            "client_kwargs": {
-                "region_name": os.environ.get("AWS_REGION"),
-            },
+        # DEPRECATED: AWS credentials disabled in favor of Azure
+        # "aws_credentials": {
+        #     "key": os.environ.get("AWS_ACCESS_KEY_ID"),
+        #     "secret": os.environ.get("AWS_SECRET_ACCESS_KEY"),
+        #     "client_kwargs": {
+        #         "region_name": os.environ.get("AWS_REGION"),
+        #     },
+        # },
+        "azure_credentials": {
+            "account_name": os.environ.get("AZURE_STORAGE_ACCOUNT_NAME"),
+            "account_key": os.environ.get("AZURE_STORAGE_ACCOUNT_KEY"),
         },
         "sender_email_password": os.environ.get("SENDER_EMAIL_PASSWORD"),
     }

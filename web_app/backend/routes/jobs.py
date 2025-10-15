@@ -1,9 +1,16 @@
 from fastapi import APIRouter, Query
 
-from web_app.backend.services.s3 import get_likes as get_likes_
-from web_app.backend.services.s3 import get_offers as get_offers_
-from web_app.backend.services.s3 import get_relevance as get_relevance_
-from web_app.backend.services.s3 import update_like
+# UPDATED: Changed from S3 to Azure Blob Storage
+from web_app.backend.services.azure_storage import get_likes as get_likes_
+from web_app.backend.services.azure_storage import get_offers as get_offers_
+from web_app.backend.services.azure_storage import get_relevance as get_relevance_
+from web_app.backend.services.azure_storage import update_like
+
+# DEPRECATED: S3 imports disabled
+# from web_app.backend.services.s3 import get_likes as get_likes_
+# from web_app.backend.services.s3 import get_offers as get_offers_
+# from web_app.backend.services.s3 import get_relevance as get_relevance_
+# from web_app.backend.services.s3 import update_like
 
 router = APIRouter()
 

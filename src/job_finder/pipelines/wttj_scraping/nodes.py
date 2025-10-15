@@ -228,20 +228,62 @@ def jobs_filtering(
     return wttj_jobs
 
 
-def s3_uploading(wttj_jobs: pd.DataFrame) -> tuple[pd.DataFrame, dict]:
+# DEPRECATED: S3 functionality disabled in favor of Azure
+# def s3_uploading(wttj_jobs: pd.DataFrame) -> tuple[pd.DataFrame, dict]:
+#     """
+#     Prepare job data for S3 uploading by adding metadata and timestamping the scrape.
+# 
+#     Args:
+#         wttj_jobs (pd.DataFrame): DataFrame containing job offers to be uploaded.
+# 
+#     Returns:
+#         tuple:
+#             - pd.DataFrame: DataFrame with a new 'provider' column added.
+#             - dict: Dictionary containing a timestamp under the key 'last_scrape'.
+#     """
+#     wttj_jobs["provider"] = "Welcome to the jungle"
+# 
+#     now = datetime.now().isoformat()
+#     last_scrape = {"last_scrape": now}
+#     return wttj_jobs, last_scrape
+
+
+def save_to_azure_and_chromadb(wttj_jobs: pd.DataFrame) -> tuple[pd.DataFrame, dict]:
     """
-    Prepare job data for S3 uploading by adding metadata and timestamping the scrape.
-
+    Save job data to both Azure Blob Storage (Excel) and ChromaDB for vector similarity search.
+    Also generates the last scrape timestamp.
+    
     Args:
-        wttj_jobs (pd.DataFrame): DataFrame containing job offers to be uploaded.
-
+        wttj_jobs (pd.DataFrame): DataFrame containing job offers.
+        
     Returns:
         tuple:
-            - pd.DataFrame: DataFrame with a new 'provider' column added.
+            - pd.DataFrame: DataFrame with a new 'provider' column added (for Azure).
             - dict: Dictionary containing a timestamp under the key 'last_scrape'.
     """
-    wttj_jobs["provider"] = "Welcome to the jungle"
-
+    # Add provider column for Azure storage
+    wttj_jobs_with_provider = wttj_jobs.copy()
+    wttj_jobs_with_provider["provider"] = "Welcome to the jungle"
+    
+    # Generate timestamp for last scrape
     now = datetime.now().isoformat()
     last_scrape = {"last_scrape": now}
-    return wttj_jobs, last_scrape
+    
+    return wttj_jobs_with_provider, last_scrape
+
+
+def save_to_chromadb(wttj_jobs: pd.DataFrame):
+    """
+    Save job data to ChromaDB for vector similarity search.
+    
+    Args:
+        wttj_jobs (pd.DataFrame): DataFrame containing job offers.
+        
+    Returns:
+        pd.DataFrame: The input DataFrame (pass-through for pipeline compatibility).
+    """
+    # Add provider column for ChromaDB
+    wttj_jobs_with_provider = wttj_jobs.copy()
+    wttj_jobs_with_provider["provider"] = "Welcome to the jungle"
+    
+    return wttj_jobs_with_provider
