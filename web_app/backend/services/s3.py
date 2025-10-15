@@ -1,3 +1,9 @@
+# ====================================================================
+# DEPRECATED: S3 SERVICE DISABLED IN FAVOR OF AZURE BLOB STORAGE
+# This file is kept for reference but is no longer used
+# New service: azure_storage.py
+# ====================================================================
+
 import json
 import os
 from io import BytesIO

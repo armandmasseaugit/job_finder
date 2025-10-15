@@ -2,46 +2,46 @@
 # (company name, offer publication date, job title etc.)
 wttj_jobs_output:
   type: pandas.ExcelDataset
-  filepath: "s3://wttj-scraping/wttj_jobs.xlsx"
-  credentials: aws_credentials
+  filepath: "abfs://wttj-scraping/wttj_jobs.xlsx"
+  credentials: azure_credentials
   load_args:
     engine: openpyxl
 
 # JSON file containing the date of the last scrape
 wttj_last_scrape:
   type: json.JSONDataset
-  filepath: "s3://wttj-scraping/wttj_last_scrape.json"
-  credentials: aws_credentials
+  filepath: "abfs://wttj-scraping/wttj_last_scrape.json"
+  credentials: azure_credentials
 
 # JSON file containing all the references of the jobs from wttj_jobs.xlsx file
 # that were liked or disliked. Its structure is {"ref of the offer 1": "like",
 # "ref of the offer 2": "dislike" ...}.
 job_likes:
   type: json.JSONDataset
-  filepath: "s3://wttj-scraping/job_likes.json"
-  credentials: aws_credentials
+  filepath: "abfs://liked-jobs/job_likes.json"
+  credentials: azure_credentials
 
 # Previous model
 rl_model_old:
   type: pickle.PickleDataset #job_finder.datasets.OptionalPickleDataset
-  filepath: "s3://wttj-scraping/rl_model.pkl"
+  filepath: "abfs://wttj-scraping/rl_model.pkl"
   versioned: true
-  credentials: aws_credentials
+  credentials: azure_credentials
 
 # New model that has been retrained with job_likes and wttj_jobs data
 rl_model_new:
   type: pickle.PickleDataset #job_finder.datasets.OptionalPickleDataset
-  filepath: "s3://wttj-scraping/rl_model.pkl"
+  filepath: "abfs://wttj-scraping/rl_model.pkl"
   versioned: true
-  credentials: aws_credentials
+  credentials: azure_credentials
 
 # JSON file containing the note (called the relevance score and it a note from 0 to 1)
 # of all the jobs that were scraped. Its structure is: {"ref of the offer 1": 0.002,
 # "ref of the offer 2": 0.765 ...}.
 scored_offers:
   type: json.JSONDataset
-  filepath: "s3://wttj-scraping/scored_jobs.json"
-  credentials: aws_credentials
+  filepath: "abfs://relevance-scores/scored_jobs.json"
+  credentials: azure_credentials
 
 # ChromaDB vector database for job embeddings and semantic search
 jobs_vector_db:
