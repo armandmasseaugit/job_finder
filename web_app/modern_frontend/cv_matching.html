@@ -316,7 +316,7 @@ function cvMatching() {
                         </button>
                         <button 
                             class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex-1"
-                            onclick="cvApp.explainMatch('${match.job_reference}', '${match.job_title}')"
+                            @click="explainMatch('${match.job_reference}', '${match.job_title}')"
                         >
                             <i class="fas fa-brain mr-2"></i>
                             Explain Match
