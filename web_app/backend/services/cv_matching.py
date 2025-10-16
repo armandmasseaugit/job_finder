@@ -142,6 +142,114 @@ class CVMatcher:
         
         return matches
     
+    def explain_match(
+        self, 
+        cv_text: str, 
+        job_reference: str,
+        top_n_words: int = 10
+    ) -> Dict:
+        """Explain why a CV matches a specific job using perturbation analysis.
+        
+        This method performs feature importance analysis by removing each word
+        from the CV text and measuring the impact on similarity score.
+        
+        Args:
+            cv_text: The CV text to analyze
+            job_reference: Reference ID of the job to explain match for
+            top_n_words: Number of most important words to return
+            
+        Returns:
+            Dict: Explanation with word importance scores and details
+        """
+        self._initialize_chroma()
+        
+        # Get the specific job
+        job_results = self.collection.get(
+            where={"reference": job_reference},
+            include=['embeddings', 'documents', 'metadatas']
+        )
+        
+        if not job_results['ids']:
+            raise ValueError(f"Job with reference {job_reference} not found")
+        
+        job_embedding = job_results['embeddings'][0]
+        job_document = job_results['documents'][0]
+        job_metadata = job_results['metadatas'][0]
+        
+        # Calculate baseline similarity
+        cv_embedding = self.create_cv_embedding(cv_text)
+        baseline_distance = float(np.linalg.norm(cv_embedding - job_embedding))
+        
+        # Tokenize CV text (simple word splitting)
+        words = cv_text.lower().split()
+        words = [word.strip('.,!?;:"()[]{}') for word in words if len(word.strip('.,!?;:"()[]{}')) > 2]
+        
+        word_importance = []
+        
+        logger.info(f"Analyzing importance of {len(words)} words for job {job_reference}")
+        
+        # Perturbation analysis: remove each word and measure impact
+        for i, word in enumerate(words):
+            # Create modified CV text without this word
+            modified_words = words.copy()
+            modified_words.pop(i)
+            modified_cv_text = ' '.join(modified_words)
+            
+            if not modified_cv_text.strip():
+                continue
+            
+            # Calculate similarity without this word
+            modified_embedding = self.create_cv_embedding(modified_cv_text)
+            modified_distance = float(np.linalg.norm(modified_embedding - job_embedding))
+            
+            # Impact is the change in distance (higher distance = worse match)
+            # Positive impact means the word helps matching (removing it makes distance higher)
+            impact = modified_distance - baseline_distance
+            
+            word_importance.append({
+                'word': word,
+                'importance': impact,
+                'baseline_distance': baseline_distance,
+                'modified_distance': modified_distance
+            })
+        
+        # Sort by importance (descending - most helpful words first)
+        word_importance.sort(key=lambda x: x['importance'], reverse=True)
+        
+        # Calculate similarity scores for display
+        baseline_score = max(0, 1 - (baseline_distance / 2))  # Normalize distance to 0-1 score
+        
+        return {
+            'job_reference': job_reference,
+            'job_title': job_metadata.get('name', 'Unknown Title'),
+            'company_name': job_metadata.get('company_name', 'Unknown Company'),
+            'baseline_similarity_score': round(baseline_score, 3),
+            'baseline_distance': round(baseline_distance, 4),
+            'cv_word_count': len(words),
+            'top_positive_words': [
+                {
+                    'word': w['word'],
+                    'importance_score': round(w['importance'], 4),
+                    'explanation': f"Removing this word increases distance by {round(w['importance'], 4)}"
+                }
+                for w in word_importance[:top_n_words] if w['importance'] > 0
+            ],
+            'top_negative_words': [
+                {
+                    'word': w['word'],
+                    'importance_score': round(abs(w['importance']), 4),
+                    'explanation': f"Removing this word decreases distance by {round(abs(w['importance']), 4)}"
+                }
+                for w in sorted(word_importance, key=lambda x: x['importance'])[:5] if w['importance'] < 0
+            ],
+            'analysis_summary': {
+                'total_words_analyzed': len(words),
+                'helpful_words': len([w for w in word_importance if w['importance'] > 0]),
+                'neutral_words': len([w for w in word_importance if abs(w['importance']) < 0.001]),
+                'harmful_words': len([w for w in word_importance if w['importance'] < -0.001])
+            }
+        }
+    
     def process_cv_file_and_match(
         self, 
         file_content: bytes, 
