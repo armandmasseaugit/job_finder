@@ -75,6 +75,10 @@ def get_job_details(
             # Clean HTML description
             raw_description = job_data.get("description", "")
             clean_description = clean_html_description(raw_description)
+            
+            # Clean HTML profile
+            raw_profile = job_data.get("profile", "")
+            clean_profile = clean_html_description(raw_profile)
 
             return {
                 "description": clean_description,
@@ -83,6 +87,8 @@ def get_job_details(
                 "key_missions": job_data.get("key_missions", []),
                 "recruitment_process": job_data.get("recruitment_process", ""),
                 "company_description": job_data.get("company_description", ""),
+                "profile": clean_profile,
+                "profile_raw": raw_profile,  # Keep raw version if needed
                 "benefits": job_data.get("benefits", {}),
                 "skills": job_data.get("skills", []),
                 "experience_level": job_data.get("experience_level"),
@@ -177,6 +183,8 @@ def wttj_query_and_parsing(
                             "description": job_details.get("description", ""),
                             "description_raw": job_details.get("description_raw", ""),
                             "summary": job_details.get("summary", ""),
+                            "profile": job_details.get("profile", ""),
+                            "profile_raw": job_details.get("profile_raw", ""),
                             "key_missions": job_details.get("key_missions", []),
                             "recruitment_process": job_details.get(
                                 "recruitment_process", ""
@@ -185,7 +193,7 @@ def wttj_query_and_parsing(
                                 "company_description", ""
                             ),
                             "benefits": job_details.get("benefits", {}),
-                            "skills": job_details.get("skills", []),
+                            "skills": ", ".join([elt.get("name").get("en") if isinstance(elt, dict) and 'name' in elt and 'en' in elt['name'] else None for elt in job_details.get("skills", [])]),
                             "experience_level_detailed": job_details.get(
                                 "experience_level"
                             ),
@@ -201,6 +209,20 @@ def wttj_query_and_parsing(
                             "salary_currency": job_details.get("salary_currency", ""),
                         }
                     )
+
+                    # DEBUG: Break after 10 jobs for testing
+                    if len(jobs) >= 10:
+                        logger.info(f"🛑 DEBUG BREAK: Stopping scraping after {len(jobs)} jobs")
+                        logger.info("Remove this break when satisfied with preprocessing")
+                        break
+                
+                # Break out of page loop if we hit job limit
+                if len(jobs) >= 10:
+                    break
+
+            # Break out of query loop if we hit job limit
+            if len(jobs) >= 10:
+                break
 
         wttj_jobs = pd.DataFrame(jobs)
     return wttj_jobs
