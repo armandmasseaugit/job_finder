@@ -186,7 +186,7 @@ async def get_cv_matching_stats() -> JSONResponse:
         return JSONResponse(content={
             "success": True,
             "stats": stats,
-            "model_name": "paraphrase-multilingual-MiniLM-L12-v2",
+            "model_name": "intfloat/multilingual-e5-small",
             "supported_formats": [".pdf", ".docx", ".doc", ".txt"]
         })
         

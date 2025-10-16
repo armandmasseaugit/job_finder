@@ -12,7 +12,7 @@ from .cv_processing import process_cv_for_matching
 logger = logging.getLogger(__name__)
 
 # Use the same model as for jobs to ensure compatibility
-MODEL_NAME = "paraphrase-multilingual-MiniLM-L12-v2"
+MODEL_NAME = "intfloat/multilingual-e5-small"
 
 
 class CVMatcher:
