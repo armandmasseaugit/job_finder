@@ -72,10 +72,10 @@ test-cov: ## 📊 Run tests with coverage report
 # ==================================================================================
 # KEDRO PIPELINE
 # ==================================================================================
-
+ADD_OPTS =
 .PHONY: run
 run: ## 🏃 Run Kedro pipeline
-	$(PYTHON) -m kedro run
+	$(PYTHON) -m kedro run $(ADD_OPTS)
 
 .PHONY: kedro-viz
 kedro-viz: ## 📊 Launch Kedro-Viz
