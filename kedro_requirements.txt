@@ -12,3 +12,4 @@ setuptools; python_version >= "3.12"
 boto3
 pandas
 Pillow
+spacy
