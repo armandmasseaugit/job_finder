@@ -58,7 +58,7 @@ class ChromaDataset(AbstractDataset):
         self,
         collection_name: str = "jobs",
         persist_directory: str = "./data/chroma",
-        embedding_model: str = "paraphrase-multilingual-MiniLM-L12-v2",
+        embedding_model: str = "intfloat/multilingual-e5-small",
         **kwargs
     ):
         """Initialize ChromaDB dataset.
@@ -122,8 +122,13 @@ class ChromaDataset(AbstractDataset):
             job_id = f"job_{job.get('reference', idx)}_{job.get('company_slug', 'unknown')}"
             ids.append(job_id)
 
-            # Create document text for embedding (title + description)
-            doc_text = f"{job.get('name', '')} {job.get('description', '')}"
+            # Use preprocessed embedding text if available, otherwise fallback to old method
+            if 'embedding_text' in job and job['embedding_text']:
+                doc_text = job['embedding_text']
+            else:
+                # Fallback: Create document text for embedding (title + description)
+                doc_text = f"{job.get('name', '')} {job.get('description', '')}"
+            
             documents.append(doc_text)
 
             # Store all other fields as metadata
