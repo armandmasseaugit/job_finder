@@ -62,6 +62,7 @@ async def upload_cv_and_match(
                 "filename": cv_file.filename,
                 "cv_text_length": len(cv_text),
                 "cv_text_preview": cv_text[:200] + "..." if len(cv_text) > 200 else cv_text,
+                "cv_text_full": cv_text,  # Include full text for explanations
                 "total_matches": len(matches),
                 "matches": matches,
                 "search_params": {
@@ -123,6 +124,52 @@ async def match_cv_text(
     except Exception as e:
         logger.error(f"Error matching CV text: {e}")
         raise HTTPException(status_code=500, detail="Internal server error during CV matching")
+
+
+@router.post("/explain-match")
+async def explain_cv_match(
+    cv_text: str = Form(...),
+    job_reference: str = Form(...),
+    top_n_words: int = Form(10)
+) -> JSONResponse:
+    """Explain why a CV matches a specific job using perturbation analysis.
+    
+    Args:
+        cv_text: The CV text to analyze
+        job_reference: Reference ID of the job to explain match for
+        top_n_words: Number of most important words to return (default: 10)
+        
+    Returns:
+        JSONResponse: Detailed explanation of match with word importance
+    """
+    try:
+        if not cv_text.strip():
+            raise HTTPException(status_code=400, detail="CV text cannot be empty")
+        
+        if not job_reference.strip():
+            raise HTTPException(status_code=400, detail="Job reference cannot be empty")
+        
+        # Get CV matcher and explain match
+        matcher = get_cv_matcher()
+        
+        explanation = matcher.explain_match(
+            cv_text=cv_text,
+            job_reference=job_reference,
+            top_n_words=top_n_words
+        )
+        
+        return JSONResponse(content={
+            "success": True,
+            "explanation": explanation,
+            "analysis_type": "perturbation_analysis",
+            "methodology": "Each word is removed from CV and impact on similarity score is measured"
+        })
+        
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        logger.error(f"Error explaining CV match: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error during match explanation")
 
 
 @router.get("/stats")
