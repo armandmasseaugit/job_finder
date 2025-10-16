@@ -46,11 +46,10 @@ scored_offers:
   credentials: azure_credentials
   default_data: {}
 
-# Preprocessed jobs data ready for embedding (using Azure blob storage like wttj_jobs_output)
+# Preprocessed jobs data ready for embedding (temporary local storage)
 jobs_preprocessed:
-  type: pandas.ExcelDataset
-  filepath: "abfs://scraped-jobs/jobs_preprocessed.xlsx"
-  credentials: azure_credentials
+  type: pandas.ParquetDataset
+  filepath: data/02_intermediate/jobs_preprocessed.parquet
 
 # ChromaDB vector database for job embeddings and semantic search
 jobs_vector_db:
