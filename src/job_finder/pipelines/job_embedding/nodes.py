@@ -29,7 +29,8 @@ JOB_STOPWORDS = {
     'candidate', 'recherche', 'recherchons', 'looking', 'seeking', 'team', 'équipe',
     'entreprise', 'company', 'société', 'startup', 'business', 'organization',
     'description', 'profil', 'profile', 'mission', 'missions', 'responsabilités',
-    'responsibilities', 'tâches', 'tasks', 'activités', 'activities'
+    'responsibilities', 'tâches', 'tasks', 'activités', 'activities', 'skills', 'compétences',
+    'qualifications', 'requirements', 'expérience', 'experience',
 }
 
 def clean_job_text(text: str) -> str:
@@ -108,38 +109,33 @@ def optimize_job_text_for_embedding(job_data: Dict) -> str:
         text_parts.append(job_data['company_name'])
     if job_data.get('city'):
         text_parts.append(job_data['city'])
-    
+    if job_data.get('country'):
+        text_parts.append(job_data['country'])
+
     # Skills and technologies
     if job_data.get('skills'):
-        if isinstance(job_data['skills'], list):
-            text_parts.extend(job_data['skills'])
-        else:
-            text_parts.append(str(job_data['skills']))
+        text_parts.append(job_data['skills'])
     
+    # Profile
+    if job_data.get('profile'):
+        text_parts.append(job_data['profile'])
+        
     # Summary
-    if job_data.get('summary'):
-        text_parts.append(job_data['summary'])
-    
+    if job_data.get('description'):
+        text_parts.append(job_data['description'])
+
     # Key missions
     if job_data.get('key_missions'):
         if isinstance(job_data['key_missions'], list):
             text_parts.extend(job_data['key_missions'])
         else:
             text_parts.append(str(job_data['key_missions']))
-    
-    # Description
-    if job_data.get('description'):
-        text_parts.append(job_data['description'])
-    
+
     # Join all parts
     raw_text = ' '.join(str(part) for part in text_parts if part)
     
     # Clean the text (remove stopwords, etc.)
     cleaned_text = clean_job_text(raw_text)
-    
-    # Log to see what we get
-    logger.info(f"Job '{job_data.get('name', 'Unknown')}' - Raw: {len(raw_text.split())} words → Cleaned: {len(cleaned_text.split())} words")
-    logger.info(f"Cleaned text sample: '{cleaned_text[:200]}...'")
     
     return cleaned_text
 
@@ -161,9 +157,11 @@ def preprocess_jobs_for_embedding(jobs_data: pd.DataFrame) -> pd.DataFrame:
         job_dict = job_row.to_dict()
         optimized_text = optimize_job_text_for_embedding(job_dict)
         embedding_texts.append(optimized_text)
-        
-        if idx % 50 == 0:  # Log progress every 50 jobs
+
+        if idx % 100 == 0:  # Log progress every 100 jobs
             logger.info(f"Processed {idx + 1}/{len(jobs_data)} jobs")
+                # Log to see what we get
+            logger.info(f"Cleaned text sample: '{optimized_text[:2000]}...'")
     
     # Add the optimized text as a new column
     result_df = jobs_data.copy()

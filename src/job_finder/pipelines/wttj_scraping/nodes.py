@@ -210,20 +210,6 @@ def wttj_query_and_parsing(
                         }
                     )
 
-                    # DEBUG: Break after 10 jobs for testing
-                    if len(jobs) >= 10:
-                        logger.info(f"🛑 DEBUG BREAK: Stopping scraping after {len(jobs)} jobs")
-                        logger.info("Remove this break when satisfied with preprocessing")
-                        break
-                
-                # Break out of page loop if we hit job limit
-                if len(jobs) >= 10:
-                    break
-
-            # Break out of query loop if we hit job limit
-            if len(jobs) >= 10:
-                break
-
         wttj_jobs = pd.DataFrame(jobs)
     return wttj_jobs
 
