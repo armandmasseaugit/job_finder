@@ -85,12 +85,12 @@ kedro-viz: ## 📊 Launch Kedro-Viz
 # WEB APPLICATIONS
 # ==================================================================================
 
-.PHONY: api
-api: ## 🚀 Start FastAPI backend server
+.PHONY: backend
+backend: ## 🚀 Start FastAPI backend server
 	cd web_app/backend && PYTHONPATH=../../:$$PYTHONPATH uv run uvicorn main:app --reload --host 0.0.0.0 --port 8000
 
-.PHONY: web
-web: ## 🌐 Start modern HTMX frontend
+.PHONY: frontend
+frontend: ## 🌐 Start modern HTMX frontend
 	cd web_app/modern_frontend && uv run python server.py
 
 
