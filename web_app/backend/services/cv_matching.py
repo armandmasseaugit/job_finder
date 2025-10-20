@@ -8,6 +8,7 @@ import numpy as np
 from sentence_transformers import SentenceTransformer
 
 from .cv_processing import process_cv_for_matching
+from .azure_storage import get_offers
 
 logger = logging.getLogger(__name__)
 
@@ -83,7 +84,7 @@ class CVMatcher:
             min_score: Minimum similarity score threshold
             
         Returns:
-            List[Dict]: List of matching jobs with scores
+            List[Dict]: List of matching jobs with scores and complete data
         """
         self._initialize_chroma()
         
@@ -103,6 +104,15 @@ class CVMatcher:
         logger.info(f"ChromaDB query results: {len(results.get('metadatas', []))} metadata sets")
         if results.get('distances'):
             logger.info(f"Distance range: {min(results['distances'][0]) if results['distances'][0] else 'N/A'} - {max(results['distances'][0]) if results['distances'][0] else 'N/A'}")
+        
+        # Load complete job data for cross-referencing
+        try:
+            complete_jobs = get_offers()  # Récupère toutes les données complètes
+            jobs_dict = {job.get('reference', ''): job for job in complete_jobs}
+            logger.info(f"Loaded {len(complete_jobs)} complete job records for cross-referencing")
+        except Exception as e:
+            logger.warning(f"Could not load complete job data: {e}")
+            jobs_dict = {}
         
         # Process results
         matches = []
@@ -125,16 +135,32 @@ class CVMatcher:
                 scaled_score = min_rank_score + (rank_score * (1.0 - min_rank_score))
                 
                 if scaled_score >= min_score:
+                    job_ref = metadata.get('reference', f'job_{i}')
+                    
+                    # Get complete job data if available
+                    complete_job = jobs_dict.get(job_ref, {})
+                    
                     match = {
-                        'job_reference': metadata.get('reference', f'job_{i}'),
-                        'job_title': metadata.get('name', 'Unknown Title'),
-                        'company_name': metadata.get('company_name', 'Unknown Company'),
-                        'city': metadata.get('city', 'Unknown City'),
+                        # Core matching data
+                        'job_reference': job_ref,
                         'similarity_score': scaled_score,
                         'match_percentage': round(scaled_score * 100, 1),
-                        'job_description': document[:200] + "..." if len(document) > 200 else document,
                         'rank': i + 1,
-                        'distance': round(distance, 4)  # Keep original distance for debugging
+                        'distance': round(distance, 4),  # Keep original distance for debugging
+                        
+                        # Basic info (fallback to ChromaDB metadata if complete data missing)
+                        'job_title': complete_job.get('name') or metadata.get('name', 'Unknown Title'),
+                        'company_name': complete_job.get('company_name') or metadata.get('company_name', 'Unknown Company'),
+                        'city': complete_job.get('city') or metadata.get('city', 'Unknown City'),
+                        'remote': complete_job.get('remote') or metadata.get('remote', 'Unknown'),
+                        
+                        # Enhanced data from complete job record
+                        'company_logo': complete_job.get('logo_url'),
+                        'job_url': complete_job.get('url'),
+                        'contract_type': complete_job.get('contract_type'),
+                        'publication_date': complete_job.get('publication_date'),
+                        
+                        'job_description': document[:200] + "..." if len(document) > 200 else document,
                     }
                     matches.append(match)
         

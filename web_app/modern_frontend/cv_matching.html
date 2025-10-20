@@ -282,11 +282,21 @@ function cvMatching() {
             container.innerHTML = matches.map(match => `
                 <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow p-6 border-l-4 border-green-500">
                     <div class="flex items-start justify-between mb-4">
-                        <div class="flex items-center">
-                            <div class="bg-green-100 rounded-full p-3 mr-4">
-                                <i class="fas fa-bullseye text-green-600 text-xl"></i>
+                        <div class="flex items-center flex-1">
+                            <!-- Company Logo à la place du rond vert -->
+                            <div class="mr-4">
+                                ${match.company_logo ? 
+                                    `<img src="${match.company_logo}" alt="${match.company_name} logo" class="w-12 h-12 rounded-lg object-cover border-2 border-gray-200" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                     <div class="w-12 h-12 bg-gray-100 rounded-lg border-2 border-gray-200 flex items-center justify-center text-gray-400" style="display: none;">
+                                         <i class="fas fa-building"></i>
+                                     </div>` 
+                                    : 
+                                    `<div class="w-12 h-12 bg-gray-100 rounded-lg border-2 border-gray-200 flex items-center justify-center text-gray-400">
+                                         <i class="fas fa-building"></i>
+                                     </div>`
+                                }
                             </div>
-                            <div>
+                            <div class="flex-1">
                                 <div class="flex items-center mb-1">
                                     <span class="text-lg font-bold text-green-600 mr-2">${match.match_percentage}% Match</span>
                                     <div class="flex space-x-1">
@@ -295,7 +305,7 @@ function cvMatching() {
                                     </div>
                                 </div>
                                 <h3 class="text-xl font-semibold text-gray-900 mb-1">
-                                    ${match.job_title}
+                                    ${match.job_url ? `<a href="${match.job_url}" target="_blank" class="hover:text-blue-600 transition-colors">${match.job_title}</a>` : match.job_title}
                                 </h3>
                                 <p class="text-gray-600 font-medium">${match.company_name}</p>
                                 <p class="text-sm text-gray-500">${match.city}</p>
@@ -312,10 +322,17 @@ function cvMatching() {
                     </div>
                     
                     <div class="flex items-center justify-between space-x-3">
-                        <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex-1">
-                            <i class="fas fa-external-link-alt mr-2"></i>
-                            View Details
-                        </button>
+                        ${match.job_url ? 
+                            `<a href="${match.job_url}" target="_blank" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex-1 text-center">
+                                <i class="fas fa-external-link-alt mr-2"></i>
+                                Apply Now
+                            </a>` 
+                            : 
+                            `<button class="bg-gray-400 text-white px-4 py-2 rounded-lg text-sm font-medium flex-1 cursor-not-allowed">
+                                <i class="fas fa-link-slash mr-2"></i>
+                                No Link Available
+                            </button>`
+                        }
                         <button 
                             class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
                             @click="explainMatch('${match.job_reference}', '${match.job_title}')"
