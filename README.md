@@ -21,7 +21,7 @@ This project was born out of that exact pain. Job hunting shouldn't be tedious o
 Below is a screenshot of the main interface with all job offers that can be sorted by relevance:
 
 <div align="center">
-  <img src="docs/source/demo-drag-drop.gif"
+  <img src="docs/source/demo-job-offers.gif"
        alt="GIF showing the explore offers section"
        height="400"/>
 </div>
