@@ -115,6 +115,8 @@ function cvMatching() {
         hasResults: false,
         isSearching: false,
         matchingJobs: [],
+        isExplaining: false,
+        currentExplainingJob: null,
         
         handleFileSelect(event) {
             const file = event.target.files[0];
@@ -315,11 +317,17 @@ function cvMatching() {
                             View Details
                         </button>
                         <button 
-                            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex-1"
+                            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
                             @click="explainMatch('${match.job_reference}', '${match.job_title}')"
+                            :disabled="isExplaining && currentExplainingJob === '${match.job_reference}'"
                         >
-                            <i class="fas fa-brain mr-2"></i>
-                            Explain Match
+                            <template x-if="isExplaining && currentExplainingJob === '${match.job_reference}'">
+                                <i class="fas fa-spinner fa-spin mr-2"></i>
+                            </template>
+                            <template x-if="!(isExplaining && currentExplainingJob === '${match.job_reference}')">
+                                <i class="fas fa-brain mr-2"></i>
+                            </template>
+                            <span x-text="isExplaining && currentExplainingJob === '${match.job_reference}' ? 'Analyzing...' : 'Explain Match'"></span>
                         </button>
                         <div class="text-sm text-gray-600">
                             <i class="fas fa-bullseye mr-1"></i>
@@ -335,6 +343,10 @@ function cvMatching() {
                 alert('No CV text available for explanation. Please upload a CV first.');
                 return;
             }
+            
+            // Set loading state
+            this.isExplaining = true;
+            this.currentExplainingJob = jobReference;
             
             try {
                 console.log(`Explaining match for job: ${jobReference} - ${jobTitle}`);
@@ -363,6 +375,10 @@ function cvMatching() {
             } catch (error) {
                 console.error('Explanation error:', error);
                 alert(`Failed to explain match: ${error.message}`);
+            } finally {
+                // Reset loading state
+                this.isExplaining = false;
+                this.currentExplainingJob = null;
             }
         },
         
@@ -471,6 +487,8 @@ function cvMatching() {
             this.hasResults = false;
             this.isSearching = false;
             this.matchingJobs = [];
+            this.isExplaining = false;
+            this.currentExplainingJob = null;
             
             // Reset file input
             this.$refs.cvInput.value = '';
