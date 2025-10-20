@@ -1,11 +1,9 @@
-# xlsx file containing all useful information on all recently scraped jobs
-# (company name, offer publication date, job title etc.)
+# Parquet file containing all useful information on all recently scraped jobs
+# (company name, offer publication date, job title etc.) - Much faster than Excel!
 wttj_jobs_output:
-  type: pandas.ExcelDataset
-  filepath: "abfs://wttj-scraping/wttj_jobs.xlsx"
+  type: pandas.ParquetDataset
+  filepath: "abfs://wttj-scraping/wttj_jobs.parquet"
   credentials: azure_credentials
-  load_args:
-    engine: openpyxl
 
 # Scraping timestamp JSON file to track the last scraping date for wttj
 wttj_last_scrape:

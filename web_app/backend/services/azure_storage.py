@@ -18,7 +18,7 @@ blob_service_client = BlobServiceClient(
 
 # Azure Blob Storage containers mapping
 CONTAINERS = {
-    "jobs": "wttj-scraping",         # For wttj_jobs.xlsx, last_scrape.json, models
+    "jobs": "wttj-scraping",         # For wttj_jobs.parquet, last_scrape.json, models
     "likes": "liked-jobs",           # For job_likes.json  
     "relevance": "relevance-scores"  # For scored_jobs.json
 }
@@ -54,10 +54,10 @@ def get_offers():
             return json.loads(redis_client.get(cache_key))
         
         blob_client = blob_service_client.get_blob_client(
-            container=CONTAINERS["jobs"], blob="wttj_jobs.xlsx"
+            container=CONTAINERS["jobs"], blob="wttj_jobs.parquet"
         )
         buffer = BytesIO(blob_client.download_blob().readall())
-        df = pd.read_excel(buffer)
+        df = pd.read_parquet(buffer)
         df = df.replace({np.nan: None, np.inf: None, -np.inf: None})
         offers = df.to_dict(orient="records")
 
