@@ -38,19 +38,6 @@ and the mouse hovering over the "like" button, ready to provide feedback to the 
   <img src="docs/source/architecture.png" alt="Architecture Diagram" height="600"/>
 </div>
 
-
-## 🐳 Docker
-
-The Docker images for this project are available on Docker Hub:
-👉 [https://hub.docker.com/repositories/armandbmasseaugit](https://hub.docker.com/repositories/armandbmasseaugit)
-
-To pull the image:
-
-```bash
-docker pull armandbmasseaugit/job-finder
-```
-
-
 ## Contributing
 
 Want to contribute to this project? Please read our [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to get started, coding standards, and the development workflow.
