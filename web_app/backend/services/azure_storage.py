@@ -58,7 +58,16 @@ def get_offers():
         )
         buffer = BytesIO(blob_client.download_blob().readall())
         df = pd.read_parquet(buffer)
+        
+        # Convert problematic columns to proper types before to_dict()
+        for col in df.columns:
+            if df[col].dtype == 'object':
+                df[col] = df[col].astype(str)
+        
+        # Clean NaN/inf values properly
         df = df.replace({np.nan: None, np.inf: None, -np.inf: None})
+        df = df.where(pd.notnull(df), None)  # Extra safety for NaN
+        
         offers = df.to_dict(orient="records")
 
         # Cache result if Redis is available
