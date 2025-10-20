@@ -217,7 +217,7 @@ python -m pytest --cov=src/job_finder tests/
 
 The application runs on multiple ports:
 - **Backend API**: http://localhost:8000 (`make backend`)
-- **Modern Frontend**: http://localhost:8080 (`make frontend`)
+- **Modern Frontend**: http://localhost:3000 (`make frontend`)
 
 
 
