@@ -125,11 +125,12 @@ def optimize_job_text_for_embedding(job_data: Dict) -> str:
         text_parts.append(job_data['description'])
 
     # Key missions
-    if job_data.get('key_missions'):
-        if isinstance(job_data['key_missions'], list):
-            text_parts.extend(job_data['key_missions'])
+    key_missions = job_data.get('key_missions')
+    if key_missions is not None and str(key_missions) != 'nan':
+        if isinstance(key_missions, list):
+            text_parts.extend(key_missions)
         else:
-            text_parts.append(str(job_data['key_missions']))
+            text_parts.append(str(key_missions))
 
     # Join all parts
     raw_text = ' '.join(str(part) for part in text_parts if part)
