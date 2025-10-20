@@ -141,7 +141,7 @@ function cvMatching() {
             
             const formData = new FormData();
             formData.append('cv_file', file);
-            formData.append('top_k', '20');  // Augmenté de 5 à 20
+            formData.append('top_k', '50');  // Augmenté à 50 pour plus de résultats
             formData.append('min_score', '0.1');
             
             try {
@@ -235,7 +235,7 @@ function cvMatching() {
             
             try {
                 // Call the correct backend endpoint for CV text matching
-                const response = await fetch(`http://localhost:8000/cv/match-text?cv_text=${encodeURIComponent(this.cvText)}&top_k=5&min_score=0.1`, {
+                const response = await fetch(`http://localhost:8000/cv/match-text?cv_text=${encodeURIComponent(this.cvText)}&top_k=50&min_score=0.1`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

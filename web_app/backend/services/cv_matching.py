@@ -73,7 +73,7 @@ class CVMatcher:
     def find_matching_jobs(
         self, 
         cv_text: str, 
-        top_k: int = 20,
+        top_k: int = 50,
         min_score: float = 0.0
     ) -> List[Dict]:
         """Find jobs that match the CV using semantic similarity.
@@ -284,7 +284,7 @@ class CVMatcher:
         self, 
         file_content: bytes, 
         filename: str,
-        top_k: int = 20,
+        top_k: int = 50,
         min_score: float = 0.3
     ) -> Tuple[str, List[Dict]]:
         """Complete pipeline: process CV file and find matches.
