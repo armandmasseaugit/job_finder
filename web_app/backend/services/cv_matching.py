@@ -145,22 +145,30 @@ class CVMatcher:
                         'job_reference': job_ref,
                         'similarity_score': scaled_score,
                         'match_percentage': round(scaled_score * 100, 1),
+                        'match_score': round(scaled_score * 100, 1),  # For template compatibility
                         'rank': i + 1,
                         'distance': round(distance, 4),  # Keep original distance for debugging
                         
                         # Basic info (fallback to ChromaDB metadata if complete data missing)
-                        'job_title': complete_job.get('name') or metadata.get('name', 'Unknown Title'),
+                        # Using template-compatible names
+                        'name': complete_job.get('name') or metadata.get('name', 'Unknown Title'),
+                        'job_title': complete_job.get('name') or metadata.get('name', 'Unknown Title'),  # Alias
                         'company_name': complete_job.get('company_name') or metadata.get('company_name', 'Unknown Company'),
                         'city': complete_job.get('city') or metadata.get('city', 'Unknown City'),
                         'remote': complete_job.get('remote') or metadata.get('remote', 'Unknown'),
                         
                         # Enhanced data from complete job record
-                        'company_logo': complete_job.get('logo_url'),
-                        'job_url': complete_job.get('url'),
+                        # Using template-compatible names
+                        'logo_url': complete_job.get('logo_url'),
+                        'company_logo': complete_job.get('logo_url'),  # Alias
+                        'url': complete_job.get('url'),
+                        'job_url': complete_job.get('url'),  # Alias
                         'contract_type': complete_job.get('contract_type'),
                         'publication_date': complete_job.get('publication_date'),
+                        'relevance_score': round(scaled_score * 100, 1),  # For template compatibility
                         
                         'job_description': document[:200] + "..." if len(document) > 200 else document,
+                        'description_preview': document[:200] + "..." if len(document) > 200 else document,  # For template compatibility
                     }
                     matches.append(match)
         
