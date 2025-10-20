@@ -118,23 +118,19 @@ class CVMatcher:
         matches = []
         
         if results['metadatas'] and results['metadatas'][0]:
-            # Calculate rank-based scores (more reliable than distance conversion)
-            total_results = len(results['metadatas'][0])
-            
             for i, (metadata, distance, document) in enumerate(zip(
                 results['metadatas'][0],
                 results['distances'][0], 
                 results['documents'][0]
             )):
-                # Rank-based scoring: 1st result = 100%, last result = higher min_score
-                # This ensures the best match always gets high score regardless of absolute distance
-                rank_score = (total_results - i) / total_results
+                # Calculate score based on distance with your logic
+                if distance < 0.9:
+                    score = 1 - distance
+                else:
+                    score = 0.1
                 
-                # Scale to ensure minimum score is reasonable (at least 10% for last result)
-                min_rank_score = 0.1
-                scaled_score = min_rank_score + (rank_score * (1.0 - min_rank_score))
-                
-                if scaled_score >= min_score:
+                # Apply minimum score filter
+                if score >= min_score:
                     job_ref = metadata.get('reference', f'job_{i}')
                     
                     # Get complete job data if available
@@ -143,9 +139,9 @@ class CVMatcher:
                     match = {
                         # Core matching data
                         'job_reference': job_ref,
-                        'similarity_score': scaled_score,
-                        'match_percentage': round(scaled_score * 100, 1),
-                        'match_score': round(scaled_score * 100, 1),  # For template compatibility
+                        'similarity_score': score,
+                        'match_percentage': round(score * 100, 1),
+                        'match_score': round(score * 100, 1),  # For template compatibility
                         'rank': i + 1,
                         'distance': round(distance, 4),  # Keep original distance for debugging
                         
@@ -165,7 +161,7 @@ class CVMatcher:
                         'job_url': complete_job.get('url'),  # Alias
                         'contract_type': complete_job.get('contract_type'),
                         'publication_date': complete_job.get('publication_date'),
-                        'relevance_score': round(scaled_score * 100, 1),  # For template compatibility
+                        'relevance_score': round(score * 100, 1),  # For template compatibility
                         
                         'job_description': document[:200] + "..." if len(document) > 200 else document,
                         'description_preview': document[:200] + "..." if len(document) > 200 else document,  # For template compatibility
