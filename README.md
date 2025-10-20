@@ -51,59 +51,9 @@ docker pull armandbmasseaugit/job-finder
 ```
 
 
-## Git Workflow & Naming Conventions
+## Contributing
 
-To ensure clarity and consistency in version control, this project follows a set of conventional branch and commit naming standards inspired by common Git practices.
-
-### Branch Types
-
-| Type      | Purpose                                                                 |
-|-----------|-------------------------------------------------------------------------|
-| fix       | For fixing non-critical bugs during development                         |
-| hotfix    | For urgent bug fixes made directly on the `main` branch                 |
-| feature   | For developing new features                                             |
-| release   | For preparing code for production (e.g., version bump, final tests)     |
-| chore     | For routine tasks like updating documentation or dependencies           |
-| refactor  | For restructuring code without changing its behavior or functionality   |
-
-Branch names typically follow this format:
-
-```
-<type>/<short-description>
-```
-
-Example: `feature/job-scoring`, `fix/missing-logo-url`
-
-### Commit Types
-
-
-| Prefix     | Use Case                                                       |
-|------------|----------------------------------------------------------------|
-| feat       | For introducing a new feature                                  |
-| fix        | For fixing a bug                                               |
-| docs       | For documentation changes only                                 |
-| style      | For code formatting, white-space, etc. (no code behavior change)|
-| refactor   | For code changes that neither fix bugs nor add features        |
-| perf       | For performance improvements                                   |
-| test       | For adding or updating tests                                   |
-| ci         | For changes to CI/CD configuration files and scripts           |
-| chore      | For minor tasks like dependency updates or file renaming       |
-
-Commit message format:
-
-```
-<type>: short description of the change
-```
-
-Example:
-
-```
-feat: add job relevance scoring model
-fix: correct scraping URL construction
-chore: update requirements.txt
-```
-
-This structure makes it easier to automate release notes, understand project history, and onboard contributors.
+Want to contribute to this project? Please read our [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to get started, coding standards, and the development workflow.
 
 ## Secrets Management
 
