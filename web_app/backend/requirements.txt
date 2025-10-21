@@ -6,3 +6,5 @@ boto3
 redis
 python-dotenv
 spacy
+azure-storage-blob
+azure-identity

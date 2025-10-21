@@ -1,7 +1,13 @@
-*
-
-!web_app/
-!web_app/backend/
-!web_app/backend/**
-
-web_app/frontend/
+# Backend dockerignore
+__pycache__
+*.pyc
+*.pyo
+tests/
+notebooks/
+data/
+data/**
+docs/
+.venv
+.env
+.vscode
+.idea
