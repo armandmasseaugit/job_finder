@@ -1,0 +1,13 @@
+# Frontend dockerignore
+node_modules/
+dist/
+.cache/
+__pycache__
+*.pyc
+*.pyo
+.venv
+.env
+docs/
+*.gif
+*.png
+*.jpg
