@@ -2,9 +2,15 @@ fastapi
 uvicorn[standard]
 numpy
 pandas
-boto3
 redis
 python-dotenv
 spacy
 azure-storage-blob
 azure-identity
+chromadb
+sentence-transformers
+PyPDF2
+pdfplumber
+python-docx
+pydantic
+python-multipart
