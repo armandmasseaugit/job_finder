@@ -1,28 +1,22 @@
-FROM python:3.12-slim as base
+FROM job-finder-base:latest
 
 WORKDIR /app
 
-ENV PYTHONUNBUFFERED=1
-ENV PYTHONDONTWRITEBYTECODE=1
+# Copy requirements Kedro
+COPY kedro_requirements.txt /app/kedro_requirements.txt
 
-# System deps
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
+# Installer les dépendances Kedro supplémentaires
+RUN python -m pip install --no-cache-dir -r kedro_requirements.txt
 
-# Copy requirements
-COPY kedro_requirements.txt /app/requirements.txt
-RUN python -m pip install --upgrade pip setuptools wheel \
-    && python -m pip install --no-cache-dir -r /app/requirements.txt
+# Copy pyproject.toml
+COPY pyproject.toml /app/pyproject.toml
 
-# Copy project
+# Copy project files
 COPY src/ /app/src/
 COPY conf/ /app/conf/
-COPY pyproject.toml /app/
 
-# Install editable project (if pyproject defines it)
-RUN python -m pip install -e . || true
+# Installer le package en mode éditable (sans dépendances pour éviter les conflits)
+RUN pip install -e . --no-deps
 
-# Default command - designed to be overridden by k8s CronJob or compose
+EXPOSE 8888
 CMD ["kedro", "run"]
