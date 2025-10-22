@@ -5,12 +5,14 @@ services:
     build:
       context: .
       dockerfile: fastapi.Dockerfile
-    image: job_finder_backend:latest
-    container_name: job_finder_backend
+    image: job-finder-backend:latest
+    container_name: job-finder-backend
     ports:
       - "8000:8000"
     environment:
       - PYTHONUNBUFFERED=1
+      - AZURE_STORAGE_ACCOUNT_NAME=${AZURE_STORAGE_ACCOUNT_NAME}
+      - AZURE_STORAGE_ACCOUNT_KEY=${AZURE_STORAGE_ACCOUNT_KEY}
     volumes:
       - ./conf:/app/conf:ro
       - ./src:/app/src:ro
@@ -23,8 +25,8 @@ services:
     build:
       context: .
       dockerfile: frontend.Dockerfile
-    image: job_finder_frontend:latest
-    container_name: job_finder_frontend
+    image: job-finder-frontend:latest
+    container_name: job-finder-frontend
     ports:
       - "3000:3000"
     environment:
@@ -38,11 +40,14 @@ services:
     build:
       context: .
       dockerfile: kedro.Dockerfile
-    image: job_finder_kedro:latest
-    container_name: job_finder_kedro
+    image: job-finder-kedro:latest
+    container_name: job-finder-kedro
     command: ["kedro", "run"]
     environment:
       - PYTHONUNBUFFERED=1
+      - AZURE_STORAGE_ACCOUNT_NAME=${AZURE_STORAGE_ACCOUNT_NAME}
+      - AZURE_STORAGE_ACCOUNT_KEY=${AZURE_STORAGE_ACCOUNT_KEY}
+      - SENDER_EMAIL_PASSWORD=${SENDER_EMAIL_PASSWORD}
     volumes:
       - ./conf:/app/conf:ro
       - ./data:/app/data
