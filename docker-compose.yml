@@ -48,6 +48,18 @@ services:
       - AZURE_STORAGE_ACCOUNT_NAME=${AZURE_STORAGE_ACCOUNT_NAME}
       - AZURE_STORAGE_ACCOUNT_KEY=${AZURE_STORAGE_ACCOUNT_KEY}
       - SENDER_EMAIL_PASSWORD=${SENDER_EMAIL_PASSWORD}
+      # ChromaDB Configuration
+      - CHROMA_HOST=${CHROMA_HOST}
+      - CHROMA_PORT=${CHROMA_PORT:-8000}
+      - CHROMA_SSL=${CHROMA_SSL:-false}
+      - CHROMA_DB_PATH=${CHROMA_DB_PATH:-/app/data/chroma}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      # ChromaDB Configuration
+      - CHROMA_HOST=${CHROMA_HOST}
+      - CHROMA_PORT=${CHROMA_PORT:-8000}
+      - CHROMA_SSL=${CHROMA_SSL:-false}
+      - CHROMA_DB_PATH=${CHROMA_DB_PATH:-/app/data/chroma}
     volumes:
       - ./conf:/app/conf:ro
       - ./data:/app/data

@@ -2,6 +2,7 @@
 # import fsspec
 import json
 import logging
+import os
 import pickle
 from typing import Any, Dict, List, Optional
 
@@ -52,33 +53,83 @@ class OptionalPickleDataset(PickleDataset):
 
 
 class ChromaDataset(AbstractDataset):
-    """Custom dataset for ChromaDB integration with job data."""
+    """Custom dataset for ChromaDB integration with job data.
+    
+    Supports both local and remote ChromaDB configurations via parameters.
+    """
 
     def __init__(
         self,
         collection_name: str = "jobs",
         persist_directory: str = "./data/chroma",
         embedding_model: str = "intfloat/multilingual-e5-small",
+        chroma_host: str = None,
+        chroma_port: int = 8000,
+        chroma_ssl: bool = False,
         **kwargs
     ):
-        """Initialize ChromaDB dataset.
+        """Initialize ChromaDB dataset with flexible configuration.
         
         Args:
             collection_name: Name of the Chroma collection
-            persist_directory: Directory to persist ChromaDB data
+            persist_directory: Directory to persist ChromaDB data (local mode)
             embedding_model: SentenceTransformers model for embeddings
+            chroma_host: Remote ChromaDB host (if None, uses local mode)
+            chroma_port: Remote ChromaDB port (default 8000)
+            chroma_ssl: Use SSL for remote connection (default False)
         """
         self._collection_name = collection_name
-        self._persist_directory = persist_directory
         self._embedding_model = embedding_model
+        
+        # Configuration ChromaDB flexible
+        if chroma_host:
+            # Mode distant
+            self._chroma_config = {
+                "mode": "remote",
+                "host": chroma_host,
+                "port": int(chroma_port),
+                "ssl": bool(chroma_ssl)
+            }
+            log.info(f"ChromaDataset configured for remote mode: {chroma_host}:{chroma_port}")
+        else:
+            # Mode local
+            self._chroma_config = {
+                "mode": "local",
+                "path": persist_directory
+            }
+            log.info(f"ChromaDataset configured for local mode: {persist_directory}")
+        
         self._client = None
         self._collection = None
         self._sentence_transformer = None
 
     def _get_client(self) -> chromadb.Client:
-        """Get or create ChromaDB client."""
+        """Get or create ChromaDB client based on configuration."""
         if self._client is None:
-            self._client = chromadb.PersistentClient(path=self._persist_directory)
+            config = self._chroma_config
+            
+            if config["mode"] == "remote":
+                log.info(f"Connecting to remote ChromaDB at {config['host']}:{config['port']}")
+                try:
+                    self._client = chromadb.HttpClient(
+                        host=config['host'],
+                        port=config['port'],
+                        ssl=config.get('ssl', False)
+                    )
+                    log.info("✅ Connected to remote ChromaDB successfully")
+                except Exception as e:
+                    log.error(f"❌ Failed to connect to remote ChromaDB: {e}")
+                    raise
+            else:
+                log.info(f"Connecting to local ChromaDB at {config['path']}")
+                try:
+                    # S'assurer que le dossier existe
+                    os.makedirs(config['path'], exist_ok=True)
+                    self._client = chromadb.PersistentClient(path=config['path'])
+                    log.info("✅ Connected to local ChromaDB successfully")
+                except Exception as e:
+                    log.error(f"❌ Failed to connect to local ChromaDB: {e}")
+                    raise
         return self._client
 
     def _get_collection(self) -> chromadb.Collection:
@@ -244,11 +295,26 @@ class ChromaDataset(AbstractDataset):
 
     def _describe(self) -> Dict[str, Any]:
         """Describe the dataset."""
-        return {
+        config_desc = {
             "collection_name": self._collection_name,
-            "persist_directory": self._persist_directory,
             "embedding_model": self._embedding_model,
         }
+        
+        # Ajouter les détails de configuration ChromaDB
+        if self._chroma_config["mode"] == "remote":
+            config_desc.update({
+                "chroma_mode": "remote",
+                "chroma_host": self._chroma_config["host"],
+                "chroma_port": self._chroma_config["port"],
+                "chroma_ssl": self._chroma_config.get("ssl", False)
+            })
+        else:
+            config_desc.update({
+                "chroma_mode": "local",
+                "persist_directory": self._chroma_config["path"]
+            })
+
+        return config_desc
 
 
 # class OptionalPickleDataset(AbstractVersionedDataset):
