@@ -5,6 +5,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 import pandas as pd
+
 from job_finder.settings import credentials
 
 logger = logging.getLogger(__name__)

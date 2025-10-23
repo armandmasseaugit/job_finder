@@ -1,8 +1,9 @@
 """Project pipelines."""
 
-from job_finder.pipelines import job_embedding, wttj_scraping
 from kedro.framework.project import find_pipelines
 from kedro.pipeline import Pipeline
+
+from job_finder.pipelines import job_embedding, wttj_scraping
 
 
 def register_pipelines() -> dict[str, Pipeline]:

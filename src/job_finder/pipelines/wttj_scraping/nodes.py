@@ -6,6 +6,7 @@ from datetime import datetime
 
 import pandas as pd
 import requests
+
 from job_finder.utils import generate_payload
 
 logger = logging.getLogger(__name__)

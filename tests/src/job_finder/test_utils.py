@@ -1,6 +1,7 @@
 import json
 
 import pytest
+
 from job_finder.utils import generate_payload
 
 

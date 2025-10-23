@@ -2,6 +2,7 @@ from unittest.mock import Mock, patch
 
 import pandas as pd
 import requests
+
 from job_finder.pipelines.wttj_scraping.nodes import (
     clean_html_description,
     get_job_details,
