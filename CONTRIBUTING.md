@@ -231,6 +231,8 @@ The application runs on multiple ports:
 
 ## 📞 Getting Help
 
+Feel free to contact me at : armand.masseau@gmail.com
+
 - **Questions**: Open a discussion on GitHub
 - **Bugs**: Create an issue with the bug template
 - **Features**: Create an issue with the feature request template
