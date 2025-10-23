@@ -1,6 +1,7 @@
 """CV matching service using embeddings and ChromaDB."""
 
 import logging
+import os
 from typing import List, Dict, Tuple, Optional
 
 import chromadb
@@ -19,16 +20,43 @@ MODEL_NAME = "intfloat/multilingual-e5-small"
 class CVMatcher:
     """CV matching service using embeddings and ChromaDB."""
     
-    def __init__(self, chroma_db_path: str = "../../data/chroma"):
+    def __init__(self, chroma_config: dict = None):
         """Initialize CV matcher with ChromaDB connection.
         
         Args:
-            chroma_db_path: Path to ChromaDB database
+            chroma_config: Optional ChromaDB configuration override
         """
-        self.chroma_db_path = chroma_db_path
+        # Configuration ChromaDB flexible via variables d'environnement
+        self._setup_chroma_config(chroma_config)
         self.model = None
         self.chroma_client = None
         self.collection = None
+        
+    def _setup_chroma_config(self, config_override: dict = None):
+        """Setup ChromaDB configuration from environment variables or override."""
+        if config_override:
+            self.chroma_config = config_override
+        else:
+            # Détecter le mode basé sur les variables d'environnement
+            chroma_host = os.getenv("CHROMA_HOST")
+            
+            if chroma_host:
+                # Mode client distant (Azure VM, autre serveur)
+                self.chroma_config = {
+                    "mode": "remote",
+                    "host": chroma_host,
+                    "port": int(os.getenv("CHROMA_PORT", 8000)),
+                    "ssl": os.getenv("CHROMA_SSL", "false").lower() == "true"
+                }
+                logger.info(f"ChromaDB configured for remote mode: {chroma_host}:{self.chroma_config['port']}")
+            else:
+                # Mode local persistant
+                chroma_path = os.getenv("CHROMA_DB_PATH", "/app/data/chroma")
+                self.chroma_config = {
+                    "mode": "local",
+                    "path": chroma_path
+                }
+                logger.info(f"ChromaDB configured for local mode: {chroma_path}")
         
     def _initialize_model(self):
         """Lazy load the sentence transformer model."""
@@ -39,16 +67,45 @@ class CVMatcher:
     def _initialize_chroma(self):
         """Lazy load ChromaDB connection."""
         if self.chroma_client is None:
-            logger.info(f"Connecting to ChromaDB at {self.chroma_db_path}")
-            self.chroma_client = chromadb.PersistentClient(path=self.chroma_db_path)
+            config = self.chroma_config
+            
+            if config["mode"] == "remote":
+                logger.info(f"Connecting to remote ChromaDB at {config['host']}:{config['port']}")
+                try:
+                    self.chroma_client = chromadb.HttpClient(
+                        host=config['host'],
+                        port=config['port'],
+                        ssl=config.get('ssl', False)
+                    )
+                    logger.info("✅ Connected to remote ChromaDB successfully")
+                except Exception as e:
+                    logger.error(f"❌ Failed to connect to remote ChromaDB: {e}")
+                    raise
+            else:
+                logger.info(f"Connecting to local ChromaDB at {config['path']}")
+                try:
+                    # S'assurer que le dossier existe
+                    os.makedirs(config['path'], exist_ok=True)
+                    self.chroma_client = chromadb.PersistentClient(path=config['path'])
+                    logger.info("✅ Connected to local ChromaDB successfully")
+                except Exception as e:
+                    logger.error(f"❌ Failed to connect to local ChromaDB: {e}")
+                    raise
             
             # Get the jobs collection (should already exist from job scraping)
             try:
                 self.collection = self.chroma_client.get_collection(name="jobs")
-                logger.info(f"Connected to jobs collection with {self.collection.count()} jobs")
+                job_count = self.collection.count()
+                logger.info(f"✅ Connected to jobs collection with {job_count} jobs")
             except Exception as e:
-                logger.error(f"Could not connect to jobs collection: {e}")
-                raise
+                logger.error(f"❌ Could not connect to jobs collection: {e}")
+                logger.warning("Creating new 'jobs' collection...")
+                try:
+                    self.collection = self.chroma_client.create_collection(name="jobs")
+                    logger.info("✅ Created new jobs collection")
+                except Exception as create_e:
+                    logger.error(f"❌ Could not create jobs collection: {create_e}")
+                    raise
     
     def create_cv_embedding(self, cv_text: str) -> np.ndarray:
         """Create embedding for CV text.

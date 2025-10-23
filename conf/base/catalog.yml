@@ -50,8 +50,15 @@ jobs_preprocessed:
   filepath: data/02_intermediate/jobs_preprocessed.parquet
 
 # ChromaDB vector database for job embeddings and semantic search
+# Configuration flexible via variables d'environnement:
+# - Mode local: CHROMA_DB_PATH=/path/to/local/db
+# - Mode distant: CHROMA_HOST=ip-or-domain + CHROMA_PORT=8000
 jobs_vector_db:
   type: job_finder.datasets.ChromaDataset
   collection_name: "jobs"
-  persist_directory: "./data/chroma"
+  # Configuration ChromaDB flexible
+  chroma_host: ${oc.env:CHROMA_HOST,null}
+  chroma_port: ${oc.env:CHROMA_PORT,8000}
+  chroma_ssl: ${oc.env:CHROMA_SSL,false}
+  persist_directory: ${oc.env:CHROMA_DB_PATH,./data/chroma}
   embedding_model: "intfloat/multilingual-e5-small"
