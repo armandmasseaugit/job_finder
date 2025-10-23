@@ -82,22 +82,39 @@ class ChromaDataset(AbstractDataset):
         self._embedding_model = embedding_model
         
         # Configuration ChromaDB flexible
+        log.info(f"🔧 ChromaDataset __init__ parameters:")
+        log.info(f"   collection_name: {collection_name}")
+        log.info(f"   persist_directory: {persist_directory}")
+        log.info(f"   chroma_host: {chroma_host}")
+        log.info(f"   chroma_port: {chroma_port}")
+        log.info(f"   chroma_ssl: {chroma_ssl} (type: {type(chroma_ssl)})")
+        log.info(f"   embedding_model: {embedding_model}")
+        
         if chroma_host:
-            # Mode distant
+            # Mode distant - properly convert SSL string to boolean
+            ssl_value = chroma_ssl
+            if isinstance(chroma_ssl, str):
+                ssl_value = chroma_ssl.lower() in ('true', '1', 'yes', 'on')
+            else:
+                ssl_value = bool(chroma_ssl)
+            
             self._chroma_config = {
                 "mode": "remote",
                 "host": chroma_host,
                 "port": int(chroma_port),
-                "ssl": bool(chroma_ssl)
+                "ssl": ssl_value
             }
-            log.info(f"ChromaDataset configured for remote mode: {chroma_host}:{chroma_port}")
+            log.info(f"✅ ChromaDataset configured for REMOTE mode:")
+            log.info(f"   Host: {chroma_host}")
+            log.info(f"   Port: {chroma_port}")
+            log.info(f"   SSL: {chroma_ssl} -> {ssl_value}")
         else:
             # Mode local
             self._chroma_config = {
                 "mode": "local",
                 "path": persist_directory
             }
-            log.info(f"ChromaDataset configured for local mode: {persist_directory}")
+            log.info(f"✅ ChromaDataset configured for LOCAL mode: {persist_directory}")
         
         self._client = None
         self._collection = None
@@ -109,16 +126,33 @@ class ChromaDataset(AbstractDataset):
             config = self._chroma_config
             
             if config["mode"] == "remote":
-                log.info(f"Connecting to remote ChromaDB at {config['host']}:{config['port']}")
+                log.info(f"🌐 Attempting to connect to REMOTE ChromaDB:")
+                log.info(f"   Host: {config['host']}")
+                log.info(f"   Port: {config['port']}")
+                log.info(f"   SSL: {config.get('ssl', False)}")
+                log.info(f"   Full config: {config}")
+                
                 try:
+                    ssl_setting = config.get('ssl', False)
+                    log.info(f"🔐 Creating HttpClient with SSL={ssl_setting}")
+                    
                     self._client = chromadb.HttpClient(
                         host=config['host'],
                         port=config['port'],
-                        ssl=config.get('ssl', False)
+                        ssl=ssl_setting
                     )
-                    log.info("✅ Connected to remote ChromaDB successfully")
+                    log.info("✅ ChromaDB HttpClient created successfully")
+                    
+                    # Test the connection
+                    log.info("🧪 Testing ChromaDB connection...")
+                    heartbeat = self._client.heartbeat()
+                    log.info(f"💓 ChromaDB heartbeat successful: {heartbeat}")
+                    
                 except Exception as e:
-                    log.error(f"❌ Failed to connect to remote ChromaDB: {e}")
+                    log.error(f"❌ Failed to connect to remote ChromaDB:")
+                    log.error(f"   Error type: {type(e).__name__}")
+                    log.error(f"   Error message: {str(e)}")
+                    log.error(f"   Config used: {config}")
                     raise
             else:
                 log.info(f"Connecting to local ChromaDB at {config['path']}")
