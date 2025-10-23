@@ -10,7 +10,6 @@ RUN python -m pip install --no-cache-dir -r /app/requirements.txt
 
 # Copy project
 COPY web_app/ /app/web_app/
-COPY conf/ /app/conf/
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \

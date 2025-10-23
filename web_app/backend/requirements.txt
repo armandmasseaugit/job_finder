@@ -1,7 +1,9 @@
+os
 fastapi
 uvicorn[standard]
 numpy
 pandas
+pyarrow
 redis
 python-dotenv
 spacy
