@@ -167,16 +167,19 @@ def preprocess_jobs_for_embedding(jobs_data: pd.DataFrame) -> pd.DataFrame:
     # Add the optimized text as a new column
     result_df = jobs_data.copy()
     result_df['embedding_text'] = embedding_texts
-    
+
     # Log statistics
-    avg_length = sum(len(text.split()) for text in embedding_texts) / len(embedding_texts)
-    logger.info(f"Preprocessing complete. Average text length: {avg_length:.1f} words")
-    
-    # Show example
-    if embedding_texts:
+    if len(embedding_texts) > 0:
+        avg_length = sum(len(text.split()) for text in embedding_texts) / len(embedding_texts)
+        logger.info(f"Preprocessing complete. Average text length: {avg_length:.1f} words")
+        
+        # Show example
         logger.info(f"Example optimized text: '{embedding_texts[0][:100]}...'")
-    
+    else:
+        logger.info("Preprocessing complete. No jobs to process.")
+
     return result_df
+
 
 def vectorize_preprocessed_jobs(preprocessed_jobs: pd.DataFrame) -> pd.DataFrame:
     """Vectorize preprocessed jobs and save to ChromaDB.

@@ -5,7 +5,7 @@ from io import BytesIO
 import pandas as pd
 import redis
 import numpy as np
-from azure.storage.blob import BlobServiceClient
+from azure.storage.blob import BlobServiceClient, ContentSettings
 
 # -------------------------
 # AZURE BLOB STORAGE CONFIG
@@ -148,7 +148,7 @@ def update_like(job_ref: str, feedback: str):
     )
     blob_client.upload_blob(
         data=json.dumps(existing_data, indent=2),
-        content_settings={'content_type': 'application/json'},
+        content_settings=ContentSettings(content_type='application/json'),
         overwrite=True
     )
 
