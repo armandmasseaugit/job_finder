@@ -11,9 +11,9 @@ set -e  # Exit on any error
 echo "🔄 Updating system packages..."
 sudo apt update && sudo apt upgrade -y
 
-# Install Python 3.11 and pip
-echo "🐍 Installing Python 3.11..."
-sudo apt install -y python3.11 python3.11-pip python3.11-venv software-properties-common
+# Install Python 3 and pip
+echo "🐍 Installing Python 3..."
+sudo apt install -y python3 python3-pip python3-venv software-properties-common
 
 # Create chromadb user
 echo "👤 Creating chromadb user..."
@@ -29,9 +29,9 @@ sudo chown -R chromadb:chromadb /opt/chromadb /var/lib/chromadb /var/log/chromad
 
 # Install ChromaDB
 echo "🔧 Installing ChromaDB..."
-sudo -u chromadb python3.11 -m venv /opt/chromadb/venv
+sudo -u chromadb python3 -m venv /opt/chromadb/venv
 sudo -u chromadb /opt/chromadb/venv/bin/pip install --upgrade pip
-sudo -u chromadb /opt/chromadb/venv/bin/pip install chromadb[server] uvicorn
+sudo -u chromadb /opt/chromadb/venv/bin/pip install chromadb[server] uvicorn fastapi
 
 # Create ChromaDB configuration
 echo "⚙️ Creating ChromaDB configuration..."
