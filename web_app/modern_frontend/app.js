@@ -26,7 +26,7 @@ const pageTemplates = {
                     Your AI-powered career companion. I'll help you discover amazing job opportunities that match your skills and aspirations.
                 </p>
             </div>
-            
+
             <!-- Stats Dashboard -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
                 <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-blue-500">
@@ -40,7 +40,7 @@ const pageTemplates = {
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-green-500">
                     <div class="flex items-center">
                         <div class="bg-green-100 p-3 rounded-full mr-4">
@@ -52,7 +52,7 @@ const pageTemplates = {
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-red-500">
                     <div class="flex items-center">
                         <div class="bg-red-100 p-3 rounded-full mr-4">
@@ -65,7 +65,7 @@ const pageTemplates = {
                     </div>
                 </div>
             </div>
-            
+
             <!-- Quick Actions -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-xl p-8 text-white transform hover:scale-105 transition-all duration-300">
@@ -76,12 +76,12 @@ const pageTemplates = {
                     <p class="text-blue-100 mb-6">
                         Discover fresh opportunities from top companies. Filter by date, location, and relevance to find your perfect match.
                     </p>
-                    <button onclick="navigateTo('explore')" 
+                    <button onclick="navigateTo('explore')"
                             class="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
                         <i class="fas fa-arrow-right mr-2"></i>Start Exploring
                     </button>
                 </div>
-                
+
                 <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-xl shadow-xl p-8 text-white transform hover:scale-105 transition-all duration-300">
                     <div class="flex items-center mb-4">
                         <i class="fas fa-file-user text-3xl mr-4"></i>
@@ -91,13 +91,13 @@ const pageTemplates = {
                     <p class="text-green-100 mb-6">
                         Upload your CV and let our advanced AI analyze your profile to find the top 5 jobs that match your skills perfectly.
                     </p>
-                    <button onclick="navigateTo('cv-match')" 
+                    <button onclick="navigateTo('cv-match')"
                             class="bg-white text-green-600 px-6 py-3 rounded-lg font-semibold hover:bg-green-50 transition-colors">
                         <i class="fas fa-upload mr-2"></i>Upload CV
                     </button>
                 </div>
             </div>
-            
+
             <!-- Recent Activity -->
             <div class="mt-12">
                 <h2 class="text-2xl font-bold text-gray-900 mb-6">
@@ -112,7 +112,7 @@ const pageTemplates = {
             </div>
         </div>
     `,
-    
+
     explore: `
         <div class="fade-in">
             <div class="flex justify-between items-center mb-8">
@@ -122,7 +122,7 @@ const pageTemplates = {
                     </h1>
                     <p class="text-gray-600 mt-2">Discover your next career opportunity</p>
                 </div>
-                <button onclick="navigateTo('home')" 
+                <button onclick="navigateTo('home')"
                         class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
                     <i class="fas fa-home mr-2"></i>Back to Home
                 </button>
@@ -133,8 +133,8 @@ const pageTemplates = {
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Search</label>
-                        <input 
-                            type="text" 
+                        <input
+                            type="text"
                             id="job-search"
                             placeholder="Job title or company..."
                             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -143,7 +143,7 @@ const pageTemplates = {
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Sort by</label>
-                        <select 
+                        <select
                             id="job-sort"
                             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             onchange="filterJobs()"
@@ -154,15 +154,15 @@ const pageTemplates = {
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Date from</label>
-                        <input 
-                            type="date" 
+                        <input
+                            type="date"
                             id="job-date"
                             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             onchange="filterJobs()"
                         >
                     </div>
                     <div class="flex items-end">
-                        <button 
+                        <button
                             onclick="loadJobOffers()"
                             class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
                             <i class="fas fa-search mr-2"></i>Refresh Jobs
@@ -188,13 +188,13 @@ async function navigateTo(page) {
     try {
         // Update app state
         appState.currentPage = page;
-        
+
         // Update URL without page reload
         history.pushState({ page }, '', `#${page}`);
-        
+
         // Load page content
         let content;
-        
+
         if (page === 'home') {
             content = pageTemplates.home;
         } else if (page === 'explore') {
@@ -210,26 +210,26 @@ async function navigateTo(page) {
         } else {
             content = pageTemplates.home; // Default fallback
         }
-        
+
         // Update main content
         const mainContent = document.getElementById('main-content');
         if (mainContent) {
             mainContent.innerHTML = content;
-            
+
             // Re-process HTMX elements
             if (typeof htmx !== 'undefined') {
                 htmx.process(mainContent);
             }
-            
+
             // Re-initialize Alpine.js components
             if (typeof Alpine !== 'undefined') {
                 Alpine.initTree(mainContent);
             }
         }
-        
+
         // Update navigation active state
         updateNavigation(page);
-        
+
     } catch (error) {
         console.error('Navigation error:', error);
         // Fallback to home page
@@ -263,13 +263,13 @@ async function loadUserStats() {
                 likedJobs: stats.liked_jobs || 0,
                 dislikedJobs: stats.disliked_jobs || 0
             };
-            
+
             // Update UI if on home page
             if (appState.currentPage === 'home') {
                 const totalElement = document.getElementById('total-jobs');
                 const likedElement = document.getElementById('liked-jobs');
                 const dislikedElement = document.getElementById('disliked-jobs');
-                
+
                 if (totalElement) totalElement.textContent = appState.userData.totalJobs;
                 if (likedElement) likedElement.textContent = appState.userData.likedJobs;
                 if (dislikedElement) dislikedElement.textContent = appState.userData.dislikedJobs;
@@ -291,13 +291,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Check URL for initial page
     const hash = window.location.hash.slice(1);
     const initialPage = hash || 'home';
-    
+
     // Load initial page
     navigateTo(initialPage);
-    
+
     // Load user stats
     loadUserStats();
-    
+
     // Setup navigation event listeners
     document.addEventListener('click', (event) => {
         const target = event.target.closest('[data-nav]');
@@ -307,7 +307,7 @@ document.addEventListener('DOMContentLoaded', function() {
             navigateTo(page);
         }
     });
-    
+
     // Auto-refresh stats every 30 seconds
     setInterval(loadUserStats, 30000);
 });
@@ -321,9 +321,9 @@ function showNotification(message, type = 'info') {
         'bg-blue-500 text-white'
     }`;
     notification.textContent = message;
-    
+
     document.body.appendChild(notification);
-    
+
     // Auto-remove after 3 seconds
     setTimeout(() => {
         if (notification.parentNode) {
@@ -338,7 +338,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.body.addEventListener('htmx:responseError', function(event) {
         showNotification('Something went wrong. Please try again.', 'error');
     });
-    
+
     document.body.addEventListener('htmx:afterRequest', function(event) {
         if (event.detail.successful) {
             // Refresh stats after successful like/dislike
@@ -356,15 +356,15 @@ let currentJobs = [];
 async function loadJobOffers() {
     try {
         console.log('🔍 Starting loadJobOffers function...');
-        
+
         const container = document.getElementById('jobs-container');
         if (!container) {
             console.error('❌ jobs-container element not found!');
             return;
         }
-        
+
         console.log('✅ Container found, showing loading state...');
-        
+
         // Show loading
         container.innerHTML = `
             <div class="bg-white rounded-xl shadow-lg p-8 text-center">
@@ -372,40 +372,40 @@ async function loadJobOffers() {
                 <p class="text-gray-500">Loading job offers...</p>
             </div>
         `;
-        
+
         // Get filter values
         const search = document.getElementById('job-search')?.value || '';
         const sortBy = document.getElementById('job-sort')?.value || 'date';
         const dateFilter = document.getElementById('job-date')?.value || '';
-        
+
         console.log('📊 Filter values:', { search, sortBy, dateFilter });
-        
+
         // Build API URL with filters
         const params = new URLSearchParams();
         if (search) params.append('search', search);
         if (sortBy) params.append('sort_by', sortBy);
         if (dateFilter) params.append('date_filter', dateFilter);
-        
+
         const apiUrl = `http://localhost:8000/offers?${params.toString()}`;
         console.log('🌐 Making API call to:', apiUrl);
-        
+
         const response = await fetch(apiUrl);
-        
+
         console.log('📡 Response status:', response.status);
         console.log('📡 Response ok:', response.ok);
-        
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         console.log('📥 Parsing JSON response...');
         const jobs = await response.json();
         console.log('✅ Jobs received:', jobs.length);
-        
+
         currentJobs = jobs;
-        
+
         displayJobs(jobs);
-        
+
     } catch (error) {
         console.error('❌ Error in loadJobOffers:', error);
         const container = document.getElementById('jobs-container');
@@ -427,7 +427,7 @@ async function loadJobOffers() {
 function displayJobs(jobs) {
     const container = document.getElementById('jobs-container');
     if (!container) return;
-    
+
     if (jobs.length === 0) {
         container.innerHTML = `
             <div class="bg-white rounded-xl shadow-lg p-8 text-center">
@@ -438,7 +438,7 @@ function displayJobs(jobs) {
         `;
         return;
     }
-    
+
     let html = `
         <div class="mb-6 text-center">
             <p class="text-blue-800 bg-blue-50 inline-block px-4 py-2 rounded-lg">
@@ -447,25 +447,25 @@ function displayJobs(jobs) {
         </div>
         <div class="space-y-6">
     `;
-    
+
     jobs.forEach(job => {
         const relevanceScore = job.relevance_score || 0;
-        const scoreClass = relevanceScore > 7 ? 'bg-green-100 text-green-800' : 
-                          relevanceScore > 5 ? 'bg-yellow-100 text-yellow-800' : 
+        const scoreClass = relevanceScore > 7 ? 'bg-green-100 text-green-800' :
+                          relevanceScore > 5 ? 'bg-yellow-100 text-yellow-800' :
                           'bg-blue-100 text-blue-800';
-        const remoteIcon = job.remote === 'full_remote' ? 'fa-home' : 
+        const remoteIcon = job.remote === 'full_remote' ? 'fa-home' :
                           job.remote === 'hybrid' || job.remote === 'partial' ? 'fa-building' : 'fa-map-marker-alt';
         const remoteText = job.remote === 'full_remote' ? 'Full Remote' :
                           job.remote === 'hybrid' || job.remote === 'partial' ? 'Hybrid' :
                           job.remote === 'no' ? 'On-site' : job.remote || 'Unknown';
-        
+
         html += `
             <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow border border-gray-100">
                 <div class="flex justify-between items-start mb-4">
                     <div class="flex-1">
                         <div class="flex items-center mb-3">
-                            <img src="${job.logo_url || 'https://via.placeholder.com/48x48/3B82F6/FFFFFF?text=?'}" 
-                                 alt="${job.company_name} logo" 
+                            <img src="${job.logo_url || 'https://via.placeholder.com/48x48/3B82F6/FFFFFF?text=?'}"
+                                 alt="${job.company_name} logo"
                                  class="w-12 h-12 rounded-lg mr-4 object-cover"
                                  onerror="this.src='https://via.placeholder.com/48x48/3B82F6/FFFFFF?text=${(job.company_name || 'C')[0]}'">
                             <div>
@@ -473,7 +473,7 @@ function displayJobs(jobs) {
                                 <p class="text-blue-600 font-medium">${job.company_name || 'Unknown Company'}</p>
                             </div>
                         </div>
-                        
+
                         <div class="flex flex-wrap items-center text-gray-600 text-sm space-x-4 mb-3">
                             <div class="flex items-center">
                                 <i class="fas ${remoteIcon} mr-2"></i>
@@ -484,12 +484,12 @@ function displayJobs(jobs) {
                                 <span>Published: ${job.publication_date || 'Unknown'}</span>
                             </div>
                         </div>
-                        
+
                         ${job.description_preview ? `
                             <p class="text-gray-700 text-sm leading-relaxed">${job.description_preview.substring(0, 200)}${job.description_preview.length > 200 ? '...' : ''}</p>
                         ` : ''}
                     </div>
-                    
+
                     <div class="flex flex-col items-end space-y-3 ml-6">
                         <div class="${scoreClass} px-3 py-1 rounded-full text-sm font-medium">
                             Score: ${relevanceScore.toFixed(1)}
@@ -508,9 +508,9 @@ function displayJobs(jobs) {
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="flex justify-between items-center pt-4 border-t border-gray-100">
-                    <a href="${job.url || '#'}" 
+                    <a href="${job.url || '#'}"
                        target="_blank"
                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors text-sm font-medium">
                         <i class="fas fa-external-link-alt mr-2"></i>View Job
@@ -520,7 +520,7 @@ function displayJobs(jobs) {
             </div>
         `;
     });
-    
+
     html += '</div>';
     container.innerHTML = html;
 }
@@ -536,7 +536,7 @@ async function likeJob(jobRef, feedback) {
         const response = await fetch(`http://localhost:8000/likes/${jobRef}?feedback=${feedback}`, {
             method: 'POST'
         });
-        
+
         if (response.ok) {
             showNotification(`Job ${feedback === 'like' ? 'liked' : 'disliked'}!`, 'success');
             loadUserStats(); // Refresh stats

@@ -2,9 +2,9 @@
 import os
 import sys
 from pathlib import Path
+
 import pandas as pd
 import pytest
-
 
 # Add project root to Python path to enable imports
 project_root = Path(__file__).parent.parent
@@ -31,15 +31,15 @@ def test_env_vars():
         "AZURE_STORAGE_CONNECTION_STRING": "DefaultEndpointsProtocol=https;AccountName=test;AccountKey=test",
         "AZURE_CONTAINER_NAME": "test-container",
     }
-    
+
     # Store original values to restore later
     original_values = {}
     for key, value in test_vars.items():
         original_values[key] = os.environ.get(key)
         os.environ[key] = value
-    
+
     yield test_vars
-    
+
     # Restore original values
     for key, original_value in original_values.items():
         if original_value is not None:
@@ -88,12 +88,12 @@ def sample_cv_content():
     return """
     John Doe
     Data Scientist
-    
+
     Experience:
     - 3 years as Data Scientist at TechCorp
     - Machine Learning, Python, SQL
     - Built recommendation systems
-    
+
     Skills: Python, Machine Learning, SQL, Docker, AWS
     """
 
@@ -106,5 +106,5 @@ def sample_job_description():
         "company": "TechStartup",
         "description": "We are looking for a Senior Data Scientist with experience in machine learning, Python programming, and cloud platforms like AWS.",
         "requirements": ["Python", "Machine Learning", "SQL", "AWS"],
-        "location": "Paris, France"
+        "location": "Paris, France",
     }

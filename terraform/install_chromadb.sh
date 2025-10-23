@@ -74,7 +74,7 @@ handlers:
     level: INFO
     formatter: default
     stream: ext://sys.stdout
-  
+
   file:
     class: logging.FileHandler
     level: INFO

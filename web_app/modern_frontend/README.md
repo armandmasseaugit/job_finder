@@ -136,7 +136,7 @@ async def upload_cv(cv_file: UploadFile = File(...)):
     # Votre logique d'upload
     pass
 
-@app.post("/cv/match") 
+@app.post("/cv/match")
 async def match_cv(request: CVMatchRequest):
     # Votre logique de matching avec ChromaDB
     pass
@@ -171,7 +171,7 @@ matches = chroma_dataset.query_similar_jobs(cv_text, top_k=5)
 ## 🚀 Prochaines étapes
 
 1. **Intégration backend** : Connecter aux vraies données
-2. **ChromaDB** : Implémenter le vrai matching sémantique  
+2. **ChromaDB** : Implémenter le vrai matching sémantique
 3. **Authentification** : Système de login utilisateur
 4. **Pagination** : Pour les listes d'offres
 5. **Notifications** : Système d'alertes temps réel

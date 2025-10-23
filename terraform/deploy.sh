@@ -37,27 +37,27 @@ log_error() {
 
 check_prerequisites() {
     log_info "Checking prerequisites..."
-    
+
     # Check if Azure CLI is installed
     if ! command -v az &> /dev/null; then
         log_error "Azure CLI is not installed. Please install it first:"
         echo "https://docs.microsoft.com/en-us/cli/azure/install-azure-cli"
         exit 1
     fi
-    
+
     # Check if Terraform is installed
     if ! command -v terraform &> /dev/null; then
         log_error "Terraform is not installed. Please install it first:"
         echo "https://learn.hashicorp.com/tutorials/terraform/install-cli"
         exit 1
     fi
-    
+
     # Check if logged into Azure
     if ! az account show &> /dev/null; then
         log_error "Not logged into Azure. Please run 'az login' first."
         exit 1
     fi
-    
+
     # Check if SSH key exists
     if [ ! -f ~/.ssh/id_rsa.pub ]; then
         log_warning "SSH public key not found at ~/.ssh/id_rsa.pub"
@@ -71,14 +71,14 @@ check_prerequisites() {
             exit 1
         fi
     fi
-    
+
     log_success "All prerequisites met"
 }
 
 setup_tfvars() {
     if [ ! -f "$TFVARS_FILE" ]; then
         log_info "Creating terraform.tfvars file..."
-        
+
         # Get user's public IP
         log_info "Getting your public IP address..."
         USER_IP=$(curl -s ifconfig.me)
@@ -89,7 +89,7 @@ setup_tfvars() {
             USER_IP="$USER_IP/32"
             log_info "Detected your public IP: $USER_IP"
         fi
-        
+
         # Create tfvars file
         cat > "$TFVARS_FILE" << EOF
 # ChromaDB Azure VM Configuration
@@ -115,10 +115,10 @@ chromadb_port = 8000
 environment  = "production"
 project_name = "job-finder"
 EOF
-        
+
         log_success "Created terraform.tfvars file"
         log_warning "Please review and edit $TFVARS_FILE if needed"
-        
+
         read -p "Press Enter to continue or Ctrl+C to exit and edit the file..."
     else
         log_info "Using existing terraform.tfvars file"
@@ -127,49 +127,49 @@ EOF
 
 deploy() {
     log_info "Starting ChromaDB deployment..."
-    
+
     cd "$TERRAFORM_DIR"
-    
+
     # Initialize Terraform
     log_info "Initializing Terraform..."
     terraform init
-    
+
     # Validate configuration
     log_info "Validating Terraform configuration..."
     terraform validate
-    
+
     # Plan deployment
     log_info "Planning deployment..."
     terraform plan -var-file="$TFVARS_FILE"
-    
+
     # Confirm deployment
     echo
     log_warning "This will create Azure resources that may incur costs!"
     read -p "Do you want to proceed with the deployment? (y/n): " -n 1 -r
     echo
-    
+
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         # Apply deployment
         log_info "Deploying ChromaDB infrastructure..."
         terraform apply -var-file="$TFVARS_FILE" -auto-approve
-        
+
         # Get outputs
         log_success "Deployment completed successfully!"
         echo
         log_info "Connection details:"
         terraform output
-        
+
         # Wait for ChromaDB to be ready
         log_info "Waiting for ChromaDB to be ready (this may take a few minutes)..."
         CHROMADB_IP=$(terraform output -raw chromadb_public_ip)
-        
+
         # Wait up to 10 minutes for ChromaDB to start
         for i in {1..60}; do
             if curl -s -f "http://$CHROMADB_IP:8000/api/v1/heartbeat" >/dev/null 2>&1; then
                 log_success "ChromaDB is ready and responding!"
                 break
             fi
-            
+
             if [ $i -eq 60 ]; then
                 log_warning "ChromaDB might still be starting. Check manually with:"
                 echo "curl http://$CHROMADB_IP:8000/api/v1/heartbeat"
@@ -178,7 +178,7 @@ deploy() {
                 sleep 10
             fi
         done
-        
+
         echo
         log_success "🎉 ChromaDB deployment completed!"
         echo
@@ -190,7 +190,7 @@ deploy() {
         echo "Python connection:"
         echo "  import chromadb"
         echo "  client = chromadb.HttpClient(host='$CHROMADB_IP', port=8000)"
-        
+
     else
         log_info "Deployment cancelled"
         exit 0
@@ -201,7 +201,7 @@ destroy() {
     log_warning "This will destroy all ChromaDB infrastructure!"
     read -p "Are you sure you want to destroy everything? (y/n): " -n 1 -r
     echo
-    
+
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         cd "$TERRAFORM_DIR"
         log_info "Destroying infrastructure..."
@@ -214,21 +214,21 @@ destroy() {
 
 status() {
     cd "$TERRAFORM_DIR"
-    
+
     if [ ! -f "terraform.tfstate" ]; then
         log_info "No infrastructure deployed yet"
         return
     fi
-    
+
     log_info "Current infrastructure status:"
     terraform show
-    
+
     # Try to check ChromaDB status
     if terraform output chromadb_public_ip >/dev/null 2>&1; then
         CHROMADB_IP=$(terraform output -raw chromadb_public_ip)
         echo
         log_info "Testing ChromaDB connectivity..."
-        
+
         if curl -s -f "http://$CHROMADB_IP:8000/api/v1/heartbeat" >/dev/null 2>&1; then
             log_success "ChromaDB is running and accessible"
         else

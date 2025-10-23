@@ -1,16 +1,16 @@
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv()
 
-from web_app.backend.routes import jobs, cv
+from web_app.backend.routes import cv, jobs
 
 app = FastAPI(
     title="Job Finder API",
     description="API for Job Finder application",
-    version="1.0.0"
+    version="1.0.0",
 )
 
 # Add CORS middleware

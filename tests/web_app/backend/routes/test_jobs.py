@@ -1,5 +1,4 @@
-import pytest
-from unittest.mock import patch, Mock
+from unittest.mock import Mock, patch
 
 
 class TestJobsRoutes:
@@ -8,7 +7,9 @@ class TestJobsRoutes:
     @patch("web_app.backend.routes.jobs.get_offers_")
     def test_get_offers(self, mock_get_offers, test_client):
         """Test getting job offers."""
-        mock_get_offers.return_value = [{"reference": "1", "name": "Test Job", "company_name": "Test Company"}]
+        mock_get_offers.return_value = [
+            {"reference": "1", "name": "Test Job", "company_name": "Test Company"}
+        ]
 
         response = test_client.get("/offers")
         assert response.status_code == 200
@@ -24,9 +25,9 @@ class TestJobsRoutes:
         """Test getting job offers with search query."""
         mock_get_offers.return_value = [
             {"id": "1", "title": "Python Developer", "company": "TechCorp"},
-            {"id": "2", "title": "Data Scientist", "company": "DataCorp"}
+            {"id": "2", "title": "Data Scientist", "company": "DataCorp"},
         ]
-        
+
         response = test_client.get("/offers?query=python")
         assert response.status_code == 200
         data = response.json()
@@ -78,12 +79,16 @@ class TestJobsRoutes:
     def test_invalid_feedback(self, test_client):
         """Test invalid feedback parameter."""
         job_id = "123"
-        
-        with patch('web_app.backend.services.azure_storage.blob_service_client') as mock_blob_client:
+
+        with patch(
+            "web_app.backend.services.azure_storage.blob_service_client"
+        ) as mock_blob_client:
             # Mock to avoid Azure upload error
-            mock_blob_client.get_blob_client.return_value.download_blob.return_value.readall.return_value = b"{}"
+            mock_blob_client.get_blob_client.return_value.download_blob.return_value.readall.return_value = (
+                b"{}"
+            )
             mock_blob_client.get_blob_client.return_value.upload_blob = Mock()
-            
+
             response = test_client.post(f"/likes/{job_id}?feedback=invalid")
             # Should handle invalid feedback appropriately
             assert response.status_code in (200, 400, 422, 500)

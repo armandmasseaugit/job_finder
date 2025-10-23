@@ -7,7 +7,7 @@ from .nodes import preprocess_jobs_for_embedding, vectorize_preprocessed_jobs
 
 def create_pipeline() -> Pipeline:
     """Create job embedding pipeline.
-    
+
     This pipeline:
     1. Takes raw job data from WTTJ scraping
     2. Preprocesses text for optimal embedding (removes stopwords, optimizes for 512 token limit)

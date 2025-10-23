@@ -1,8 +1,7 @@
 from kedro.pipeline import Pipeline, node, pipeline
 
-from .nodes import jobs_filtering, wttj_query_and_parsing
 # from .nodes import s3_uploading  # DEPRECATED: S3 functionality disabled in favor of Azure
-from .nodes import save_to_azure_and_chromadb
+from .nodes import jobs_filtering, save_to_azure_and_chromadb, wttj_query_and_parsing
 
 
 def create_pipeline() -> Pipeline:

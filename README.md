@@ -43,7 +43,7 @@ Below is a screenshot of the main interface with all job offers that can be sort
 - **Redis**: in-memory key-value store for caching and fast data access
 - **Kubernetes**: scalable deployment and job orchestration
 - **Terraform**: infrastructure as code for cloud resources (the ChromaDB vector database set on an Azure VM)
-- **ChromaDB**: 
+- **ChromaDB**:
 
 
 <div align="center">

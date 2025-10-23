@@ -64,6 +64,6 @@ def get_credentials():
 
 
 # For backward compatibility
-credentials = type('Credentials', (), {
-    'get': lambda self, key: get_credentials().get(key)
-})()
+credentials = type(
+    "Credentials", (), {"get": lambda self, key: get_credentials().get(key)}
+)()
