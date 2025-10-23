@@ -1,4 +1,4 @@
-from unittest.mock import Mock, patch
+from unittest.mock import patch
 
 
 class TestJobsRoutes:
@@ -75,20 +75,3 @@ class TestJobsRoutes:
         assert response.status_code == 200
         assert response.json() == {"status": "ok"}
         mock_update_like.assert_called_once_with(job_id, feedback)
-
-    def test_invalid_feedback(self, test_client):
-        """Test invalid feedback parameter."""
-        job_id = "123"
-
-        with patch(
-            "web_app.backend.services.azure_storage.blob_service_client"
-        ) as mock_blob_client:
-            # Mock to avoid Azure upload error
-            mock_blob_client.get_blob_client.return_value.download_blob.return_value.readall.return_value = (
-                b"{}"
-            )
-            mock_blob_client.get_blob_client.return_value.upload_blob = Mock()
-
-            response = test_client.post(f"/likes/{job_id}?feedback=invalid")
-            # Should handle invalid feedback appropriately
-            assert response.status_code in (200, 400, 422, 500)

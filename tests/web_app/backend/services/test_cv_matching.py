@@ -58,7 +58,7 @@ class TestCVMatching:
 
     def test_get_cv_matcher_function(self):
         """Test get_cv_matcher function."""
-        with patch("web_app.backend.services.cv_matching.CVMatcher") as mock_cv_matcher:
+        with patch("web_app.backend.services.cv_matching.CVMatcher"):
             from web_app.backend.services.cv_matching import get_cv_matcher
 
             matcher = get_cv_matcher()

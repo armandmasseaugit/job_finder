@@ -10,15 +10,6 @@ class TestAzureStorage:
 
     def test_get_offers(self):
         """Test getting offers from Azure storage."""
-        mock_data = [
-            {
-                "reference": "job1",
-                "name": "Data Scientist",
-                "company_name": "Company A",
-            },
-            {"reference": "job2", "name": "ML Engineer", "company_name": "Company B"},
-        ]
-
         with patch(
             "web_app.backend.services.azure_storage.pd.read_parquet"
         ) as mock_read_parquet:
@@ -39,9 +30,9 @@ class TestAzureStorage:
             mock_read_parquet.return_value = df
 
             with patch(
-                "web_app.backend.services.azure_storage.blob_service_client"
-            ) as mock_blob_client:
-                mock_blob_client.get_blob_client.return_value.download_blob.return_value.readall.return_value = (
+                "web_app.backend.services.azure_storage.get_blob_service_client"
+            ) as mock_get_blob_client:
+                mock_get_blob_client.return_value.get_blob_client.return_value.download_blob.return_value.readall.return_value = (
                     b"mock_data"
                 )
 
@@ -60,9 +51,9 @@ class TestAzureStorage:
 
         with patch("web_app.backend.services.azure_storage.REDIS_AVAILABLE", False):
             with patch(
-                "web_app.backend.services.azure_storage.blob_service_client"
-            ) as mock_blob_client:
-                mock_blob_client.get_blob_client.return_value.download_blob.return_value.readall.return_value = json.dumps(
+                "web_app.backend.services.azure_storage.get_blob_service_client"
+            ) as mock_get_blob_client:
+                mock_get_blob_client.return_value.get_blob_client.return_value.download_blob.return_value.readall.return_value = json.dumps(
                     mock_likes_data
                 ).encode(
                     "utf-8"
@@ -82,9 +73,9 @@ class TestAzureStorage:
 
         with patch("web_app.backend.services.azure_storage.REDIS_AVAILABLE", False):
             with patch(
-                "web_app.backend.services.azure_storage.blob_service_client"
-            ) as mock_blob_client:
-                mock_blob_client.get_blob_client.return_value.download_blob.return_value.readall.return_value = json.dumps(
+                "web_app.backend.services.azure_storage.get_blob_service_client"
+            ) as mock_get_blob_client:
+                mock_get_blob_client.return_value.get_blob_client.return_value.download_blob.return_value.readall.return_value = json.dumps(
                     mock_relevance_data
                 ).encode(
                     "utf-8"
@@ -103,17 +94,19 @@ class TestAzureStorage:
         existing_data = {"job1": "like"}
 
         with patch(
-            "web_app.backend.services.azure_storage.blob_service_client"
-        ) as mock_blob_client:
+            "web_app.backend.services.azure_storage.get_blob_service_client"
+        ) as mock_get_blob_client:
             # Mock download to return existing data
-            mock_blob_client.get_blob_client.return_value.download_blob.return_value.readall.return_value = json.dumps(
+            mock_get_blob_client.return_value.get_blob_client.return_value.download_blob.return_value.readall.return_value = json.dumps(
                 existing_data
             ).encode(
                 "utf-8"
             )
 
             # Mock upload_blob to avoid the ContentSettings error
-            mock_blob_client.get_blob_client.return_value.upload_blob = Mock()
+            mock_get_blob_client.return_value.get_blob_client.return_value.upload_blob = (
+                Mock()
+            )
 
             from web_app.backend.services.azure_storage import update_like
 
@@ -121,4 +114,4 @@ class TestAzureStorage:
             update_like("job1", "dislike")
 
             # Verify upload was called
-            mock_blob_client.get_blob_client.return_value.upload_blob.assert_called_once()
+            mock_get_blob_client.return_value.get_blob_client.return_value.upload_blob.assert_called_once()

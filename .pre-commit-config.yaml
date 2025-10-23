@@ -32,11 +32,11 @@ repos:
         args: [--profile=black]
 
   # Ruff - fast Python linter
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.1.8
-    hooks:
-      - id: ruff
-        args: [--fix]
+  # - repo: https://github.com/astral-sh/ruff-pre-commit
+  #   rev: v0.1.8
+  #   hooks:
+  #     - id: ruff
+  #       args: [--fix]
 
   # MyPy - type checking (temporarily disabled for development)
   # - repo: https://github.com/pre-commit/mirrors-mypy

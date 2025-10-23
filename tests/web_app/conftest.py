@@ -12,6 +12,8 @@ def test_client():
         "os.environ",
         {
             "AZURE_STORAGE_CONNECTION_STRING": "DefaultEndpointsProtocol=https;AccountName=test;AccountKey=test",
+            "AZURE_STORAGE_ACCOUNT_NAME": "test",
+            "AZURE_STORAGE_ACCOUNT_KEY": "test-key",
             "AZURE_CONTAINER_NAME": "test-container",
             "CHROMA_HOST": "localhost",
             "CHROMA_PORT": "8000",

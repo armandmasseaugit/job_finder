@@ -6,7 +6,6 @@ import re
 import pandas as pd
 
 try:
-    import spacy
     from spacy.lang.en.stop_words import STOP_WORDS as EN_STOP_WORDS
     from spacy.lang.fr.stop_words import STOP_WORDS as FR_STOP_WORDS
 
@@ -82,8 +81,10 @@ JOB_STOPWORDS = {
     "qualifications",
     "requirements",
     "expérience",
-    "experience",
 }
+
+# Minimum word length for filtering
+MIN_WORD_LENGTH = 2
 
 
 def clean_job_text(text: str) -> str:
@@ -127,7 +128,7 @@ def clean_job_text(text: str) -> str:
         # - Not a number
         # - Not a single character
         if (
-            len(word_clean) > 2
+            len(word_clean) > MIN_WORD_LENGTH
             and word_clean not in STOPWORDS
             and word_clean not in JOB_STOPWORDS
             and not word_clean.isdigit()

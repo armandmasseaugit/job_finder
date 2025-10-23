@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 from io import BytesIO
 
@@ -7,14 +8,20 @@ import pandas as pd
 import redis
 from azure.storage.blob import BlobServiceClient, ContentSettings
 
+logger = logging.getLogger(__name__)
+
 # -------------------------
 # AZURE BLOB STORAGE CONFIG
 # -------------------------
 
-blob_service_client = BlobServiceClient(
-    account_url=f"https://{os.environ['AZURE_STORAGE_ACCOUNT_NAME']}.blob.core.windows.net",
-    credential=os.environ["AZURE_STORAGE_ACCOUNT_KEY"],
-)
+
+def get_blob_service_client():
+    """Get Azure Blob Service Client."""
+    return BlobServiceClient(
+        account_url=f"https://{os.environ['AZURE_STORAGE_ACCOUNT_NAME']}.blob.core.windows.net",
+        credential=os.environ["AZURE_STORAGE_ACCOUNT_KEY"],
+    )
+
 
 # Azure Blob Storage containers mapping
 CONTAINERS = {
@@ -29,16 +36,16 @@ CONTAINERS = {
 try:
     redis_client = redis.Redis(
         host=os.getenv("REDIS_HOST", "localhost"),
-        port=int(os.getenv("REDIS_PORT", 6379)),
+        port=int(os.getenv("REDIS_PORT", "6379")),
         db=0,
         decode_responses=True,
     )
     # Test Redis connection
     redis_client.ping()
     REDIS_AVAILABLE = True
-    print("✅ Redis connection successful")
+    logger.info("✅ Redis connection successful")
 except Exception as e:
-    print(f"⚠️ Redis not available: {e}")
+    logger.warning(f"⚠️ Redis not available: {e}")
     redis_client = None
     REDIS_AVAILABLE = False
 
@@ -53,7 +60,7 @@ def get_offers():
         if REDIS_AVAILABLE and redis_client.exists(cache_key):
             return json.loads(redis_client.get(cache_key))
 
-        blob_client = blob_service_client.get_blob_client(
+        blob_client = get_blob_service_client().get_blob_client(
             container=CONTAINERS["jobs"], blob="wttj_jobs.parquet"
         )
         buffer = BytesIO(blob_client.download_blob().readall())
@@ -76,7 +83,7 @@ def get_offers():
 
         return offers
     except Exception as e:
-        print(f"Error getting offers: {e}")
+        logger.error(f"Error getting offers: {e}")
         return []
 
 
@@ -88,7 +95,7 @@ def get_likes():
         if REDIS_AVAILABLE and redis_client.exists(cache_key):
             return json.loads(redis_client.get(cache_key))
 
-        blob_client = blob_service_client.get_blob_client(
+        blob_client = get_blob_service_client().get_blob_client(
             container=CONTAINERS["likes"], blob="job_likes.json"
         )
         blob_data = blob_client.download_blob().readall()
@@ -100,7 +107,7 @@ def get_likes():
 
         return likes
     except Exception as e:
-        print(f"Error getting likes: {e}")
+        logger.error(f"Error getting likes: {e}")
         return {}
 
 
@@ -112,7 +119,7 @@ def get_relevance():
         if REDIS_AVAILABLE and redis_client.exists(cache_key):
             return json.loads(redis_client.get(cache_key))
 
-        blob_client = blob_service_client.get_blob_client(
+        blob_client = get_blob_service_client().get_blob_client(
             container=CONTAINERS["relevance"], blob="scored_jobs.json"
         )
         blob_data = blob_client.download_blob().readall()
@@ -124,13 +131,13 @@ def get_relevance():
 
         return relevance
     except Exception as e:
-        print(f"Error getting relevance: {e}")
+        logger.error(f"Error getting relevance: {e}")
         return {}
 
 
 def update_like(job_ref: str, feedback: str):
     try:
-        blob_client = blob_service_client.get_blob_client(
+        blob_client = get_blob_service_client().get_blob_client(
             container=CONTAINERS["likes"], blob="job_likes.json"
         )
         try:
@@ -143,7 +150,7 @@ def update_like(job_ref: str, feedback: str):
 
     existing_data[job_ref] = feedback
 
-    blob_client = blob_service_client.get_blob_client(
+    blob_client = get_blob_service_client().get_blob_client(
         container=CONTAINERS["likes"], blob="job_likes.json"
     )
     blob_client.upload_blob(
