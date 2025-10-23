@@ -197,14 +197,36 @@ python -m pytest --cov=src/job_finder tests/
 
 ## 📝 Code Standards
 
+###  Pre-commit Hooks
+
+This project uses [pre-commit](https://pre-commit.com/) to automatically check code quality before every commit. Pre-commit runs tools like ruff, black, isort, and mypy to catch errors and enforce style, so you don't have to remember to run them manually.
+
+### How to install pre-commit
+
+1. Install pre-commit (if not already installed):
+   ```bash
+   pip install pre-commit
+   ```
+2. Install the git hooks:
+   ```bash
+   pre-commit install
+   ```
+   This will set up the hooks so they run automatically on every `git commit`.
+
+3. (Optional) Run all hooks on all files to check the whole codebase:
+   ```bash
+   pre-commit run --all-files
+   ```
+
+If a hook fails, your commit will be blocked until you fix the issues. This helps keep the codebase clean and consistent for everyone!
+
+
 ### Python Code Style
 
 - Follow [PEP 8](https://pep8.org/)
 - Use type hints where possible
 - Maximum line length: 88 characters (Black default)
 - Use meaningful variable and function names
-- Format code with `make format` before committing
-- Check linting with `make lint`
 
 ### Frontend Code Style
 
