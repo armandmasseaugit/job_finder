@@ -1,4 +1,3 @@
-os
 fastapi
 uvicorn[standard]
 numpy
