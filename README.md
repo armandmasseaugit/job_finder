@@ -79,6 +79,21 @@ This automated pipeline ensures that the data is always fresh, the recommendatio
 Want to contribute to this project? Please read our [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to get started, coding standards, and the development workflow.
 
 
+
+## Modern Python Tooling
+
+This project uses a modern Python development workflow to ensure code quality, maintainability, and type safety:
+
+- **mypy**: static type checking for Python
+- **pre-commit**: automated code quality checks before every commit
+- **ruff**: fast Python linter and code style enforcement
+- **black**: uncompromising code formatter
+- **isort**: import sorting
+- **pytest**: comprehensive test suite
+
+All code is checked automatically on every commit and pull request, ensuring a robust and maintainable codebase.
+
+
 ## Secrets Management
 
 In a typical Kedro setup, secrets are managed by placing credential files inside the `conf/`
