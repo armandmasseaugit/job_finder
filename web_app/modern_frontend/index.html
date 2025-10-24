@@ -4,54 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Finder - Modern</title>
-    
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <!-- HTMX -->
     <script src="https://unpkg.com/htmx.org@1.9.6"></script>
-    
+
     <!-- Alpine.js for interactive components -->
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    
+
     <!-- App JavaScript -->
     <script src="app.js"></script>
-    
+
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <style>
         /* Custom animations */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        
+
         .fade-in {
             animation: fadeIn 0.5s ease-out;
         }
-        
+
         /* Modern glassmorphism effect */
         .glass {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
-        
+
         /* Custom scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
         }
-        
+
         ::-webkit-scrollbar-track {
             background: #f1f1f1;
         }
-        
+
         ::-webkit-scrollbar-thumb {
             background: #3b82f6;
             border-radius: 4px;
         }
-        
+
         /* Loading animation */
         .htmx-request {
             opacity: 0.6;
@@ -60,7 +60,7 @@
     </style>
 </head>
 <body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
-    
+
     <!-- Navigation -->
     <nav class="bg-white shadow-lg sticky top-0 z-50" x-data="{ currentPage: 'home' }">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -72,17 +72,17 @@
                         </h1>
                     </div>
                 </div>
-                
+
                 <!-- Navigation Links -->
                 <div class="hidden md:flex items-center space-x-8">
-                    <button 
+                    <button
                         data-nav="home"
                         class="px-3 py-2 text-sm font-medium transition-colors text-blue-600 border-b-2 border-blue-600"
                     >
                         <i class="fas fa-home mr-1"></i>Home
                     </button>
-                    
-                    <button 
+
+                    <button
                         data-nav="explore"
                         class="px-3 py-2 text-sm font-medium transition-colors text-gray-500 hover:text-gray-700"
                         hx-get="/explore"
@@ -91,8 +91,8 @@
                     >
                         <i class="fas fa-search mr-1"></i>Explore Jobs
                     </button>
-                    
-                    <button 
+
+                    <button
                         data-nav="cv-match"
                         class="px-3 py-2 text-sm font-medium transition-colors text-gray-500 hover:text-gray-700"
                         hx-get="/cv-match"
@@ -102,7 +102,7 @@
                         <i class="fas fa-file-user mr-1"></i>CV Match <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full ml-1">NEW</span>
                     </button>
                 </div>
-                
+
                 <!-- Mobile menu button -->
                 <div class="md:hidden flex items-center">
                     <button class="text-gray-500 hover:text-gray-700">
@@ -139,8 +139,8 @@
                         </div>
                         <div>
                             <p class="text-sm text-gray-600">Available Jobs</p>
-                            <p class="text-2xl font-bold text-gray-900" 
-                               hx-get="http://localhost:8000/stats" 
+                            <p class="text-2xl font-bold text-gray-900"
+                               hx-get="http://localhost:8000/stats"
                                hx-trigger="load"
                                hx-target="this"
                                hx-select="response.total_jobs">
@@ -149,7 +149,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
                     <div class="flex items-center">
                         <div class="bg-green-100 rounded-lg p-3 mr-4">
@@ -158,7 +158,7 @@
                         <div>
                             <p class="text-sm text-gray-600">Jobs Liked</p>
                             <p class="text-2xl font-bold text-gray-900"
-                               hx-get="http://localhost:8000/stats" 
+                               hx-get="http://localhost:8000/stats"
                                hx-trigger="load"
                                hx-target="this"
                                hx-select="response.liked_jobs">
@@ -167,7 +167,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
                     <div class="flex items-center">
                         <div class="bg-purple-100 rounded-lg p-3 mr-4">
@@ -176,7 +176,7 @@
                         <div>
                             <p class="text-sm text-gray-600">Jobs Disliked</p>
                             <p class="text-2xl font-bold text-gray-900"
-                               hx-get="http://localhost:8000/stats" 
+                               hx-get="http://localhost:8000/stats"
                                hx-trigger="load"
                                hx-target="this"
                                hx-select="response.disliked_jobs">
@@ -206,7 +206,7 @@
                         <i class="fas fa-arrow-right"></i>
                     </div>
                 </div>
-                
+
                 <!-- CV Match Card -->
                 <div class="bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl p-8 text-white hover:from-purple-600 hover:to-pink-700 transition-all cursor-pointer transform hover:scale-105"
                      hx-get="/cv-match"

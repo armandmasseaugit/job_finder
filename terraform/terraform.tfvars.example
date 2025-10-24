@@ -1,0 +1,28 @@
+# Example terraform.tfvars
+# Copy this file to terraform.tfvars and customize values
+
+# Resource configuration
+resource_group_name = "rg-chromadb-prod"
+location           = "West Europe"
+vm_name            = "vm-chromadb"
+
+# VM specifications
+vm_size        = "Standard_B2s"  # 2 vCPUs, 4 GB RAM (~€30-40/month)
+admin_username = "azureuser"
+
+# SSH configuration
+ssh_public_key_path = "~/.ssh/id_rsa.pub"
+
+# Security: Replace with your actual IP address
+# Get your IP: curl ifconfig.me
+allowed_ssh_ips = ["0.0.0.0/0"]  # CHANGE THIS to your IP address for security!
+
+# ChromaDB configuration
+chromadb_port = 8000
+
+# Tagging
+environment  = "production"
+project_name = "job-finder"
+
+# Optional: Custom installation script
+# custom_data_script = "./install_chromadb.sh"

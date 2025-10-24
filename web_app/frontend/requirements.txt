@@ -1,6 +1,0 @@
-# Core Python packages
-requests
-pandas
-streamlit
-streamlit-lottie
-streamlit-on-Hover-tabs

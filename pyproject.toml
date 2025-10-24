@@ -87,6 +87,7 @@ dev = [
     "mypy>=1.5.0",
     "bandit>=1.7.0",
     "pylint>=2.15.0",
+    "pip-audit>=2.6.0",
 
     # Development tools
     "pre-commit>=3.3.0",
@@ -130,7 +131,12 @@ source_dir = "src"
 [tool.pytest.ini_options]
 addopts = """
 --cov-report term-missing \
---cov src/job_finder -ra"""
+--cov src/job_finder \
+--cov web_app/backend -ra"""
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
 
 [tool.coverage.report]
 fail_under = 0

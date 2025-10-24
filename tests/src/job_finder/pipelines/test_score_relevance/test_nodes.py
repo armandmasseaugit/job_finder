@@ -1,4 +1,5 @@
 import pandas as pd
+
 from job_finder.pipelines.score_relevance.nodes import (
     feature_engineering,
     load_and_merge_feedback,

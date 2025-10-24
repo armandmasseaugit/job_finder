@@ -1,0 +1,85 @@
+# Dockerignore pour l'image de base - on minimise le contexte
+# car l'image de base n'a besoin d'aucun fichier du projet
+
+# Exclure tout par défaut
+**
+
+# Permettre seulement les fichiers essentiels si nécessaire
+# (pour l'image de base, on n'en a pas besoin)
+
+# Documentation
+*.md
+*.txt
+*.rst
+
+# Git
+.git/
+.gitignore
+.github/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+Dockerfile*
+docker-compose*
+.dockerignore*
+
+# Data et cache
+data/
+notebooks/
+logs/
+*.log
+
+# Configuration
+.env
+.env.*
+conf/
+
+# Code source (pas nécessaire pour l'image de base)
+src/
+web_app/
+tests/
+
+# Terraform et infra
+terraform/
+
+# Autres
+Makefile
+build.sh
+*.yml
+*.yaml

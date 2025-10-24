@@ -19,8 +19,9 @@
 #
 import re
 
-from job_finder import __version__ as release
 from kedro.framework.cli.utils import find_stylesheets
+
+from job_finder import __version__ as release
 
 # -- Project information -----------------------------------------------------
 

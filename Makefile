@@ -69,6 +69,11 @@ test: ## 🧪 Run tests with pytest
 test-cov: ## 📊 Run tests with coverage report
 	$(PYTHON) -m pytest tests/ --cov=src/$(PACKAGE) --cov-report=html --cov-report=term-missing
 
+.PHONY: security
+security: ## 🔒 Run security checks
+	$(PYTHON) -m bandit -r src/ web_app/
+	$(PYTHON) -m pip-audit
+
 # ==================================================================================
 # KEDRO PIPELINE
 # ==================================================================================
@@ -109,8 +114,9 @@ redis-start: ## 🟥 Start Redis server
 
 .PHONY: docker-build
 docker-build: ## 🐳 Build all Docker images
-	docker build -f fastapi.Dockerfile -t job-finder-api .
-	docker build -f streamlit.Dockerfile -t job-finder-web .
+	docker build -f base.Dockerfile -t job-finder-base .
+	docker build -f fastapi.Dockerfile -t job-finder-backend .
+	docker build -f frontend.Dockerfile -t job-finder-frontend .
 	docker build -f kedro.Dockerfile -t job-finder-kedro .
 
 .PHONY: docker-up

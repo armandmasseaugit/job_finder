@@ -1,0 +1,118 @@
+name: Release & Deploy
+
+description: >
+  Create a GitHub release and trigger production deployment on new tags.
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g., v1.0.0)'
+        required: true
+        type: string
+
+jobs:
+  create-release:
+    name: 🚀 Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: "latest"
+
+      - name: Install dependencies
+        run: make install
+
+      - name: Run full test suite
+        run: make test-cov
+
+      - name: Generate changelog
+        id: changelog
+        run: |
+          # Get the previous tag
+          PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+
+          # Generate changelog between tags
+          if [ -n "$PREVIOUS_TAG" ]; then
+            CHANGELOG=$(git log --pretty=format:"- %s" $PREVIOUS_TAG..HEAD)
+          else
+            CHANGELOG=$(git log --pretty=format:"- %s")
+          fi
+
+          echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name || github.event.inputs.version }}
+          release_name: Release ${{ github.ref_name || github.event.inputs.version }}
+          body: |
+            ## 🎉 What's New
+
+            ${{ steps.changelog.outputs.changelog }}
+
+            ## 🐳 Docker Images
+
+            The following Docker images are available for this release:
+            - `${{ secrets.DOCKER_USERNAME }}/job_finder_kedro:${{ github.ref_name || github.event.inputs.version }}`
+            - `${{ secrets.DOCKER_USERNAME }}/job_finder_fastapi:${{ github.ref_name || github.event.inputs.version }}`
+            - `${{ secrets.DOCKER_USERNAME }}/job_finder_frontend:${{ github.ref_name || github.event.inputs.version }}`
+
+            ## 📋 Installation
+
+            ```bash
+            # Clone the repository
+            git clone https://github.com/armandmasseaugit/job_finder.git
+            cd job_finder
+
+            # Install dependencies
+            make install
+
+            # Run the application
+            make backend  # Start backend
+            make frontend # Start frontend
+            ```
+
+            Full documentation is available in the [README](README.md).
+          draft: false
+          prerelease: ${{ contains(github.ref_name, 'rc') || contains(github.ref_name, 'beta') || contains(github.ref_name, 'alpha') }}
+
+  deploy-production:
+    name: 🌐 Deploy to Production
+    runs-on: ubuntu-latest
+    needs: create-release
+    if: startsWith(github.ref, 'refs/tags/v') && !contains(github.ref, 'rc') && !contains(github.ref, 'beta') && !contains(github.ref, 'alpha')
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy notification
+        run: |
+          echo "🚀 Deploying version ${{ github.ref_name }} to production"
+          # Add your deployment steps here (e.g., update Kubernetes manifests, trigger deployment, etc.)
+
+      # Example: Update Kubernetes deployment
+      # - name: Update Kubernetes deployment
+      #   run: |
+      #     kubectl set image deployment/job-finder-backend backend=${{ secrets.DOCKER_USERNAME }}/job_finder_fastapi:${{ github.ref_name }}
+      #     kubectl set image deployment/job-finder-frontend frontend=${{ secrets.DOCKER_USERNAME }}/job_finder_frontend:${{ github.ref_name }}
+      #     kubectl set image cronjob/job-finder-kedro kedro=${{ secrets.DOCKER_USERNAME }}/job_finder_kedro:${{ github.ref_name }}

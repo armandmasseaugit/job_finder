@@ -24,17 +24,25 @@ Thank you for your interest in contributing to Job Finder! This document provide
    make install
    ```
 
+
 3. **Set up environment variables**
-   
-   Required environment variables:
-   ```bash
-   # Azure Storage (for data storage)
-   export AZURE_STORAGE_ACCOUNT_NAME="your_storage_account"
-   export AZURE_STORAGE_ACCOUNT_KEY="your_storage_key"
-   
-   # Email (for notifications)
-   export SENDER_EMAIL_PASSWORD="your_email_app_password"
-   ```
+
+    If you want to run the project on **Azure** (remote ChromaDB, Azure Storage, etc.):
+
+    - Copy the example environment file and fill in your credentials:
+       ```bash
+       cp .env.example .env
+       # Then edit .env and fill in your Azure Storage, email, and ChromaDB info
+       ```
+    - This is only required for Azure/production deployments. If you are running everything locally, you can ignore `.env.example`.
+
+    - To run the Kedro pipeline locally (with local files and local ChromaDB):
+       - Open `conf/local/catalog.yml`,
+       - Copy the relevant (uncommented) dataset definitions,
+       - Paste them into `conf/base/catalog.yml` to replace the Azure-based configuration.
+       - This will make the pipeline use local files and local ChromaDB instead of Azure resources.
+
+    **Note:** Never commit your real `.env` file to version control.
 
 4. **Start Redis (required for caching)**
    ```bash
@@ -189,14 +197,36 @@ python -m pytest --cov=src/job_finder tests/
 
 ## 📝 Code Standards
 
+###  Pre-commit Hooks
+
+This project uses [pre-commit](https://pre-commit.com/) to automatically check code quality before every commit. Pre-commit runs tools like ruff, black, isort, and mypy to catch errors and enforce style, so you don't have to remember to run them manually.
+
+### How to install pre-commit
+
+1. Install pre-commit (if not already installed):
+   ```bash
+   pip install pre-commit
+   ```
+2. Install the git hooks:
+   ```bash
+   pre-commit install
+   ```
+   This will set up the hooks so they run automatically on every `git commit`.
+
+3. (Optional) Run all hooks on all files to check the whole codebase:
+   ```bash
+   pre-commit run --all-files
+   ```
+
+If a hook fails, your commit will be blocked until you fix the issues. This helps keep the codebase clean and consistent for everyone!
+
+
 ### Python Code Style
 
 - Follow [PEP 8](https://pep8.org/)
 - Use type hints where possible
 - Maximum line length: 88 characters (Black default)
 - Use meaningful variable and function names
-- Format code with `make format` before committing
-- Check linting with `make lint`
 
 ### Frontend Code Style
 
@@ -222,6 +252,8 @@ The application runs on multiple ports:
 
 
 ## 📞 Getting Help
+
+Feel free to contact me at : armand.masseau@gmail.com
 
 - **Questions**: Open a discussion on GitHub
 - **Bugs**: Create an issue with the bug template

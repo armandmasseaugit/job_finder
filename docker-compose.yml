@@ -1,43 +1,63 @@
 version: '3.8'
 
 services:
-  # FastAPI Backend
-  api:
+  backend:
     build:
       context: .
       dockerfile: fastapi.Dockerfile
+    image: job-finder-backend:latest
+    container_name: job-finder-backend
     ports:
       - "8000:8000"
     environment:
-      - ENV=development
+      - PYTHONUNBUFFERED=1
+      - AZURE_STORAGE_ACCOUNT_NAME=${AZURE_STORAGE_ACCOUNT_NAME}
+      - AZURE_STORAGE_ACCOUNT_KEY=${AZURE_STORAGE_ACCOUNT_KEY}
+      # ChromaDB Configuration
+      - CHROMA_HOST=${CHROMA_HOST}
+      - CHROMA_PORT=${CHROMA_PORT:-8000}
+      - CHROMA_SSL=${CHROMA_SSL:-false}
+      - CHROMA_DB_PATH=${CHROMA_DB_PATH:-/app/data/chroma}
     volumes:
       - ./conf:/app/conf:ro
+      - ./src:/app/src:ro
     depends_on:
       - redis
     networks:
       - job-finder-network
 
-  # Streamlit Frontend
-  web:
+  frontend:
     build:
       context: .
-      dockerfile: streamlit.Dockerfile
+      dockerfile: frontend.Dockerfile
+    image: job-finder-frontend:latest
+    container_name: job-finder-frontend
     ports:
-      - "8501:8501"
+      - "3000:3000"
     environment:
-      - API_URL=http://api:8000
+      - PYTHONUNBUFFERED=1
     depends_on:
-      - api
+      - backend
     networks:
       - job-finder-network
 
-  # Kedro Pipeline Runner
   kedro:
     build:
       context: .
       dockerfile: kedro.Dockerfile
+    image: job-finder-kedro:latest
+    container_name: job-finder-kedro
+    command: ["kedro", "run"]
     environment:
-      - ENV=development
+      - PYTHONUNBUFFERED=1
+      - AZURE_STORAGE_ACCOUNT_NAME=${AZURE_STORAGE_ACCOUNT_NAME}
+      - AZURE_STORAGE_ACCOUNT_KEY=${AZURE_STORAGE_ACCOUNT_KEY}
+      - SENDER_EMAIL_PASSWORD=${SENDER_EMAIL_PASSWORD}
+      # ChromaDB Configuration
+      - CHROMA_HOST=${CHROMA_HOST}
+      - CHROMA_PORT=${CHROMA_PORT:-8000}
+      - CHROMA_SSL=${CHROMA_SSL:-false}
+      - CHROMA_DB_PATH=${CHROMA_DB_PATH:-/app/data/chroma}
     volumes:
       - ./conf:/app/conf:ro
       - ./data:/app/data
@@ -46,32 +66,17 @@ services:
     networks:
       - job-finder-network
 
-  # Redis Cache
   redis:
     image: redis:7-alpine
+    container_name: job_finder_redis
     ports:
       - "6379:6379"
     volumes:
       - redis_data:/data
-    command: redis-server --appendonly yes
+    command: ["redis-server", "--appendonly", "yes"]
     networks:
       - job-finder-network
 
-  # Development tools (optional)
-  jupyter:
-    build:
-      context: .
-      dockerfile: kedro.Dockerfile
-    ports:
-      - "8888:8888"
-    environment:
-      - JUPYTER_ENABLE_LAB=yes
-    volumes:
-      - ./:/app
-      - ./data:/app/data
-    command: jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root
-    networks:
-      - job-finder-network
 
 volumes:
   redis_data:

@@ -41,6 +41,12 @@ def load_credentials():
             "account_name": os.environ.get("AZURE_STORAGE_ACCOUNT_NAME"),
             "account_key": os.environ.get("AZURE_STORAGE_ACCOUNT_KEY"),
         },
+        "chroma_credentials": {
+            "host": os.environ.get("CHROMA_HOST"),
+            "port": int(os.environ.get("CHROMA_PORT", 8000)),
+            "ssl": os.environ.get("CHROMA_SSL", "false").lower() == "true",
+            "path": os.environ.get("CHROMA_DB_PATH", "./data/chroma"),
+        },
         "sender_email_password": os.environ.get("SENDER_EMAIL_PASSWORD"),
     }
 
@@ -58,6 +64,6 @@ def get_credentials():
 
 
 # For backward compatibility
-credentials = type('Credentials', (), {
-    'get': lambda self, key: get_credentials().get(key)
-})()
+credentials = type(
+    "Credentials", (), {"get": lambda self, key: get_credentials().get(key)}
+)()

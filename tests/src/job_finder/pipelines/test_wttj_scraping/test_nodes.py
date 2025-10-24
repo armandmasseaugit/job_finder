@@ -1,17 +1,13 @@
-import html
-import re
-from unittest.mock import Mock, patch, MagicMock
+from unittest.mock import Mock, patch
 
 import pandas as pd
-import pytest
 import requests
 
 from job_finder.pipelines.wttj_scraping.nodes import (
     clean_html_description,
     get_job_details,
-    wttj_query_and_parsing,
     jobs_filtering,
-    s3_uploading,
+    wttj_query_and_parsing,
 )
 
 
@@ -227,61 +223,6 @@ class TestJobsFiltering:
         result = jobs_filtering(test_data, queries)
 
         assert len(result) == 0
-
-
-class TestS3Uploading:
-    """Test cases for the s3_uploading function."""
-
-    @patch("job_finder.pipelines.wttj_scraping.nodes.datetime")
-    def test_s3_uploading_basic(self, mock_datetime):
-        """Test basic s3_uploading functionality."""
-        # Mock datetime
-        mock_datetime.now.return_value.isoformat.return_value = "2023-10-14T10:30:00"
-
-        # Create test DataFrame
-        test_data = pd.DataFrame(
-            {
-                "name": ["Python Developer", "Java Engineer"],
-                "company_name": ["Company A", "Company B"],
-            }
-        )
-
-        result_df, result_metadata = s3_uploading(test_data)
-
-        # Check that provider column is added
-        assert "provider" in result_df.columns
-        assert all(result_df["provider"] == "Welcome to the jungle")
-
-        # Check metadata
-        assert result_metadata["last_scrape"] == "2023-10-14T10:30:00"
-
-    def test_s3_uploading_preserves_original_data(self):
-        """Test that original data is preserved."""
-        test_data = pd.DataFrame(
-            {
-                "name": ["Python Developer"],
-                "company_name": ["Company A"],
-                "salary": [50000],
-            }
-        )
-
-        result_df, _ = s3_uploading(test_data)
-
-        # Original columns should be preserved
-        assert "name" in result_df.columns
-        assert "company_name" in result_df.columns
-        assert "salary" in result_df.columns
-        assert result_df.iloc[0]["name"] == "Python Developer"
-        assert result_df.iloc[0]["salary"] == 50000
-
-    def test_s3_uploading_empty_dataframe(self):
-        """Test s3_uploading with empty DataFrame."""
-        test_data = pd.DataFrame()
-        result_df, result_metadata = s3_uploading(test_data)
-
-        assert "provider" in result_df.columns
-        assert len(result_df) == 0
-        assert "last_scrape" in result_metadata
 
 
 class TestWttjQueryAndParsing:

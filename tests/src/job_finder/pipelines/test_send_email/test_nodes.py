@@ -1,6 +1,5 @@
 from datetime import datetime, timedelta
-from email.mime.multipart import MIMEMultipart
-from unittest.mock import Mock, patch, MagicMock
+from unittest.mock import MagicMock, patch
 
 import pandas as pd
 import pytest
