@@ -33,20 +33,24 @@ Below is a screenshot of the main interface with all job offers that can be sort
 
 ## Technology Stack
 
-- **Python 3.8+**
-- **Kedro**: reproducible and modular data pipelines
-- **Pandas, NumPy**: data manipulation and processing
-- **scikit-learn**: machine learning (SGDClassifier, TF-IDF vectorization)
-- **FastAPI**: backend API for job offers, relevance scores, and feedback
-- **Frontend**: custom web app
-- **Azure**: deployment (AKS) and storage for scraped data, models, and results
-- **Email service**: daily summaries (SMTP or any email API)
-- **Docker**: containerized deployment
-- **GitHub Actions**: CI/CD for testing, building, and deploying Docker containers
-- **Redis**: in-memory key-value store for caching and fast data access
-- **Kubernetes**: scalable deployment and job orchestration
-- **Terraform**: infrastructure as code for cloud resources (the ChromaDB vector database set on an Azure VM)
-- **ChromaDB**:
+- **Python 3.9+** — core language for data processing and backend logic  
+- **Kedro** — reproducible and modular data pipelines  
+- **Pandas, NumPy** — data manipulation and feature engineering  
+- **scikit-learn** — machine learning (TF-IDF vectorization, SGDClassifier)  
+- **FastAPI** — backend API for job offers, relevance scoring, and feedback  
+- **HTMX + JavaScript** — lightweight interactive frontend (no heavy framework required)  
+- **Azure** —  
+  - **AKS**: container orchestration (deployments and batch jobs)  
+  - **Azure VM**: hosts the ChromaDB vector database  
+  - **Azure Blob Storage**: versioning of ML models and configuration files  
+  - **Azure Database for PostgreSQL**: relational database for storing jobs, likes, and relevance scores  
+- **Docker** — containerized development and deployment  
+- **GitHub Actions** — CI/CD for testing, building, and deploying Docker containers  
+- **Redis** — in-memory cache for fast job data access  
+- **Kubernetes** — scalable orchestration of API services and Kedro jobs  
+- **Terraform** — infrastructure as code for provisioning cloud resources
+- **PyTorch** — used for HuggingFace embeddings  
+
 
 
 <div align="center">
