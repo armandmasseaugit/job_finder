@@ -69,6 +69,11 @@ test: ## 🧪 Run tests with pytest
 test-cov: ## 📊 Run tests with coverage report
 	$(PYTHON) -m pytest tests/ --cov=src/$(PACKAGE) --cov-report=html --cov-report=term-missing
 
+.PHONY: security
+security: ## 🔒 Run security checks
+	$(PYTHON) -m bandit -r src/ web_app/
+	$(PYTHON) -m pip-audit
+
 # ==================================================================================
 # KEDRO PIPELINE
 # ==================================================================================

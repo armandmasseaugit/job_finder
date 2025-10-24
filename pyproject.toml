@@ -87,6 +87,7 @@ dev = [
     "mypy>=1.5.0",
     "bandit>=1.7.0",
     "pylint>=2.15.0",
+    "pip-audit>=2.6.0",
 
     # Development tools
     "pre-commit>=3.3.0",
