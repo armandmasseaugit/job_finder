@@ -1,0 +1,56 @@
+name: Security & Dependencies
+
+description: |
+  Automated dependency updates and security audits (bandit, pip-audit).
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+jobs:
+  dependency-update:
+    name: 📦 Update Dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+      - uses: astral-sh/setup-uv@v3
+        with:
+          version: latest
+      - run: uv lock --upgrade
+      - run: uv sync
+      - run: make test
+      - uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: update dependencies"
+          title: "🔄 Automated dependency update"
+          body: |
+            This PR contains automated dependency updates.
+            - Updated all dependencies to latest compatible versions
+            - Tests have been run and pass with new dependencies
+            Please review the changes before merging.
+          branch: automated/dependency-update
+          delete-branch: true
+
+  security-audit:
+    name: 🔒 Security Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+      - uses: astral-sh/setup-uv@v3
+        with:
+          version: latest
+      - run: make install
+      - run: uv run pip-audit --require-hashes --desc
+      - run: uv run bandit -r src/ -f json -o bandit-report.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: security-reports
+          path: bandit-report.json
