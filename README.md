@@ -1,5 +1,9 @@
 # Job Finder
 
+[![CI](https://github.com/armandmasseaugit/job_finder/actions/workflows/ci.yml/badge.svg)](https://github.com/armandmasseaugit/job_finder/actions/workflows/ci.yml)
+[![Build & Publish](https://github.com/armandmasseaugit/job_finder/actions/workflows/build-publish.yml/badge.svg)](https://github.com/armandmasseaugit/job_finder/actions/workflows/build-publish.yml)
+[![Security & Deps](https://github.com/armandmasseaugit/job_finder/actions/workflows/security-deps.yml/badge.svg)](https://github.com/armandmasseaugit/job_finder/actions/workflows/security-deps.yml)
+
 **Ever spent hours scrolling through job boards, jumping from site to site, only to find the same irrelevant listings—or worse, miss the good ones entirely?**
 
 This project was born out of that exact pain. Job hunting shouldn't be tedious or chaotic.
