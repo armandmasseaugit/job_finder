@@ -70,6 +70,7 @@ jobs:
           images: ${{ env.IMAGE_PREFIX }}-base
           tags: |
             type=raw,value=ci-${{ github.sha }}
+            type=raw,value=latest
       - uses: docker/build-push-action@v5
         with:
           context: .
